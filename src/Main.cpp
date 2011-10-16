@@ -130,11 +130,11 @@ void nextTurn()
 //	pivotPos[1]=coins[0].CenterY;
 //	fly back to perspective
 
-	goPersp();
 //	getchar();
 	if(player==2)
 		AIStriker();
-
+	else
+		goPersp();
 	//	for(int i=0;i<3;i++)
 //	{
 //		cameraPos[i]=1+0*pivotPos[i];

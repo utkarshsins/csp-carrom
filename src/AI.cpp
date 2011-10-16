@@ -4,10 +4,10 @@
 
 void AIStriker()
 {
-	getchar();
+//	getchar();
 	setCenter();
 	printf("st_x : %f st_y : %f\n\n\n",coins[0].VelocityX,coins[0].VelocityY);
-	getchar();
+	//getchar();
 	striker_lock=true;
 	//playTurn();	
 

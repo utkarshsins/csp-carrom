@@ -3,14 +3,14 @@ src=src
 
 flags=-std=c++0x -lGLU -lglut -lGL
 libs=-I$(inc) -IThirdPartyLibs
-a.out: Main.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o ServerClient.o
-	g++ -o a.out Main.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o ServerClient.o $(flags)
+a.out: Main.o AI.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o ServerClient.o
+	g++ -o a.out Main.o AI.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o ServerClient.o $(flags)
 	
 Main.o: $(src)/Main.cpp $(inc)/Main.h
 	g++ $(libs) -c $(src)/Main.cpp	$(flags)
 
-AI.o: $(src)/AI.c $(inc)/AI.h
-	g++ $(libs) -c $(src)/Main.cpp $(flags)
+AI.o: $(src)/AI.cpp $(inc)/AI.h
+	g++ $(libs) -c $(src)/AI.cpp $(flags)
 
 Carrom.o: $(src)/Carrom.cpp $(inc)/Carrom.h
 	g++ $(libs) -c $(src)/Carrom.cpp $(flags)
