@@ -34,23 +34,23 @@ void AIStriker()
 //	engagePhysics(0);
 }
 
-bool pathClear(float x, float y)
-{
-
-	float a=coins[0].CenterX;
-	float b=coins[0].CenterY;
-	while(a-x>=0.002||b-y>=0.002)
-		for(int i=1;i<6;i++)
-		{
-			if(distance(a,b,x,y)<=coins[0].radius+coins[i].radius)
-			{
-				return false;
-			}
-			a+=0.001*(x-coins[0].CenterX);
-			b+=0.001*(y-coins[0].CenterY);
-		}	
-	return true;
-}
+//bool pathClear(float x, float y)
+//{
+//
+//	float a=coins[0].CenterX;
+//	float b=coins[0].CenterY;
+//	while(a-x>=0.002||b-y>=0.002)
+//		for(int i=1;i<6;i++)
+//		{
+//			if(distance(a,b,x,y)<=coins[0].radius+coins[i].radius)
+//			{
+//				return false;
+//			}
+//			a+=0.001*(x-coins[0].CenterX);
+//			b+=0.001*(y-coins[0].CenterY);
+//		}	
+//	return true;
+//}
 
 void setCenter()
 {
@@ -61,6 +61,8 @@ void setCenter()
 		coins[0].CenterX=(sin(turn_rotation*M_PI/180))*SHIFT*-1+cos(turn_rotation*M_PI/180)*adjustment;
 		coins[0].CenterY=(cos(turn_rotation*M_PI/180))*SHIFT*-1+sin(turn_rotation*M_PI/180)*adjustment;
 
+		Render();
+
 		for(int i=5;i>=1;i--)
 		{
 			if(tryCoin(i)==true)
@@ -68,7 +70,7 @@ void setCenter()
 				return;
 			}
 		}
-		adjustment+=0.001;
+		adjustment+=0.01;
 	}
 
 	adjustment=0;
@@ -85,7 +87,7 @@ void setCenter()
 				return;
 			}
 		}
-		adjustment-=0.001;
+		adjustment-=0.01;
 	}
 }
 
@@ -118,47 +120,53 @@ bool tryCoin(int i)
 	factor_x/=length;
 	factor_y/=length;
 
-	float x=coins[i].CenterX-(coins[i].radius+coins[0].radius)*factor_x;
-	float y=coins[i].CenterY-(coins[i].radius+coins[0].radius)*factor_y;
 
-	float a=coins[0].CenterX;
-	float b=coins[0].CenterY;
+	float x=diff_x*width;
+	float y=diff_y*width;
+
+	float a=coins[i].CenterX;
+	float b=coins[i].CenterY;
 	while(fabs(a-x)>=0.002||fabs(b-y)>=0.002)
 	{
-		for(int i=1;i<6;i++)
+		for(int j=1;j<6;j++)
 		{
+			if(j==i)
+				continue;
 //			printf("distance: %f\n",distance(a,b,x,y));
 //			printf("%d",i);
-			if(distance(a,b,coins[i].CenterX,coins[i].CenterY)<=coins[0].radius+coins[i].radius)
+			if(distance(a,b,coins[j].CenterX,coins[j].CenterY)<=coins[i].radius+coins[j].radius)
 			{
 				return false;
 			}
-			a+=0.001*(x-coins[0].CenterX);
-			b+=0.001*(y-coins[0].CenterY);
 		}
+		a+=0.001*(x-coins[i].CenterX);
+		b+=0.001*(y-coins[i].CenterY);
 //		printf("\n");
 	}
 
-	x=diff_x*width;
-	y=diff_y*width;
+	x=coins[i].CenterX-(coins[i].radius+coins[0].radius)*factor_x;
+	y=coins[i].CenterY-(coins[i].radius+coins[0].radius)*factor_y;
 
-	a=coins[i].CenterX;
-	b=coins[i].CenterY;
+	a=coins[0].CenterX;
+	b=coins[0].CenterY;
 	while(fabs(a-x)>=0.002||fabs(b-y)>=0.002)
 	{
-		for(int i=1;i<6;i++)
+		for(int j=1;j<6;j++)
 		{
+			if(j==i)
+				continue;
 //			printf("distance: %f\n",distance(a,b,x,y));
 //			printf("%d",i);
-			if(distance(a,b,coins[i].CenterX,coins[i].CenterY)<=coins[0].radius+coins[i].radius)
+			if(distance(a,b,coins[j].CenterX,coins[j].CenterY)<=coins[0].radius+coins[j].radius)
 			{
 				return false;
 			}
-			a+=0.001*(x-coins[0].CenterX);
-			b+=0.001*(y-coins[0].CenterY);
 		}
+		a+=0.001*(x-coins[0].CenterX);
+		b+=0.001*(y-coins[0].CenterY);
 //		printf("\n");
 	}
+
 
 	printf("Try succesful for coin %d\ncenter coin - x:%f,y:%f\ntagert center - x:%f,y:%f\ncenter striker - x:%f,y:%f",i,coins[i].CenterX,coins[i].CenterY,x,y,coins[0].CenterX,coins[0].CenterY);
 	coins[0].VelocityX=(x-coins[0].CenterX)/sqrt((x-coins[0].CenterX)*(x-coins[0].CenterX)+(y-coins[0].CenterY)*(y-coins[0].CenterY));	
@@ -172,5 +180,6 @@ float distance(float a, float b, float x, float y)
 
 	float y_squared=(b-y)*(b-y);
 
+//	printf("%f\n",sqrt(x_squared+y_squared));
 	return sqrt(x_squared+y_squared);
 }
