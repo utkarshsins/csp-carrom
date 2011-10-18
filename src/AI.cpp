@@ -80,6 +80,8 @@ void setCenter()
 		coins[0].CenterX=(sin(turn_rotation*M_PI/180))*SHIFT*-1+cos(turn_rotation*M_PI/180)*adjustment;
 		coins[0].CenterY=(cos(turn_rotation*M_PI/180))*SHIFT*-1+sin(turn_rotation*M_PI/180)*adjustment;
 
+		Render();
+
 		for(int i=5;i>=1;i--)
 		{
 			if(tryCoin(i)==true)
@@ -130,12 +132,13 @@ bool tryCoin(int i)
 	{
 		for(int j=1;j<6;j++)
 		{
-			if(j==i)
+			if(j==i||coins[j].scored!=0)
 				continue;
 //			printf("distance: %f\n",distance(a,b,x,y));
 //			printf("%d",i);
 			if(distance(a,b,coins[j].CenterX,coins[j].CenterY)<=coins[i].radius+coins[j].radius)
 			{
+				printf("yoyohoho");
 				return false;
 			}
 		}
