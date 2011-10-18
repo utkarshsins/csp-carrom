@@ -5,6 +5,7 @@
 void AIStriker()
 {
 //	getchar();
+//	Random Comment
 	setCenter();
 	printf("st_x : %f st_y : %f\n\n\n",coins[0].VelocityX,coins[0].VelocityY);
 	//getchar();
@@ -109,9 +110,9 @@ bool tryCoin(int i)
 	float targetX, targetY;
 	//Begin Target hit position of Striker Caluculations
 	//OBSERVATION fail only on particular side of the board, also, fail when coin scored, and also looks like cant do if not at original
-	float width=0.95*2;
-	float factor_x=(diff_x*width/2-coins[i].CenterX);
-	float factor_y=(diff_y*width/2-coins[i].CenterY);
+	float width=0.95;
+	float factor_x=(diff_x*width-coins[i].CenterX);
+	float factor_y=(diff_y*width-coins[i].CenterY);
 
 	float length=sqrt(factor_x*factor_x+factor_y*factor_y);
 	factor_x/=length;
@@ -137,6 +138,28 @@ bool tryCoin(int i)
 		}
 //		printf("\n");
 	}
+
+	x=diff_x*width;
+	y=diff_y*width;
+
+	a=coins[i].CenterX;
+	b=coins[i].CenterY;
+	while(fabs(a-x)>=0.002||fabs(b-y)>=0.002)
+	{
+		for(int i=1;i<6;i++)
+		{
+//			printf("distance: %f\n",distance(a,b,x,y));
+//			printf("%d",i);
+			if(distance(a,b,coins[i].CenterX,coins[i].CenterY)<=coins[0].radius+coins[i].radius)
+			{
+				return false;
+			}
+			a+=0.001*(x-coins[0].CenterX);
+			b+=0.001*(y-coins[0].CenterY);
+		}
+//		printf("\n");
+	}
+
 	printf("Try succesful for coin %d\ncenter coin - x:%f,y:%f\ntagert center - x:%f,y:%f\ncenter striker - x:%f,y:%f",i,coins[i].CenterX,coins[i].CenterY,x,y,coins[0].CenterX,coins[0].CenterY);
 	coins[0].VelocityX=(x-coins[0].CenterX)/sqrt((x-coins[0].CenterX)*(x-coins[0].CenterX)+(y-coins[0].CenterY)*(y-coins[0].CenterY));	
 	coins[0].VelocityY=(y-coins[0].CenterY)/sqrt((x-coins[0].CenterX)*(x-coins[0].CenterX)+(y-coins[0].CenterY)*(y-coins[0].CenterY));	

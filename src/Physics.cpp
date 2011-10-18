@@ -8,11 +8,11 @@
 #define VELY(a) coins[a].VelocityY
 
 CarromCoin corners[4];
-float edge_half=0.95;
+#define edge_half 0.95
 
-float friction=0.3;
-float physics_factor=0.024;
-float pocketing_factor = 1.3;
+#define friction 0.3
+#define physics_factor 0.024
+#define pocketing_factor 1.3
 
 void engagePhysics(int arg)
 {
