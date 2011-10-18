@@ -1,60 +1,38 @@
 #include<thread>
 #include"AI.h"
 #include"Main.h"
+#include<unistd.h>
 
 void AIStriker()
 {
-//	getchar();
-//	Random Comment
-	setCenter();
-	printf("st_x : %f st_y : %f\n\n\n",coins[0].VelocityX,coins[0].VelocityY);
-	//getchar();
-	striker_lock=true;
-	//playTurn();	
+	cameraPos[0]=cameraLook[0]=0;
+	cameraPos[1]=cameraLook[1]=SHIFT;
 
-	camera_movable=false;
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(45,(float)(windowX)/windowY,0.5,300);
+	gluLookAt(EXPANDARR3(cameraPos),EXPANDARR3(cameraLook),0,1,0);//cameraPos[0],SHIFT*(i+1)/gradiant,0,0,1,0);
 
 	fixate_translate[0]=-coins[0].CenterX;
 	fixate_translate[1]=-coins[0].CenterY;
-	
-	//coins[0].VelocityX=sin(((0-pointer_angle+turn_rotation)/180)*PI);
-	//coins[0].VelocityY=cos(((0-pointer_angle+turn_rotation)/180)*PI);
 
-	goTop();
+//	striker_lock=true;
+
+	setCenter();
+	printf("st_x : %f st_y : %f\n\n\n",coins[0].VelocityX,coins[0].VelocityY);
+
+	sleep(1);	
 	std::thread t(engagePhysics,0);
 	t.detach();
 	striker_lock=false;
-
-//	goTop();
-//	std::thread t(engagePhysics,0);
-//	t.detach();
-//	striker_lock=false;
-//	engagePhysics(0);
-
-//	engagePhysics(0);
 }
-
-//bool pathClear(float x, float y)
-//{
-//
-//	float a=coins[0].CenterX;
-//	float b=coins[0].CenterY;
-//	while(a-x>=0.002||b-y>=0.002)
-//		for(int i=1;i<6;i++)
-//		{
-//			if(distance(a,b,x,y)<=coins[0].radius+coins[i].radius)
-//			{
-//				return false;
-//			}
-//			a+=0.001*(x-coins[0].CenterX);
-//			b+=0.001*(y-coins[0].CenterY);
-//		}	
-//	return true;
-//}
 
 void setCenter()
 {
-	float adjustment=0;
+	float adjustment=(rand()%10000-5000)/20000.0;
+	float temp=adjustment;
+
+	printf("%f\n",temp);
 
 	while(adjustment<=PLACEMENTWIDTH)
 	{
@@ -73,7 +51,7 @@ void setCenter()
 		adjustment+=0.01;
 	}
 
-	adjustment=0;
+	adjustment=temp;
 
 	while(adjustment>=-PLACEMENTWIDTH)
 	{
@@ -95,7 +73,6 @@ void setCenter()
 
 bool tryCoin(int i)
 {
-
 	if(coins[i].scored!=0)
 		return false;
 	float diff_x=coins[i].CenterX-coins[0].CenterX;
@@ -134,8 +111,6 @@ bool tryCoin(int i)
 		{
 			if(j==i||coins[j].scored!=0)
 				continue;
-//			printf("distance: %f\n",distance(a,b,x,y));
-//			printf("%d",i);
 			if(distance(a,b,coins[j].CenterX,coins[j].CenterY)<=coins[i].radius+coins[j].radius)
 			{
 				printf("yoyohoho");
@@ -144,7 +119,6 @@ bool tryCoin(int i)
 		}
 		a+=0.001*(x-coins[i].CenterX);
 		b+=0.001*(y-coins[i].CenterY);
-//		printf("\n");
 	}
 
 	x=coins[i].CenterX-(coins[i].radius+coins[0].radius)*factor_x;
