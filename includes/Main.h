@@ -11,6 +11,7 @@
 #define ALPHA 2
 #define SHIFT 0.33*ALPHA
 #define PERSP_ZOOM 2
+#define PLACEMENTWIDTH 0.28*ALPHA
 
 extern GLfloat cameraPos[3];
 extern int mouseX,mouseY, windowX, windowY;
@@ -24,6 +25,7 @@ extern GLfloat pointer_angle;
 extern int player;
 extern GLfloat turn_rotation;
 extern std::mutex m;
+
 void setCamera();
 void ReshapeFunction(int w, int h);
 void Render(void);
@@ -37,3 +39,5 @@ void drawPointer();
 void goTop();
 void goPersp();
 void nextTurn();
+void playTurn();
+void drawDebug(float,float);
