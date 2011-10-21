@@ -31,4 +31,4 @@ ServerClient.o:	$(src)/ServerClient.cpp
 	g++ $(libs) -c $(src)/ServerClient.cpp $(flags)
 
 clean:
-	rm *.o
+	rm *.o *.out
