@@ -13,7 +13,7 @@ GLfloat mat_shininess[] = { 50.0 };
 //GLfloat pivotPos[3]={0,0,0};
 GLfloat  fixate_translate[3];
 
-GLfloat cameraPos[3]={0,-1.0*ALPHA,1.125*ALPHA};
+GLfloat cameraPos[3]={0,-1.0*ALPHA,1.25*ALPHA};
 GLfloat cameraLook[3]={(0-cameraPos[0])/PERSP_ZOOM,(0-cameraPos[1])/PERSP_ZOOM,0};
 GLfloat persp_rot=0;
 GLfloat pointer_angle=0;
@@ -68,10 +68,10 @@ void Render(void)
 
 	glRotated(turn_rotation, 0,0,1);
 
-	if(camera_movable)
-		glTranslated(0-coins[0].CenterX,0-coins[0].CenterY,COIN_HEIGHT);
+	if(camera_movable) // Remove 0.5f from z-coord to fix back camera angle
+		glTranslated(0-coins[0].CenterX,0-coins[0].CenterY,COIN_HEIGHT + 0.5f);
 	else
-		glTranslated(fixate_translate[0],fixate_translate[1],COIN_HEIGHT);
+		glTranslated(fixate_translate[0],fixate_translate[1],COIN_HEIGHT + 0.5f);
 
 	glRotated(turn_animation,0,0,1);
 	DrawCarromBoard();
