@@ -56,7 +56,7 @@ void MouseButton(int key, int direction, int x, int y)
 			}
 			cameraPos[2]*=(1+0.07*direction/factor);
 			setCamera();
-			Render();
+			RenderGame();
 		}
 	}
 }

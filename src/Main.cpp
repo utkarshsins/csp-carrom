@@ -49,7 +49,6 @@ void ReshapeFunctionMenu(int w, int h)
 
 	glutSetWindow(MENUWINDOW);
 	glViewport(0,0,w, 250);
-	glutReshapeWindow(w, h);
 
 	glutSetWindow(GAMEWINDOW);
 	glutReshapeWindow(w, h-250);
@@ -73,7 +72,30 @@ void drawStriker()
 	coins[0].DrawCoin();
 }
 
-void Render(void)
+void RenderMenu(void)
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(1,1,0,1);
+
+	glPushMatrix();
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	glScalef((windowX - 10)/5/windowX,1,1);
+
+//	DrawCarromBoard();
+	DrawMenuButton();
+	
+	glPopMatrix();
+	
+	glutSwapBuffers();
+}
+
+void RenderGame(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1,1,1,0.7);
@@ -96,6 +118,8 @@ void Render(void)
 	for(int i=0;i<6;i++)
 		if(coins[i].scored==0)
 			coins[i].DrawCoin();
+
+	DrawMenuButton();
 
 	if(striker_lock)
 		drawPointer();
@@ -174,7 +198,7 @@ void rotateCam(int requirement)
 	{
 		turn_animation+=(rotate);
 		rotate*=(int)turn_animation%requirement>requirement*0.8?0.97:0.96;
-		Render();
+		RenderGame();
 	}
 
 	turn_rotation+=requirement;
@@ -237,7 +261,7 @@ void goTop()
 		gluPerspective(45,(float)(windowX)/windowY,0.5,300);
 		gluLookAt(EXPANDARR3(cameraPos),EXPANDARR3(cameraLook),0,1,0);//cameraPos[0],SHIFT*(i+1)/gradiant,0,0,1,0);
 
-		Render();
+		RenderGame();
 	}
 }
 
@@ -259,7 +283,7 @@ void goPersp()
 	gluPerspective(45,(float)(windowX)/windowY,0.5,300);
 	gluLookAt(EXPANDARR3(cameraPos),EXPANDARR3(cameraLook),0,1,0);//cameraPos[0],SHIFT*(i+1)/gradiant,0,0,1,0);
 
-	Render();
+	RenderGame();
 	to_fly[0]=cameraPos[0]-0;
 	to_fly[1]=cameraPos[1]+1*ALPHA;
 	to_fly[2]=cameraPos[2]-1.125*ALPHA;
@@ -284,11 +308,11 @@ void goPersp()
 		gluPerspective(45,(float)(windowX)/windowY,0.5,300);
 		gluLookAt(EXPANDARR3(cameraPos),EXPANDARR3(cameraLook),0,(gradiant-i-1.0f)/gradiant,(i+1.0f)/gradiant);//cameraPos[0],SHIFT*(i+1)/gradiant,0,0,1,0);
 
-		Render();
+		RenderGame();
 	}
 
 	camera_movable=true;
-	Render();
+	RenderGame();
 }
 
 void key(unsigned char a, int b, int y)
@@ -300,7 +324,7 @@ void init(void)
 	GLfloat light_position[] = { -1.0, -3.0, 4.0, 0.0 };
 	GLfloat white_light[] = { 1.0, 1.0, 1.0, 1.0 };
 	GLfloat lmodel_ambient[] = { 0.1, 0.1, 0.1, 1.0 };
-	glClearColor(0.0, 0.0, 0.0, 0.0);
+//	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glShadeModel(GL_SMOOTH);
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, white_light);
@@ -330,6 +354,8 @@ void init(void)
 	coins[3].SetXY(0.4, 0.5);
 
 	coins[5].IsQueen=true;
+
+	MenuInit();
 }
 
 int main(int args, char *argv[])
@@ -344,6 +370,7 @@ int main(int args, char *argv[])
 	glutCreateWindow(argv[0]);
 //	glutFullScreen();
 	glutReshapeFunc(ReshapeFunctionMenu);
+	glutDisplayFunc(RenderMenu);
 
 	std::cout << glutGetWindow() << std::endl;
 	glutCreateSubWindow(glutGetWindow(), 0, 250, 1920, 500);
@@ -352,7 +379,7 @@ int main(int args, char *argv[])
 	init();
 	
 	glutReshapeFunc(ReshapeFunctionGame);
-	glutDisplayFunc(Render);
+	glutDisplayFunc(RenderGame);
 	glutIdleFunc(idle);
 	glutMotionFunc(moveCam);
 	glutPassiveMotionFunc(stopCam);

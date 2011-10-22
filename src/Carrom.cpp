@@ -15,8 +15,38 @@ GLubyte CarromVerticalBorderIn[2000];
 GLuint CarromCoinFace[100];
 GLuint CarromBase[2000];
 
+GLuint MenuData[2000];
+GLfloat MenuColorData[2000];
+
 GLuint listID;
 GLuint textureID[10];
+
+void MenuInit()
+{
+	{
+		MenuData[0] = 1224/3;
+		MenuData[1] = MenuData[0]+1;
+		MenuData[2] = MenuData[0]+2;
+	}
+	{
+		MenuData[3] = MenuData[0]+3;
+		MenuData[4] = 4;
+		MenuData[5] = 5;
+	}
+	{
+		MenuData[6] = 6;
+		MenuData[7] = 7;
+		MenuData[8] = 8;
+	}
+	{
+		MenuData[9] = 9;
+		MenuData[10] = 10;
+		MenuData[11] = 11;
+	}
+
+	for(int i = 0; i<12; i++)
+		CarromColorData[i] = 1.f;
+}
 
 void CarromBaseInit(GLfloat scale)
 {
@@ -238,10 +268,10 @@ void CarromBaseInit(GLfloat scale)
 		CarromVerticalBorderIn[j] = i+2;
 		CarromVerticalBorderIn[j+1] = i+3;
 
-		CarromColorData[i] = 0.f;
-		CarromColorData[i+1] = 0.f;
-		CarromColorData[i+2] = 0.f;
-		CarromColorData[i+3] = 0.f;
+		CarromColorData[i] = 1.f;
+		CarromColorData[i+1] = 1.f;
+		CarromColorData[i+2] = 1.f;
+		CarromColorData[i+3] = 1.f;
 	}
 /*
 	for(int i = 492; i<582; i=i+3)
@@ -390,21 +420,37 @@ void CarromBaseInit(GLfloat scale)
 		 CarromCoinFace[i+40] = 984 / 3 + i * 2 + 1;
 	}
 
+	for(int i = 1224; i<1224+12; i=i+12)
+	{
+		CarromBaseData[i] = -1.f;
+		CarromBaseData[i+1] = 1.f;
+		CarromBaseData[i+2] = 0.f;
+		CarromBaseData[i+3] = 1.f;
+		CarromBaseData[i+4] = 1.f;
+		CarromBaseData[i+5] = 0.f;
+		CarromBaseData[i+6] = 1.f;
+		CarromBaseData[i+7] = -1.f;
+		CarromBaseData[i+8] = 0.f;
+		CarromBaseData[i+9] = -1.f;
+		CarromBaseData[i+10] = -1.f;
+		CarromBaseData[i+11] = 0.f;
+	}
+
 }
 
 
 void CarromBaseGlInit()
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
-//	glEnableClientState(GL_COLOR_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_NORMALIZE);
 	//glEnable(GL_POINT_SMOOTH);
 	//glEnable(GL_POINT_SPRITE);
-//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	//glColorPointer(3, GL_FLOAT, 0, CarromColorData);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glColorPointer(3, GL_FLOAT, 0, CarromColorData);
 	//glCullFace(GL_BACK);
 	//glEnable(GL_CULL_FACE);
 	
@@ -432,7 +478,6 @@ void CarromBaseGlInit()
 
 	glHint(GL_FOG_HINT, GL_NICEST);
 	listID = glGenLists(1);
-
 }
 
 void LoadCarromTextures()
@@ -458,6 +503,11 @@ void LoadCarromTextures()
 	BMPLoadGL("Textures/Striker.bmp");
 }
 
+void DrawMenuButton()
+{
+	glDrawElements(GL_QUADS, 4, GL_UNSIGNED_INT, MenuData);
+}
+
 void DrawCarromBoard()
 {
 	glPushMatrix();
@@ -468,7 +518,7 @@ void DrawCarromBoard()
 	glDrawElements(GL_QUAD_STRIP, 82, GL_UNSIGNED_BYTE, CarromTopIn);
 	glDrawElements(GL_QUAD_STRIP, 82, GL_UNSIGNED_BYTE, CarromVerticalBorderIn);
 	
-	glDisableClientState(GL_COLOR_ARRAY);	
+//	glDisableClientState(GL_COLOR_ARRAY);	
 	
 	glEnable(GL_POLYGON_OFFSET_FILL);
 	

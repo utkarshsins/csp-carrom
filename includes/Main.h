@@ -30,7 +30,8 @@ extern std::mutex m;
 
 void setCamera();
 void ReshapeFunction(int w, int h);
-void Render(void);
+void RenderGame(void);
+void RenderMenu(void);
 void scroll(int arbit, int direction, int x, int y);
 void idle();
 void rotateCam(int);

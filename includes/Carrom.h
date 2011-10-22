@@ -15,6 +15,8 @@ void CarromBaseGlInit();
 void LoadCarromTextures();
 void DrawCarromBoard();
 
+void MenuInit();
+void DrawMenuButton();
 
 extern GLfloat CarromBaseData[2000];
 extern GLfloat CarromColorData[2000];
@@ -24,6 +26,9 @@ extern GLubyte CarromTopIn[2000];
 extern GLubyte CarromVerticalBorderIn[2000];
 extern GLuint CarromCoinFace[100];
 extern GLuint CarromBase[2000];
+
+extern GLuint MenuData[2000];
+extern GLfloat MenuColorData[2000];
 
 extern GLuint listID;
 extern GLuint textureID[10];
