@@ -1,3 +1,4 @@
+#include<iostream>
 #include<stdio.h>
 #include <stdlib.h>
 #include<math.h>
@@ -7,6 +8,7 @@
 #include"AI.h"
 
 #define PI M_PI
+
 float position=3;
 GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 GLfloat mat_shininess[] = { 50.0 };
@@ -32,11 +34,26 @@ int frame=0;
 CarromCoin coins[6];
 
 GLboolean moving,adjusting, striker_lock=false,camera_movable=true;
-void ReshapeFunction(int w, int h)
+
+void ReshapeFunctionGame(int w, int h)
 {
+	glutSetWindow(GAMEWINDOW);
+	glViewport(0, 0, w, h);
+}
+
+void ReshapeFunctionMenu(int w, int h)
+{
+	std::cout << "Window width = "<< w << ", height = "<< h <<std::endl;
 	windowX=w;
-	windowY=h;
-	glViewport(0,0,w,h);
+	windowY=h - 250;
+
+	glutSetWindow(MENUWINDOW);
+	glViewport(0,0,w, 250);
+	glutReshapeWindow(w, h);
+
+	glutSetWindow(GAMEWINDOW);
+	glutReshapeWindow(w, h-250);
+
 	setCamera();
 }
 void setCamera()
@@ -226,6 +243,7 @@ void goTop()
 
 void goPersp()
 {
+	glutSetWindow(GAMEWINDOW);
 	GLfloat to_look[3],to_fly[3];
 	
 	glMatrixMode(GL_MODELVIEW);
@@ -317,26 +335,31 @@ void init(void)
 int main(int args, char *argv[])
 {
 	glutInit(&args, argv);
+
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+	
 	glutInitWindowSize(500, 500);
 	glutInitWindowPosition(480, 300);
+	
 	glutCreateWindow(argv[0]);
+//	glutFullScreen();
+	glutReshapeFunc(ReshapeFunctionMenu);
+
+	std::cout << glutGetWindow() << std::endl;
+	glutCreateSubWindow(glutGetWindow(), 0, 250, 1920, 500);
+	std::cout << glutGetWindow();
+	
 	init();
-	glutReshapeFunc(ReshapeFunction);
+	
+	glutReshapeFunc(ReshapeFunctionGame);
 	glutDisplayFunc(Render);
 	glutIdleFunc(idle);
 	glutMotionFunc(moveCam);
 	glutPassiveMotionFunc(stopCam);
-//	glutMouseWheelFunc(scroll);
 	glutMouseFunc(MouseButton);
 	glutKeyboardFunc(key);
-//	glutTimerFunc(10,yoyo,0);
-//	displayInit();
-//	std::thread t(yoyo);
-//	glutFullScreen();
-	//printFPS(0);
 	glutMainLoop();
-//	t.join();
+
 	return 0;
 }
 
