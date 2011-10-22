@@ -130,7 +130,7 @@ void drawPointer()
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glLoadIdentity();
-	glTranslated(0,0,COIN_HEIGHT);
+	glTranslated(0,0,COIN_HEIGHT + 0.5f);
 	glRotated(pointer_angle, 0,0,1);
 	glBegin(GL_LINES);
 	glVertex2f(0,0);
