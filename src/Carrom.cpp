@@ -1,6 +1,9 @@
+#include <iostream>
 #include "Carrom.h"
 #include "Coin.h"
 #include<GL/freeglut.h>
+#include "Main.h"
+
 #define RADIUS_HOLE (4.5f/2.f/74.0f)
 #define COIN_RADIUS (3.1f/74.f)
 #define COIN_HEIGHT (0.8f*2.f/74.f)
@@ -13,40 +16,11 @@ GLubyte CarromVerticalBorderOut[2000];
 GLubyte CarromTopIn[2000];
 GLubyte CarromVerticalBorderIn[2000];
 GLuint CarromCoinFace[100];
-GLuint CarromBase[2000];
+//GLuint CarromBase[2000];
 
-GLuint MenuData[2000];
-GLfloat MenuColorData[2000];
 
 GLuint listID;
 GLuint textureID[10];
-
-void MenuInit()
-{
-	{
-		MenuData[0] = 1224/3;
-		MenuData[1] = MenuData[0]+1;
-		MenuData[2] = MenuData[0]+2;
-	}
-	{
-		MenuData[3] = MenuData[0]+3;
-		MenuData[4] = 4;
-		MenuData[5] = 5;
-	}
-	{
-		MenuData[6] = 6;
-		MenuData[7] = 7;
-		MenuData[8] = 8;
-	}
-	{
-		MenuData[9] = 9;
-		MenuData[10] = 10;
-		MenuData[11] = 11;
-	}
-
-	for(int i = 0; i<12; i++)
-		CarromColorData[i] = 1.f;
-}
 
 void CarromBaseInit(GLfloat scale)
 {
@@ -273,36 +247,7 @@ void CarromBaseInit(GLfloat scale)
 		CarromColorData[i+2] = 1.f;
 		CarromColorData[i+3] = 1.f;
 	}
-/*
-	for(int i = 492; i<582; i=i+3)
-	{
-		CarromBaseData[i] = scale * (0.025f + RADIUS_HOLE - RADIUS_HOLE*cos((double) (i-492)*3.0*M_PI/2.0/90.0));
-		CarromBaseData[i+1] = scale * (0.025f + RADIUS_HOLE + RADIUS_HOLE*sin((double) (i-492)*3.0*M_PI/2.0/90.0));
-		CarromBaseData[i+2] = 0;
-	}
-	for(int i = 582; i<672; i=i+3)
-	{
-		CarromBaseData[i] = scale * (0.975f - RADIUS_HOLE - RADIUS_HOLE*sin((double) (i-582)*3.0*M_PI/2.0/90.0));
-		CarromBaseData[i+1] = scale * (0.025f + RADIUS_HOLE - RADIUS_HOLE*cos((double) (i-582)*3.0*M_PI/2.0/90.0));
-		CarromBaseData[i+2] = 0;
-	}
-	for(int i = 672; i<762; i=i+3)
-	{
-		CarromBaseData[i] = scale * (0.975f - RADIUS_HOLE + RADIUS_HOLE*cos((double) (i-672)*3.0*M_PI/2.0/90.0));
-		CarromBaseData[i+1] = scale * (0.925f - RADIUS_HOLE - RADIUS_HOLE*sin((double) (i-672)*3.0*M_PI/2.0/90.0));
-		CarromBaseData[i+2] = 0;
-	}
-	for(int i = 762; i<852; i=i+3)
-	{
-		CarromBaseData[i] = scale * (0.025f + RADIUS_HOLE + RADIUS_HOLE*sin((double) (i-762)*3.0*M_PI/2.0/90.0));
-		CarromBaseData[i+1] = scale * (0.975f - RADIUS_HOLE + RADIUS_HOLE*cos((double) (i-762)*3.0*M_PI/2.0/90.0));
-		CarromBaseData[i+2] = 0;
-	}
-	for(int i = 492, j = 0; i<852; i=i+3, j++)
-	{
-		CarromBase[j] = i;
-	}
-*/
+	
 	{
 		int i = 492;
 	CarromColorData[i] = 0.7215f;
@@ -363,36 +308,36 @@ void CarromBaseInit(GLfloat scale)
 
 	for(int i = 504; i<624; i=i+3)
 	{
-		CarromColorData[i] = 0.f;
-		CarromColorData[i+1] = 0.f;
-		CarromColorData[i+2] = 0.f;
+		CarromColorData[i] = 1.f;
+		CarromColorData[i+1] = 1.f;
+		CarromColorData[i+2] = 1.f;
 		CarromBaseData[i] = scale * (0.025f + RADIUS_HOLE*(1.f + cos((double) (i-504)*2.0*M_PI/120)));
 		CarromBaseData[i+1] = scale * (0.025f + RADIUS_HOLE*(1.f + sin((double) (i-504)*2.0*M_PI/120)));
 		CarromBaseData[i+2] = 0.f;
 	}
 	for(int i = 624; i<744; i=i+3)
 	{
-		CarromColorData[i] = 0.f;
-		CarromColorData[i+1] = 0.f;
-		CarromColorData[i+2] = 0.f;
+		CarromColorData[i] = 1.f;
+		CarromColorData[i+1] = 1.f;
+		CarromColorData[i+2] = 1.f;
 		CarromBaseData[i] = scale * (0.975f - RADIUS_HOLE*(1.f + cos((double) (i-504)*2.0*M_PI/120)));
 		CarromBaseData[i+1] = scale * (0.025f + RADIUS_HOLE*(1.f + sin((double) (i-504)*2.0*M_PI/120)));
 		CarromBaseData[i+2] = 0.f;
 	}
 	for(int i = 744; i<864; i=i+3)
 	{
-		CarromColorData[i] = 0.f;
-		CarromColorData[i+1] = 0.f;
-		CarromColorData[i+2] = 0.f;
+		CarromColorData[i] = 1.f;
+		CarromColorData[i+1] = 1.f;
+		CarromColorData[i+2] = 1.f;
 		CarromBaseData[i] = scale * (0.975f - RADIUS_HOLE*(1.f + cos((double) (i-504)*2.0*M_PI/120)));
 		CarromBaseData[i+1] = scale * (0.975f - RADIUS_HOLE*(1.f + sin((double) (i-504)*2.0*M_PI/120)));
 		CarromBaseData[i+2] = 0.f;
 	}
 	for(int i = 864; i<984; i=i+3)
 	{
-		CarromColorData[i] = 0.f;
-		CarromColorData[i+1] = 0.f;
-		CarromColorData[i+2] = 0.f;
+		CarromColorData[i] = 1.f;
+		CarromColorData[i+1] = 1.f;
+		CarromColorData[i+2] = 1.f;
 		CarromBaseData[i] = scale * (0.025f + RADIUS_HOLE*(1.f + cos((double) (i-504)*2.0*M_PI/120)));
 		CarromBaseData[i+1] = scale * (0.975f - RADIUS_HOLE*(1.f + sin((double) (i-504)*2.0*M_PI/120)));
 		CarromBaseData[i+2] = 0.f;
@@ -419,28 +364,12 @@ void CarromBaseInit(GLfloat scale)
 		 CarromCoinFace[i] = 984 / 3 + i * 2;
 		 CarromCoinFace[i+40] = 984 / 3 + i * 2 + 1;
 	}
-
-	for(int i = 1224; i<1224+12; i=i+12)
-	{
-		CarromBaseData[i] = -1.f;
-		CarromBaseData[i+1] = 1.f;
-		CarromBaseData[i+2] = 0.f;
-		CarromBaseData[i+3] = 1.f;
-		CarromBaseData[i+4] = 1.f;
-		CarromBaseData[i+5] = 0.f;
-		CarromBaseData[i+6] = 1.f;
-		CarromBaseData[i+7] = -1.f;
-		CarromBaseData[i+8] = 0.f;
-		CarromBaseData[i+9] = -1.f;
-		CarromBaseData[i+10] = -1.f;
-		CarromBaseData[i+11] = 0.f;
-	}
-
 }
 
 
 void CarromBaseGlInit()
 {
+	glutSetWindow(GAMEWINDOW);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
@@ -501,11 +430,6 @@ void LoadCarromTextures()
 	
 	glBindTexture(GL_TEXTURE_2D, textureID[5]);
 	BMPLoadGL("Textures/Striker.bmp");
-}
-
-void DrawMenuButton()
-{
-	glDrawElements(GL_QUADS, 4, GL_UNSIGNED_INT, MenuData);
 }
 
 void DrawCarromBoard()

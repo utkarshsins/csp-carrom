@@ -41,12 +41,6 @@ void ReshapeFunctionGame(int w, int h)
 	glViewport(0, 0, w, h);
 }
 
-void ReshapeFunctionMenu(int w, int h)
-{
-	glutSetWindow(MENUWINDOW);
-	glViewport(0, 0, w, h);
-}
-
 void ReshapeFunction(int w, int h)
 {
 	std::cout << "Window width = "<< w << ", height = "<< h <<std::endl;
@@ -82,8 +76,8 @@ void RenderMenu(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(0,0,1,1);
-/*
-	glPushMatrix();
+
+//	glPushMatrix();
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -91,16 +85,16 @@ void RenderMenu(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	glScalef((windowX - 10)/5/windowX,0.1f,1);
+//	glScalef((windowX - 10.f)/5.f/windowX,50.f/250.f,1);
 
 //	DrawCarromBoard();
 	DrawMenuButton();
 	
-	glPopMatrix();
-*/
-	glBegin(GL_POINTS);
-		glVertex3f(0.f,0.f, -0.1f);
-	glEnd();
+//	glPopMatrix();
+
+//	glBegin(GL_POINTS);
+//		glVertex3f(1.f,1.f, -0.1f);
+//	glEnd();
 
 	glutSwapBuffers();
 }
@@ -365,7 +359,6 @@ void init(void)
 
 	coins[5].IsQueen=true;
 
-	MenuInit();
 }
 
 int main(int args, char *argv[])
@@ -380,12 +373,8 @@ int main(int args, char *argv[])
 	glutCreateWindow(argv[0]);
 //	glutFullScreen();
 	glutReshapeFunc(ReshapeFunction);
-//	glutDisplayFunc(RenderMenu);
 
-	std::cout << glutGetWindow() << std::endl;
-	glutCreateSubWindow(glutGetWindow(), 0, 250, 1920, 500);
-	std::cout << glutGetWindow();
-	
+	glutCreateSubWindow(glutGetWindow(), 0, 250, 1920, 500);	
 	init();
 	
 	glutReshapeFunc(ReshapeFunctionGame);
@@ -396,10 +385,7 @@ int main(int args, char *argv[])
 	glutMouseFunc(MouseButton);
 	glutKeyboardFunc(key);
 
-	glutSetWindow(MAINWINDOW);
-	glutCreateSubWindow(glutGetWindow(), 0, 0, 1920, 250);
-	glutReshapeFunc(ReshapeFunctionMenu);
-	glutDisplayFunc(RenderMenu);
+	MenuInit();
 
 	glutMainLoop();
 
