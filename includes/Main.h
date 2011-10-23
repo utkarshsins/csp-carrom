@@ -12,8 +12,10 @@
 #define SHIFT 0.33*ALPHA
 #define PERSP_ZOOM 2
 #define PLACEMENTWIDTH 0.28*ALPHA
-#define MENUWINDOW 1
+
+#define MAINWINDOW 1
 #define GAMEWINDOW 2
+#define MENUWINDOW 3
 
 extern GLfloat cameraPos[3];
 extern int mouseX,mouseY, windowX, windowY;

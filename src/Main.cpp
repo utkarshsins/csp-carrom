@@ -43,12 +43,18 @@ void ReshapeFunctionGame(int w, int h)
 
 void ReshapeFunctionMenu(int w, int h)
 {
+	glutSetWindow(MENUWINDOW);
+	glViewport(0, 0, w, h);
+}
+
+void ReshapeFunction(int w, int h)
+{
 	std::cout << "Window width = "<< w << ", height = "<< h <<std::endl;
 	windowX=w;
 	windowY=h - 250;
 
 	glutSetWindow(MENUWINDOW);
-	glViewport(0,0,w, 250);
+	glutReshapeWindow(w, 250);
 
 	glutSetWindow(GAMEWINDOW);
 	glutReshapeWindow(w, h-250);
@@ -75,8 +81,8 @@ void drawStriker()
 void RenderMenu(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	glClearColor(1,1,0,1);
-
+	glClearColor(0,0,1,1);
+/*
 	glPushMatrix();
 
 	glMatrixMode(GL_PROJECTION);
@@ -85,13 +91,17 @@ void RenderMenu(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	glScalef((windowX - 10)/5/windowX,1,1);
+	glScalef((windowX - 10)/5/windowX,0.1f,1);
 
 //	DrawCarromBoard();
 	DrawMenuButton();
 	
 	glPopMatrix();
-	
+*/
+	glBegin(GL_POINTS);
+		glVertex3f(0.f,0.f, -0.1f);
+	glEnd();
+
 	glutSwapBuffers();
 }
 
@@ -119,7 +129,7 @@ void RenderGame(void)
 		if(coins[i].scored==0)
 			coins[i].DrawCoin();
 
-	DrawMenuButton();
+//	DrawMenuButton();
 
 	if(striker_lock)
 		drawPointer();
@@ -369,8 +379,8 @@ int main(int args, char *argv[])
 	
 	glutCreateWindow(argv[0]);
 //	glutFullScreen();
-	glutReshapeFunc(ReshapeFunctionMenu);
-	glutDisplayFunc(RenderMenu);
+	glutReshapeFunc(ReshapeFunction);
+//	glutDisplayFunc(RenderMenu);
 
 	std::cout << glutGetWindow() << std::endl;
 	glutCreateSubWindow(glutGetWindow(), 0, 250, 1920, 500);
@@ -385,6 +395,12 @@ int main(int args, char *argv[])
 	glutPassiveMotionFunc(stopCam);
 	glutMouseFunc(MouseButton);
 	glutKeyboardFunc(key);
+
+	glutSetWindow(MAINWINDOW);
+	glutCreateSubWindow(glutGetWindow(), 0, 0, 1920, 250);
+	glutReshapeFunc(ReshapeFunctionMenu);
+	glutDisplayFunc(RenderMenu);
+
 	glutMainLoop();
 
 	return 0;
