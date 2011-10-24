@@ -56,13 +56,14 @@ void MouseButton(int key, int direction, int x, int y)
 			}
 			cameraPos[2]*=(1+0.07*direction/factor);
 			setCamera();
-			Render();
+			RenderGame();
 		}
 	}
 }
 
 bool isMouseOnStriker(int x, int y)
 {
+	glutSetWindow(GAMEWINDOW);
 	GLint viewport[4];
 	GLuint selection_buffer[5];
 
@@ -74,7 +75,8 @@ bool isMouseOnStriker(int x, int y)
 	glLoadIdentity();
 
 	glGetIntegerv(GL_VIEWPORT,viewport);
-	gluPickMatrix(x,viewport[3]-y, 13,13,viewport);
+	printf("vieport0 = %d, 1 = %d, 2 = %d, 3 = %d\n",  viewport[0], viewport[1], viewport[2], viewport[3]);
+	gluPickMatrix(x,viewport[1] + viewport[3]-y, 13,13,viewport); // Viewport[1] is the window y-offset, Viewport[3] is the window height
 	gluPerspective(45, windowX/(float)windowY,0.5, 300);
 	gluLookAt(EXPANDARR3(cameraPos),EXPANDARR3(cameraLook),0,0,1);
 
@@ -87,6 +89,7 @@ bool isMouseOnStriker(int x, int y)
 	glFlush();
 	int hits=glRenderMode(GL_RENDER);
 
+	printf("x = %d, y = %d, hits = %d\n", x, y, hits);
 	if(hits!=0)
 		return true;
 	else return false;

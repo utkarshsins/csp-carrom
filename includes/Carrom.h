@@ -1,5 +1,5 @@
-#ifndef  __CARROM_H__
-#define  __CARROM_H__
+#ifndef  __CARROMH__
+#define  __CARROMH__
 
 #include <GL/glut.h>
 #include <GL/glu.h>
@@ -15,6 +15,7 @@ void CarromBaseGlInit();
 void LoadCarromTextures();
 void DrawCarromBoard();
 
+void DrawMenuButton();
 
 extern GLfloat CarromBaseData[2000];
 extern GLfloat CarromColorData[2000];
@@ -25,8 +26,8 @@ extern GLubyte CarromVerticalBorderIn[2000];
 extern GLuint CarromCoinFace[100];
 extern GLuint CarromBase[2000];
 
+
 extern GLuint listID;
 extern GLuint textureID[10];
-
 
 #endif

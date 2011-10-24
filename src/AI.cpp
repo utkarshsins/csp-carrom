@@ -39,7 +39,7 @@ void setCenter()
 		coins[0].CenterX=(sin(turn_rotation*M_PI/180))*SHIFT*-1+cos(turn_rotation*M_PI/180)*adjustment;
 		coins[0].CenterY=(cos(turn_rotation*M_PI/180))*SHIFT*-1+sin(turn_rotation*M_PI/180)*adjustment;
 
-		Render();
+		RenderGame();
 
 		for(int i=5;i>=1;i--)
 		{
@@ -58,7 +58,7 @@ void setCenter()
 		coins[0].CenterX=(sin(turn_rotation*M_PI/180))*SHIFT*-1+cos(turn_rotation*M_PI/180)*adjustment;
 		coins[0].CenterY=(cos(turn_rotation*M_PI/180))*SHIFT*-1+sin(turn_rotation*M_PI/180)*adjustment;
 
-		Render();
+		RenderGame();
 
 		for(int i=5;i>=1;i--)
 		{
