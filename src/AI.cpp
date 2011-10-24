@@ -88,7 +88,6 @@ bool tryCoin(int i)
 	else
 		diff_y=1;
 
-	float targetX, targetY;
 	//Begin Target hit position of Striker Caluculations
 	//OBSERVATION fail only on particular side of the board, also, fail when coin scored, and also looks like cant do if not at original
 	float width=0.95;
@@ -99,6 +98,11 @@ bool tryCoin(int i)
 	factor_x/=length;
 	factor_y/=length;
 
+
+	float targetX=coins[i].CenterX-(coins[i].radius+coins[0].radius)*factor_x, targetY=coins[i].CenterY-(coins[i].radius+coins[0].radius)*factor_y;
+
+	coins[0].VelocityX=(targetX-coins[0].CenterX)/sqrt((targetX-coins[0].CenterX)*(targetX-coins[0].CenterX)+(targetY-coins[0].CenterY)*(targetY-coins[0].CenterY));	
+	coins[0].VelocityY=(targetY-coins[0].CenterY)/sqrt((targetX-coins[0].CenterX)*(targetX-coins[0].CenterX)+(targetY-coins[0].CenterY)*(targetY-coins[0].CenterY));	
 
 	float x=diff_x*width;
 	float y=diff_y*width;
@@ -121,8 +125,8 @@ bool tryCoin(int i)
 		b+=0.001*(y-coins[i].CenterY);
 	}
 
-	x=coins[i].CenterX-(coins[i].radius+coins[0].radius)*factor_x;
-	y=coins[i].CenterY-(coins[i].radius+coins[0].radius)*factor_y;
+	x=targetX;
+	y=targetY;
 
 	a=coins[0].CenterX;
 	b=coins[0].CenterY;
@@ -146,8 +150,6 @@ bool tryCoin(int i)
 
 
 	printf("Try succesful for coin %d\ncenter coin - x:%f,y:%f\ntagert center - x:%f,y:%f\ncenter striker - x:%f,y:%f",i,coins[i].CenterX,coins[i].CenterY,x,y,coins[0].CenterX,coins[0].CenterY);
-	coins[0].VelocityX=(x-coins[0].CenterX)/sqrt((x-coins[0].CenterX)*(x-coins[0].CenterX)+(y-coins[0].CenterY)*(y-coins[0].CenterY));	
-	coins[0].VelocityY=(y-coins[0].CenterY)/sqrt((x-coins[0].CenterX)*(x-coins[0].CenterX)+(y-coins[0].CenterY)*(y-coins[0].CenterY));	
 	return true;
 }
 
