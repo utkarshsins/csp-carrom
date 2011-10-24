@@ -22,23 +22,11 @@ void MouseButton(int key, int direction, int x, int y)
 				pointer_angle=0*turn_rotation-persp_rot;
 				pointer_y=y;
 				pointer_x=x;
+				setPointerLength(x,y);
 		}
 
 		else if(striker_lock)
 		{
-//			camera_movable=false;
-//
-//			fixate_translate[0]=-coins[0].CenterX;
-//			fixate_translate[1]=-coins[0].CenterY;
-//			
-//			coins[0].VelocityX=sin(((0-pointer_angle+turn_rotation)/180)*PI);
-//			coins[0].VelocityY=cos(((0-pointer_angle+turn_rotation)/180)*PI);
-
-
-//			goTop();
-//			std::thread t(engagePhysics,0);
-//			t.detach();
-//			striker_lock=false;
 			playTurn();
 		}
 	}
@@ -56,14 +44,22 @@ void MouseButton(int key, int direction, int x, int y)
 			}
 			cameraPos[2]*=(1+0.07*direction/factor);
 			setCamera();
-			RenderGame();
+			Render();
 		}
 	}
 }
 
+void setPointerLength(int x, int y)
+{
+	pointer_length=(abs(pointer_x-x)+abs(pointer_y-y)*2)/200.0;
+	if(pointer_length>1.3)
+		pointer_length=1.3;
+	else if(pointer_length<0.3)
+		pointer_length=0.3;
+}
+
 bool isMouseOnStriker(int x, int y)
 {
-	glutSetWindow(GAMEWINDOW);
 	GLint viewport[4];
 	GLuint selection_buffer[5];
 
@@ -75,8 +71,7 @@ bool isMouseOnStriker(int x, int y)
 	glLoadIdentity();
 
 	glGetIntegerv(GL_VIEWPORT,viewport);
-	printf("vieport0 = %d, 1 = %d, 2 = %d, 3 = %d\n",  viewport[0], viewport[1], viewport[2], viewport[3]);
-	gluPickMatrix(x,viewport[1] + viewport[3]-y, 13,13,viewport); // Viewport[1] is the window y-offset, Viewport[3] is the window height
+	gluPickMatrix(x,viewport[3]-y, 13,13,viewport);
 	gluPerspective(45, windowX/(float)windowY,0.5, 300);
 	gluLookAt(EXPANDARR3(cameraPos),EXPANDARR3(cameraLook),0,0,1);
 
@@ -89,7 +84,6 @@ bool isMouseOnStriker(int x, int y)
 	glFlush();
 	int hits=glRenderMode(GL_RENDER);
 
-	printf("x = %d, y = %d, hits = %d\n", x, y, hits);
 	if(hits!=0)
 		return true;
 	else return false;
@@ -160,6 +154,7 @@ void stopCam(int x, int y)
 	if(striker_lock&&(!moving&&!adjusting))
 	{
 		pointer_angle-=(float)(mouseX-x)/((pointer_y-y)>2?(pointer_y-y):2);
+		setPointerLength(x,y);		
 		if(pointer_angle>90)
 			pointer_angle=90;
 		if(pointer_angle<-90)
@@ -171,4 +166,21 @@ void stopCam(int x, int y)
 
 	mouseX=x;
 	mouseY=y;
+}
+
+void playTurn()
+{
+	
+	camera_movable=false;
+
+	fixate_translate[0]=-coins[0].CenterX;
+	fixate_translate[1]=-coins[0].CenterY;
+	
+	coins[0].VelocityX=sin(((0-pointer_angle+turn_rotation)/180)*PI)*pointer_length;
+	coins[0].VelocityY=cos(((0-pointer_angle+turn_rotation)/180)*PI)*pointer_length;
+
+	goTop();
+	std::thread t(engagePhysics,0);
+	t.detach();
+	striker_lock=false;
 }
