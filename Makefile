@@ -3,8 +3,8 @@ src=src
 
 flags=-std=c++0x -lGLU -lglut -lGL
 libs=-I$(inc) -IThirdPartyLibs
-a.out: Main.o AI.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o ServerClient.o
-	g++ -o a.out Main.o AI.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o ServerClient.o $(flags)
+a.out: Main.o AI.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o ServerClient.o MenuButton.o MenuMouse.o MenuRender.o
+	g++ -o a.out Main.o AI.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o ServerClient.o MenuButton.o MenuMouse.o MenuRender.o $(flags)
 	
 Main.o: $(src)/Main.cpp $(inc)/Main.h
 	g++ $(libs) -c $(src)/Main.cpp	$(flags)
@@ -29,6 +29,15 @@ BMPLoader.o:	ThirdPartyLibs/BMPLoader.cpp	ThirdPartyLibs/BMPLoader.h
 	
 ServerClient.o:	$(src)/ServerClient.cpp
 	g++ $(libs) -c $(src)/ServerClient.cpp $(flags)
+	
+MenuButton.o:	$(src)/Menu/Button.cpp
+	g++ $(libs) -o $@ -c $(src)/Menu/Button.cpp $(flags)
+	
+MenuMouse.o:	$(src)/Menu/MenuMouse.cpp
+	g++ $(libs) -o $@ -c $(src)/Menu/MenuMouse.cpp $(flags)
+	
+MenuRender.o:	$(src)/Menu/Render.cpp
+	g++ $(libs) -o $@ -c $(src)/Menu/Render.cpp $(flags)
 
 clean:
-	rm *.o
+	rm *.o *.out
