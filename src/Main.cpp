@@ -8,6 +8,8 @@
 #include"AI.h"
 
 #define PI M_PI
+#define CAMERA_Y -0.6*ALPHA
+#define CAMERA_Z 1.2*ALPHA
 
 float position=3;
 GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -15,7 +17,7 @@ GLfloat mat_shininess[] = { 50.0 };
 //GLfloat pivotPos[3]={0,0,0};
 GLfloat  fixate_translate[3];
 
-GLfloat cameraPos[3]={0,-1.0*ALPHA,1.25*ALPHA};
+GLfloat cameraPos[3]={0,CAMERA_Y,CAMERA_Z};
 GLfloat cameraLook[3]={(0-cameraPos[0])/PERSP_ZOOM,(0-cameraPos[1])/PERSP_ZOOM,0};
 GLfloat persp_rot=0;
 GLfloat pointer_angle=0,pointer_length;
@@ -57,6 +59,7 @@ void ReshapeFunction(int w, int h)
 }
 void setCamera()
 {
+	glutSetWindow(GAMEWINDOW);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(45,(float)(windowX)/windowY,0.5,300);
@@ -69,11 +72,13 @@ void setCamera()
 
 void drawStriker()
 {
+	glutSetWindow(GAMEWINDOW);
 	coins[0].DrawCoin();
 }
 
 void RenderMenu(void)
 {
+	glutSetWindow(MENUWINDOW);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(0,0,1,1);
 
@@ -97,10 +102,12 @@ void RenderMenu(void)
 //	glEnd();
 
 	glutSwapBuffers();
+	glutPostRedisplay();
 }
 
 void RenderGame(void)
 {
+	glutSetWindow(GAMEWINDOW);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1,1,1,0.7);
 
@@ -111,10 +118,10 @@ void RenderGame(void)
 
 	glRotated(turn_rotation, 0,0,1);
 
-	if(camera_movable) // Remove 0.5f from z-coord to fix back camera angle
-		glTranslated(0-coins[0].CenterX,0-coins[0].CenterY,COIN_HEIGHT + 0.5f);
+	if(camera_movable)
+		glTranslated(0-coins[0].CenterX,0-coins[0].CenterY,COIN_HEIGHT);
 	else
-		glTranslated(fixate_translate[0],fixate_translate[1],COIN_HEIGHT + 0.5f);
+		glTranslated(fixate_translate[0],fixate_translate[1],COIN_HEIGHT);
 
 	glRotated(turn_animation,0,0,1);
 	DrawCarromBoard();
@@ -147,18 +154,19 @@ void nextTurn()
 	coins[0].CenterX=-SHIFT*sin(turn_rotation*PI/180);
 	coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
 
-	if(player==2)
-		AIStriker();
-	else
+//	if(player==2)
+//		AIStriker();
+//	else
 		goPersp();
 }
 
 void drawPointer()
 {
+	glutSetWindow(GAMEWINDOW);
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glLoadIdentity();
-	glTranslated(0,0,COIN_HEIGHT + 0.5f);
+	glTranslated(0,0,COIN_HEIGHT);
 	glRotated(pointer_angle, 0,0,1);
 	glBegin(GL_LINES);
 	glVertex2f(0,0);
@@ -168,15 +176,15 @@ void drawPointer()
 	glPopMatrix();
 }
 
-void doStuff();
-
 void idle()
 {
+	glutSetWindow(GAMEWINDOW);
 	glutPostRedisplay();
 }
 
 void rotateCam(int requirement)
 {
+	glutSetWindow(GAMEWINDOW);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glTranslated(0-coins[0].CenterX,0-coins[0].CenterY,COIN_HEIGHT);
@@ -194,6 +202,7 @@ void rotateCam(int requirement)
 
 void goTop()
 {
+	glutSetWindow(GAMEWINDOW);
 	bool sin0=(-0.00001<=sin(turn_rotation*PI/180))&&(sin(turn_rotation*PI/180)<=0.00001);
 	bool cos0=(-0.00001<=cos(turn_rotation*PI/180))&&(cos(turn_rotation*PI/180)<=0.00001);
 	float angle=turn_rotation*PI/180;
@@ -272,11 +281,11 @@ void goPersp()
 
 	RenderGame();
 	to_fly[0]=cameraPos[0]-0;
-	to_fly[1]=cameraPos[1]+1*ALPHA;
-	to_fly[2]=cameraPos[2]-1.125*ALPHA;
+	to_fly[1]=cameraPos[1]-CAMERA_Y;
+	to_fly[2]=cameraPos[2]-CAMERA_Z;
 
 	to_look[0]=0*cameraLook[0]+0;
-	to_look[1]=cameraLook[1]-ALPHA/PERSP_ZOOM;
+	to_look[1]=cameraLook[1]+CAMERA_Y/PERSP_ZOOM;
 	to_look[2]=cameraLook[2];
 
 	int gradiant=30;//10;

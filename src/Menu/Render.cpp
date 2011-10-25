@@ -26,6 +26,7 @@ void MenuGlInit()
 
 void DrawMenuButton()
 {
+	glutSetWindow(MENUWINDOW);
 	glPushMatrix();
 	
 	glLoadIdentity();
