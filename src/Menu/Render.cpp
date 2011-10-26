@@ -58,8 +58,8 @@ void RenderMenu(void)
 {
         glutSetWindow(MENUWINDOW);
         glClear(GL_COLOR_BUFFER_BIT);
-        glClearColor(0,0,1,1);
-//	glClearColor(1,1,1,1);
+//        glClearColor(0,0,1,1);
+	glClearColor(1,1,1,1);
 //      glPushMatrix();
 
         glMatrixMode(GL_PROJECTION);
@@ -108,9 +108,10 @@ void DrawGameMenu()
 
 void DrawNetwork()
 {
+	glColor4f(0,0,0,1);
 	WriteText("NETWORK", -1.f, 1.f);
-//	if(!NetworkStatus::IsConnected())
-//		DrawConnectToBox();
+	if(!NetworkStatus::IsConnected())
+		DrawConnectToBox();
 //	else 
 //		DrawConnectedTo();
 
@@ -127,9 +128,10 @@ void DrawConnectToBox()
 	glColor4f(0,0,0,0.5f);
 	glDrawArrays(GL_QUADS, 0, 4);
 
-//	WriteText(NetworkStatus::ReturnNetworkIP(), -1.f, 0);
-//	if(IsCursorOn())
-		//CursorDrawingFunc();
+	glColor4f(1,1,1,1);
+	WriteText(NetworkStatus::ReturnNetworkIP(), -1.f, -0.1f);
+	if(MenuMouse::IsCursorOn())
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, '|');
 
 	glEnableClientState(GL_COLOR_ARRAY);
 	glPopMatrix();
@@ -137,7 +139,7 @@ void DrawConnectToBox()
 
 void WriteText(const char *TextToRender, GLfloat RasterX, GLfloat RasterY)
 {
-	glColor4f(0,0,0,1);
+//	glColor4f(0,0,0,1);
 	unsigned char *TextToRenderUnsigned = (unsigned char *) TextToRender;
 	glRasterPos2f(RasterX + 0.1f, RasterY - 0.2f);
 	glutBitmapString(GLUT_BITMAP_HELVETICA_18, TextToRenderUnsigned);

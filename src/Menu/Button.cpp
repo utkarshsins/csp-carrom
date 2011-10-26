@@ -21,7 +21,8 @@ void MenuInit()
 	MenuDataInit();
 	MenuGlInit();
 
-//	NetworkStatus::ChangeIP("localhost");
+	NetworkStatus::ChangeIP("localhost");
+	glutTimerFunc(1000, MenuMouse::CursorDisplayChange, 0);
 }
 
 void MenuDataInit()

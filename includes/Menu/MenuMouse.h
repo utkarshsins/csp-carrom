@@ -54,9 +54,24 @@ class MenuMouse {
 						MenuSelected = i;
 		}
 
+		static void CursorDisplayChange(int i)
+		{
+			glutSetWindow(MENUWINDOW);
+			BlinkingCursorOn = !BlinkingCursorOn;
+
+			glutTimerFunc(1000, MenuMouse::CursorDisplayChange, 0);
+			glutPostRedisplay();
+		}
+
+		static bool IsCursorOn()
+		{
+			return BlinkingCursorOn;
+		}
+
 	private:
 		static int MouseX, MouseY;
 		static int MenuSelected;
+		static bool BlinkingCursorOn;
 };
 
 #endif

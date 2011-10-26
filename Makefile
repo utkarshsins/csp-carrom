@@ -3,8 +3,8 @@ src=src
 
 flags=-std=c++0x -lGLU -lglut -lGL
 libs=-I$(inc) -IThirdPartyLibs
-a.out: Main.o AI.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o ServerClient.o MenuButton.o MenuMouse.o MenuRender.o
-	g++ -o a.out Main.o AI.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o ServerClient.o MenuButton.o MenuMouse.o MenuRender.o $(flags)
+a.out: Main.o AI.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o ServerClient.o MenuButton.o MenuMouse.o MenuRender.o NetworkStatus.o
+	g++ -o a.out Main.o AI.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o ServerClient.o MenuButton.o MenuMouse.o MenuRender.o NetworkStatus.o $(flags)
 	
 Main.o: $(src)/Main.cpp $(inc)/Main.h
 	g++ $(libs) -c $(src)/Main.cpp	$(flags)
@@ -38,5 +38,8 @@ MenuMouse.o:	$(src)/Menu/MenuMouse.cpp
 	
 MenuRender.o:	$(src)/Menu/Render.cpp
 	g++ $(libs) -o $@ -c $(src)/Menu/Render.cpp $(flags)
+
+NetworkStatus.o:	$(src)/Network/Status.cpp
+	g++  $(libs) -o $@ -c $(src)/Network/Status.cpp $(flags)
 clean:
 	rm *.o *.out
