@@ -38,6 +38,5 @@ MenuMouse.o:	$(src)/Menu/MenuMouse.cpp
 	
 MenuRender.o:	$(src)/Menu/Render.cpp
 	g++ $(libs) -o $@ -c $(src)/Menu/Render.cpp $(flags)
-
 clean:
 	rm *.o *.out

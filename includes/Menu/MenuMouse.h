@@ -27,7 +27,8 @@ class MenuMouse {
 		static void MouseMenuFunction(int x, int y)
 		{
 			MouseMenuX(x);
-			MouseMenuY(y);			
+			MouseMenuY(y);		
+			glutPostRedisplay();
 		}
 		
 		static bool IsMouseOnMenuButton(int i)

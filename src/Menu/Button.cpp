@@ -20,6 +20,8 @@ void MenuInit()
 	
 	MenuDataInit();
 	MenuGlInit();
+
+//	NetworkStatus::ChangeIP("localhost");
 }
 
 void MenuDataInit()
@@ -106,6 +108,25 @@ void MenuDataInit()
 		MenuColorData[i] = 0.f;
 		MenuColorData[i+1] = 0.f;
 		MenuColorData[i+2] = 0.f;
+	}
+
+	for(int i = 210; i < 210 + 3*3 ; i=i+3)
+	{
+		MenuData[i] = 1.f;
+		MenuData[i+1] = (i-210.f)/3.f - 1.f;
+		MenuData[i+2] = 0.f;
+		if(((i-210)/3)%2 == 0)
+		{
+			MenuColorData[i] = 1.f;
+			MenuColorData[i+1] = 1.f;
+			MenuColorData[i+2] = 1.f;
+		}
+		else
+		{
+			MenuColorData[i] = 0.f;
+			MenuColorData[i+1] = 0.f;
+			MenuColorData[i+2] = 0.f;
+		}
 	}
 }
 

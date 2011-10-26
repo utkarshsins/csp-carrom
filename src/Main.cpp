@@ -76,35 +76,6 @@ void drawStriker()
 	coins[0].DrawCoin();
 }
 
-void RenderMenu(void)
-{
-	glutSetWindow(MENUWINDOW);
-	glClear(GL_COLOR_BUFFER_BIT);
-	glClearColor(0,0,1,1);
-
-//	glPushMatrix();
-
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-//	glScalef((windowX - 10.f)/5.f/windowX,50.f/250.f,1);
-
-//	DrawCarromBoard();
-	DrawMenuButton();
-	
-//	glPopMatrix();
-
-//	glBegin(GL_POINTS);
-//		glVertex3f(1.f,1.f, -0.1f);
-//	glEnd();
-
-	glutSwapBuffers();
-	glutPostRedisplay();
-}
-
 void RenderGame(void)
 {
 	glutSetWindow(GAMEWINDOW);
@@ -363,7 +334,7 @@ int main(int args, char *argv[])
 	glutInitWindowPosition(480, 300);
 	
 	glutCreateWindow(argv[0]);
-//	glutFullScreen();
+	glutFullScreen();
 	glutReshapeFunc(ReshapeFunction);
 
 	glutCreateSubWindow(glutGetWindow(), 0, 250, 1920, 500);	
