@@ -4,6 +4,7 @@
 #include "Main.h"
 #include <GL/freeglut.h>
 #include "Network/Status.h"
+#include "Menu/DebugMenu.h"
 
 void MenuGlInit();
 void DrawMenuButton();
@@ -17,12 +18,5 @@ void DrawNetwork();
 void DrawConnectToBox();
 void DrawRightBorder();
 
-void DrawNetworkDebug();
-void DrawGraphicsDebug();
-void DrawPhysicsDebug();
-void DrawGameDebug();
-void DrawAIDebug();
-void CheckDebugSelected(int);
-void DrawDebugTick(int);
 void WriteText(const char *, GLfloat, GLfloat);
 #endif
