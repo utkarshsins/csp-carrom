@@ -3,6 +3,8 @@
 #include <iostream>
 #include "Main.h"
 
+#include "Network/Status.h"
+
 class MenuMouse {
 	public:
 		static int MouseMenuX(int x)
@@ -73,5 +75,29 @@ class MenuMouse {
 		static int MenuSelected;
 		static bool BlinkingCursorOn;
 };
+
+class MenuKeyboard
+{
+	public:
+		static void KeyPress(unsigned char key, int x, int y)
+		{
+			char *NetIP = NetworkStatus::ReturnNetworkIP();
+			int PositionToInsert = strlen(NetIP);
+
+			if(key == 8)
+				if(PositionToInsert>0)
+					NetIP[PositionToInsert-1] = '\0';
+				else;
+			else if(key == 13)
+				std::cout << "Pressed Enter. Change State." << std::endl;
+			else if(PositionToInsert < 15)
+				NetIP[PositionToInsert] = key;
+
+			glutSetWindow(MENUWINDOW);
+			glutPostRedisplay();
+			//NetworkStatus::ChangeIP(NetIP);
+		}
+};
+
 
 #endif

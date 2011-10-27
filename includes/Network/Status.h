@@ -25,6 +25,7 @@ class NetworkStatus
 			NetworkIP = (char *) malloc ((strlen(NewIP)+1)*sizeof(char));
 			strcpy(NetworkStatus::NetworkIP, NewIP);
 		}
+
 	private:
 		static bool ConnectionEstablished;
 		static char *NetworkIP;

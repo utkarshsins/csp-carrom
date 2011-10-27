@@ -23,6 +23,7 @@ void MenuInit()
 
 	NetworkStatus::ChangeIP("localhost");
 	glutTimerFunc(1000, MenuMouse::CursorDisplayChange, 0);
+	glutKeyboardFunc(MenuKeyboard::KeyPress);
 }
 
 void MenuDataInit()
