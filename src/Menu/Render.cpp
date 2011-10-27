@@ -161,33 +161,46 @@ void DrawDebugMenu()
 void DrawNetworkDebug()
 {
 	glColor4f(0,0,0,1);
+	CheckDebugSelected(0);
 	WriteText("NETWORK", -1.f, 0.5f);
 }
 
 void DrawGraphicsDebug()
 {
 	glColor4f(0,0,0,1);
+	CheckDebugSelected(1);
 	WriteText("GRAPHICS", -1.f, 0.5f);
 }
 
 void DrawPhysicsDebug()
 {
 	glColor4f(0,0,0,1);
+	CheckDebugSelected(2);
 	WriteText("GRAPHICS", -1.f, 0.5f);
 }
 
 void DrawGameDebug()
 {
 	glColor4f(0,0,0,1);
+	CheckDebugSelected(3);
 	WriteText("GAME", -1.f, 0.5f);
 }
 
 void DrawAIDebug()
 {
 	glColor4f(0,0,0,1);
+	CheckDebugSelected(4);
 	WriteText("A.I.", -1.f, 0.5f);
 }
 
+void CheckDebugSelected(int i)
+{
+	if(MenuMouse::IsMouseOnDebugButton(i))
+	{
+		glDrawArrays(GL_QUADS, 0, 4);
+		glColor4f(1,1,1,1);
+	}
+}
 void DrawConnectToBox()
 {
 	glPushMatrix();

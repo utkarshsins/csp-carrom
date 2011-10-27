@@ -47,6 +47,15 @@ class MenuMouse {
 				return true;
 			return false;
 		}
+
+		static bool IsMouseOnDebugButton(int i)
+		{
+			if(IsMenuSelected(1))
+				if(MouseY >= 60 && MouseY <= 240)
+					if(MouseX >= 5+(windowX-10)*i/5.f && MouseX <= 5+(windowX-10.f)*(i+1)/5.f)
+						return true;
+			return false;
+		}
 		
 		static void SetMenuSelected(int button, int state, int x, int y)
 		{
