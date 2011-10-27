@@ -197,6 +197,7 @@ void DrawCreditsMenu()
 
 	glTranslatef(1.f, 0, 0);
 	DrawRightBorder();
+	WriteText(" CARROM\n\n  Get a life\n\nAssignment 3\n   CSP301", -1.f/3.f, 0.9f);
 
 	glTranslatef(2.f, 0, 0);
 	DrawPic(1);
