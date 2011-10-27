@@ -1,4 +1,6 @@
 #include "Menu/Button.h"
+#include "Menu/Theme.h"
+#include "Main.h"
 
 GLfloat MenuData[2000];
 GLfloat MenuColorData[2000];
@@ -133,3 +135,43 @@ void MenuDataInit()
 	}
 }
 
+void UpdateTheme()
+{
+	for(int i = 0; i<12; i=i+3)
+	{
+		MenuColorData[i] = Theme::ReturnRGB(0)/255.f;
+		MenuColorData[i+1] = Theme::ReturnRGB(1)/255.f;
+		MenuColorData[i+2] = Theme::ReturnRGB(2)/255.f;
+	}
+	
+	for(int i = 15; i <= 15 + 20*3; i = i+3)
+	{
+		MenuColorData[i] = Theme::ReturnRGB(0)/255.f;
+		MenuColorData[i+1] = Theme::ReturnRGB(1)/255.f;
+		MenuColorData[i+2] = Theme::ReturnRGB(2)/255.f;
+	}
+	
+	for(int i = 81; i <= 81 + 20*3; i = i+3)
+	{
+		MenuColorData[i] = Theme::ReturnRGB(0)/255.f;
+		MenuColorData[i+1] = Theme::ReturnRGB(1)/255.f;
+		MenuColorData[i+2] = Theme::ReturnRGB(2)/255.f;
+	}		
+			
+	for(int i = 147; i <= 147 + 20*3; i = i+3)
+	{
+		MenuColorData[i] = Theme::ReturnRGB(0)/255.f;
+		MenuColorData[i+1] = Theme::ReturnRGB(1)/255.f;
+		MenuColorData[i+2] = Theme::ReturnRGB(2)/255.f;
+	}
+		
+	for(int i = 210; i < 210 + 3*3 ; i=i+3)
+	{
+		if(((i-210)/3)%2 != 0)
+		{
+			MenuColorData[i] = Theme::ReturnRGB(0)/255.f;
+			MenuColorData[i+1] = Theme::ReturnRGB(1)/255.f;
+			MenuColorData[i+2] = Theme::ReturnRGB(2)/255.f;
+		}
+	}
+}

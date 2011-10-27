@@ -1,6 +1,8 @@
 #ifndef __MENUTHEMEH__
 #define __MENUTHEMEH__
 
+#include "Menu/Button.h"
+
 class Theme
 {
 	public:
@@ -12,6 +14,7 @@ class Theme
 				Value = 0;
 
 			RGBValue[RGB] = Value;
+			UpdateTheme();
 		}
 
 		static int ReturnRGB(int RGB)
