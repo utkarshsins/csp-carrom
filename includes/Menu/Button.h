@@ -5,6 +5,7 @@
 
 extern GLfloat MenuData[2000];
 extern GLfloat MenuColorData[2000];
+extern GLfloat MenuTextureData[2000];
 
 void ReshapeFunctionMenu(int, int);
 void MenuInit();

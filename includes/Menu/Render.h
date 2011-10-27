@@ -15,6 +15,7 @@ void DrawMenuFrame();
 void DrawGameMenu();
 void DrawDebugMenu();
 void DrawThemeMenu();
+void DrawCreditsMenu();
 
 void DrawNetwork();
 
@@ -26,5 +27,6 @@ void DrawRed();
 void DrawBlue();
 void DrawGreen();
 
+void DrawPic(int);
 void WriteText(const char *, GLfloat, GLfloat);
 #endif

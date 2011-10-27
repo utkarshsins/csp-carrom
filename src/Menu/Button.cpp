@@ -4,6 +4,7 @@
 
 GLfloat MenuData[2000];
 GLfloat MenuColorData[2000];
+GLfloat MenuTextureData[2000];
 
 void ReshapeFunctionMenu(int w, int h)
 {
@@ -24,6 +25,7 @@ void MenuInit()
 	MenuDataInit();
 	MenuGlInit();
 
+	glEnable(GL_ALPHA_TEST);
 	NetworkStatus::ChangeIP("localhost");
 	glutTimerFunc(1000, MenuMouse::CursorDisplayChange, 0);
 	glutKeyboardFunc(MenuKeyboard::KeyPress);
@@ -46,6 +48,20 @@ void MenuDataInit()
 		MenuData[i+9] = -1.f;
 		MenuData[i+10] = -1.f;
 		MenuData[i+11] = 0.f;
+		
+		MenuTextureData[i] = 0.f;
+		MenuTextureData[i+1] = 1.f;
+		MenuTextureData[i+2] = 0.f;
+		MenuTextureData[i+3] = 1.f;
+		MenuTextureData[i+4] = 1.f;
+		MenuTextureData[i+5] = 0.f;
+		MenuTextureData[i+6] = 1.f;
+		MenuTextureData[i+7] = 0.f;
+		MenuTextureData[i+8] = 0.f;
+		MenuTextureData[i+9] = 0.f;
+		MenuTextureData[i+10] = 0.f;
+		MenuTextureData[i+11] = 0.f;
+		
 	}
 
 	for(int i = 0; i<12; i++)

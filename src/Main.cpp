@@ -328,7 +328,7 @@ int main(int args, char *argv[])
 {
 	glutInit(&args, argv);
 
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	
 	glutInitWindowSize(800, 600);
 	glutInitWindowPosition(480, 300);

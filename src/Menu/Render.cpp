@@ -6,12 +6,25 @@
 
 void MenuGlInit()
 {
+	GLuint TextureIDMenu[2];
+
 	glutSetWindow(MENUWINDOW);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
 
+	
+	glClientActiveTexture(GL_TEXTURE0);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glColorPointer(3, GL_FLOAT, 0, MenuColorData);
 	glVertexPointer(3, GL_FLOAT, 0, MenuData);
+	glTexCoordPointer(3, GL_FLOAT, 0, MenuTextureData);
+	
+	glGenTextures(2, TextureIDMenu);
+	glBindTexture(GL_TEXTURE_2D, TextureIDMenu[0]);	
+	BMPLoadGL("Textures/Utkarsh.bmp");
+	glBindTexture(GL_TEXTURE_2D, TextureIDMenu[1]);	
+	BMPLoadGL("Textures/Harshal.bmp");
+	glDisable(GL_TEXTURE_2D);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -57,15 +70,21 @@ void DrawMenuButton()
 void RenderMenu(void)
 {
         glutSetWindow(MENUWINDOW);
-        glClear(GL_COLOR_BUFFER_BIT);
-//        glClearColor(0,0,1,1);
-	glClearColor(1,1,1,1);
-//      glPushMatrix();
+
+	glClearColor(1,1,1,0.1f);
+	glClear(GL_COLOR_BUFFER_BIT);
+//	glClearColor(Theme::ReturnRGB(0)/255.f,Theme::ReturnRGB(1)/255.f,Theme::ReturnRGB(2)/255.f,0);
 
         glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
+
+	glColor4f(Theme::ReturnRGB(0)/255.f, Theme::ReturnRGB(1)/255.f, Theme::ReturnRGB(2)/255.f, 0.1f);
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDrawArrays(GL_QUADS, 0, 4);
+	glEnableClientState(GL_COLOR_ARRAY);
 
 	DrawMenuButton();
         DrawMenuFrame();
@@ -94,6 +113,8 @@ void DrawMenuFrame()
 		DrawDebugMenu();
 	else if(MenuMouse::IsMenuSelected(2))
 		DrawThemeMenu();
+	else if(MenuMouse::IsMenuSelected(4))
+		DrawCreditsMenu();
 
 	glPopMatrix();
 }
@@ -162,6 +183,45 @@ void DrawThemeMenu()
 	DrawBlue();
 
 	glPopMatrix();
+}
+
+void DrawCreditsMenu()
+{
+	glPushMatrix();
+	glScalef(1.f/3.f, (200.f-10.f)/200.f, 1);
+
+	glTranslatef(-3.f, 0, 0);
+	DrawRightBorder();
+
+	DrawPic(0);
+
+	glTranslatef(1.f, 0, 0);
+	DrawRightBorder();
+
+	glTranslatef(2.f, 0, 0);
+	DrawPic(1);
+
+	glPopMatrix();
+}
+
+void DrawPic(int i)
+{
+	glPushMatrix();
+	glTranslatef(-1, 0, 0);
+	glScalef(180.f*3.f/5.f*3.f/(windowX+60.f),3.f/5.f, 1);
+	glTranslatef(1.25f, 0, 0);
+	glBindTexture(GL_TEXTURE_2D, i+1);
+	glEnable(GL_TEXTURE_2D);
+	glDrawArrays(GL_QUADS, 0, 4);
+	glDisable(GL_TEXTURE_2D);
+
+	glColor4f(0,0,0,1);
+	if(i == 0)
+		WriteText("UTKARSH\n2010CS50299\n\"Coding was fun... \n...until IIT happened\"", 1.5f, 0.8f);
+	else
+		WriteText("HARSHAL\n2010CS50283\n\"Physics Theek Karo...\"", 1.5f, 0.8f);
+	glPopMatrix();
+
 }
 
 void DrawRed()
