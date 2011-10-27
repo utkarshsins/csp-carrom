@@ -5,6 +5,8 @@
 #include <GL/freeglut.h>
 #include "Network/Status.h"
 #include "Menu/DebugMenu.h"
+#include "Menu/Theme.h"
+
 
 void MenuGlInit();
 void DrawMenuButton();

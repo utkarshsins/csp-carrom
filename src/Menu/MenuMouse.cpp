@@ -7,3 +7,4 @@ int MenuMouse::MenuSelected = 0;
 bool MenuMouse::BlinkingCursorOn = false;
 
 bool DebugStatus::DebugStatusValue[5] = { false };
+bool MenuMouse::MouseDown = false;

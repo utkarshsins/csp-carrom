@@ -4,6 +4,7 @@
 #include "Main.h"
 
 #include "Network/Status.h"
+#include "Menu/Theme.h"
 
 class DebugStatus
 {
@@ -46,7 +47,9 @@ class MenuMouse {
 		static void MouseMenuFunction(int x, int y)
 		{
 			MouseMenuX(x);
-			MouseMenuY(y);		
+			MouseMenuY(y);	
+			if(MouseDown)
+				SetMenuSelected(GLUT_LEFT_BUTTON, GLUT_DOWN, x, y);
 			glutPostRedisplay();
 		}
 		
@@ -73,15 +76,56 @@ class MenuMouse {
 						return true;
 			return false;
 		}
-		
+	
+		static bool IsMouseOnRGB(int state)
+		{
+			int i;
+			if(IsMenuSelected(2) && state == GLUT_DOWN)
+			{
+				if(MouseX >= 5+(windowX-10)/3.f && MouseX <= 5+(windowX-10)*2.f/3.f)
+					if(MouseY >= 60 && MouseY <=240)
+					{
+						GLfloat mid = windowX / 2.f;
+						mid = mid + (windowX-10.f) / 9.f / 2.f;
+						GLfloat MouseRGBX = ((MouseX - mid)/(windowX*2.f/25.f) + 1.f)/2.f;
+						MouseRGBX = MouseRGBX * 255;
+						
+						if(MouseRGBX < 0)
+							MouseRGBX = 0;
+						else if(MouseRGBX > 255)
+							MouseRGBX = 255;
+	
+						if(MouseY >= 60 && MouseY <120)
+							i = 0;
+						else if(MouseY >=120 && MouseY <180)
+							i = 1;
+						else
+							i = 2;
+
+						Theme::ChangeRGB(i, MouseRGBX);
+	
+						std::cout << "OnRGB X = " << MouseRGBX << std::endl;
+					}
+			}
+			return false;
+		}
+
 		static void SetMenuSelected(int button, int state, int x, int y)
 		{
 			if(button == GLUT_LEFT_BUTTON)
+			{
 				for(int i = 0; i<5; i++)
 					if(IsMouseOnMenuButton(i))
 						MenuSelected = i;
 					else if(IsMouseOnDebugButton(i) && state == GLUT_DOWN)
 						DebugStatus::ChangeDebugStatus(i);
+				IsMouseOnRGB(state);
+			}
+
+			if(state == GLUT_DOWN)
+				MouseDown = true;
+			else
+				MouseDown = false;
 
 			glutSetWindow(MENUWINDOW);
 			glutPostRedisplay();
@@ -105,6 +149,7 @@ class MenuMouse {
 		static int MouseX, MouseY;
 		static int MenuSelected;
 		static bool BlinkingCursorOn;
+		static bool MouseDown;
 };
 
 class MenuKeyboard

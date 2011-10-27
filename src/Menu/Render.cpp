@@ -118,6 +118,7 @@ void DrawSliderTab(int i)
 	glScalef(2.f/256.f, 1, 1);
 	glTranslatef(-256.f/2.f, 0, 0);
 
+	i = Theme::ReturnRGB(i);
 	glTranslatef(i, 0, 0);
 
 	glScalef(5,1,1);
@@ -135,7 +136,7 @@ void DrawSlider(int i)
 	glDrawArrays(GL_QUADS, 0, 4);
 
 	glPopMatrix();
-	DrawSliderTab(155);
+	DrawSliderTab(i);
 }
 
 void DrawThemeMenu()
@@ -155,10 +156,10 @@ void DrawThemeMenu()
 	DrawRed();
 
 	glTranslatef(0,-2,0);
-	DrawBlue();
+	DrawGreen();
 
 	glTranslatef(0,-2,0);
-	DrawGreen();
+	DrawBlue();
 
 	glPopMatrix();
 }

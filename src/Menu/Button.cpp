@@ -15,6 +15,7 @@ void MenuInit()
 	glutCreateSubWindow(glutGetWindow(), 0, 0, 1920, 250);
 	glutReshapeFunc(ReshapeFunctionMenu);
 	glutDisplayFunc(RenderMenu);
+	glutMotionFunc(MenuMouse::MouseMenuFunction);
 	glutPassiveMotionFunc(MenuMouse::MouseMenuFunction);
 	glutMouseFunc(MenuMouse::SetMenuSelected);
 	
