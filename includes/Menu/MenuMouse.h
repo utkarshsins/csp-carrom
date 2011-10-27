@@ -54,6 +54,9 @@ class MenuMouse {
 				for(int i = 0; i<5; i++)
 					if(IsMouseOnMenuButton(i))
 						MenuSelected = i;
+
+			glutSetWindow(MENUWINDOW);
+			glutPostRedisplay();
 		}
 
 		static void CursorDisplayChange(int i)

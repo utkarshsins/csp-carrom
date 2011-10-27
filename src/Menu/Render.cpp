@@ -90,6 +90,8 @@ void DrawMenuFrame()
 
 	if(MenuMouse::IsMenuSelected(0))
 		DrawGameMenu();
+	else if(MenuMouse::IsMenuSelected(1))
+		DrawDebugMenu();
 
 	glPopMatrix();
 }
@@ -99,9 +101,8 @@ void DrawGameMenu()
 	glPushMatrix();
 	glTranslatef(-1.f, 0, 0);
 	glScalef(1.f/5.f, (200.f-10.f)/200.f, 1);
-	glTranslatef(1.f, 0, 0);
-	glDrawArrays(GL_LINE_STRIP, 70, 3);
 
+	DrawRightBorder();
 	DrawNetwork();
 	glPopMatrix();
 }
@@ -116,7 +117,77 @@ void DrawNetwork()
 //		DrawConnectedTo();
 
 }
+
+void DrawRightBorder()
+{
+	glTranslatef(1.f, 0, 0);
+	glDrawArrays(GL_LINE_STRIP, 70, 3);
+}
+
+void DrawDebugMenu()
+{
+
+	// Network, Graphics, Physics, Game, AI
+	glPushMatrix();
+	glTranslatef(-1.f, 0, 0);
+	glScalef(1.f/5.f, (200.f-10.f)/200.f, 1);
 	
+	DrawRightBorder();
+	DrawNetworkDebug();
+
+	glTranslatef(1.f, 0, 0);
+	
+	DrawRightBorder();
+	DrawGraphicsDebug();
+
+	glTranslatef(1.f, 0, 0);
+
+	DrawRightBorder();
+	DrawPhysicsDebug();
+
+	glTranslatef(1.f, 0, 0);
+
+	DrawRightBorder();
+	DrawGameDebug();
+
+	glTranslatef(1.f, 0, 0);
+
+	DrawRightBorder();
+	DrawAIDebug();
+
+	glPopMatrix();
+}
+
+void DrawNetworkDebug()
+{
+	glColor4f(0,0,0,1);
+	WriteText("NETWORK", -1.f, 0.5f);
+}
+
+void DrawGraphicsDebug()
+{
+	glColor4f(0,0,0,1);
+	WriteText("GRAPHICS", -1.f, 0.5f);
+}
+
+void DrawPhysicsDebug()
+{
+	glColor4f(0,0,0,1);
+	WriteText("GRAPHICS", -1.f, 0.5f);
+}
+
+void DrawGameDebug()
+{
+	glColor4f(0,0,0,1);
+	WriteText("GAME", -1.f, 0.5f);
+}
+
+void DrawAIDebug()
+{
+	glColor4f(0,0,0,1);
+	WriteText("A.I.", -1.f, 0.5f);
+}
+
 void DrawConnectToBox()
 {
 	glPushMatrix();

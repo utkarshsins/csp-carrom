@@ -330,11 +330,11 @@ int main(int args, char *argv[])
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	
-	glutInitWindowSize(500, 500);
+	glutInitWindowSize(800, 600);
 	glutInitWindowPosition(480, 300);
 	
 	glutCreateWindow(argv[0]);
-	glutFullScreen();
+//	glutFullScreen();
 	glutReshapeFunc(ReshapeFunction);
 
 	glutCreateSubWindow(glutGetWindow(), 0, 250, 1920, 500);	
