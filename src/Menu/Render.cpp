@@ -92,6 +92,8 @@ void DrawMenuFrame()
 		DrawGameMenu();
 	else if(MenuMouse::IsMenuSelected(1))
 		DrawDebugMenu();
+	else if(MenuMouse::IsMenuSelected(2))
+		DrawThemeMenu();
 
 	glPopMatrix();
 }
@@ -105,6 +107,81 @@ void DrawGameMenu()
 	DrawRightBorder();
 	DrawNetwork();
 	glPopMatrix();
+}
+
+void DrawSliderTab(int i)
+{
+	glPushMatrix();
+	glTranslatef(1.f/3.f, 0, 0);
+	glScalef(.5f, .4f, 1);
+
+	glScalef(2.f/256.f, 1, 1);
+	glTranslatef(-256.f/2.f, 0, 0);
+
+	glTranslatef(i, 0, 0);
+
+	glScalef(5,1,1);
+	glDrawArrays(GL_QUADS, 0, 4);
+
+	glPopMatrix();
+}
+
+void DrawSlider(int i)
+{
+	glPushMatrix();
+	glTranslatef(1.f/3.f, 0, 0);
+	glScalef(.5f, .1f ,1 );
+
+	glDrawArrays(GL_QUADS, 0, 4);
+
+	glPopMatrix();
+	DrawSliderTab(155);
+}
+
+void DrawThemeMenu()
+{
+	glPushMatrix();
+	glScalef(1.f/3.f, (200.f-10.f)/200.f, 1);
+	
+	glTranslatef(-3.f, 0,0);
+	DrawRightBorder();
+	glTranslatef(1.f, 0,0);
+	DrawRightBorder();
+
+	glScalef(1, 1.f/3.f,1);
+	glTranslatef(0, 2, 0);
+
+//	glDrawArrays(GL_QUADS, 0, 4);
+	DrawRed();
+
+	glTranslatef(0,-2,0);
+	DrawBlue();
+
+	glTranslatef(0,-2,0);
+	DrawGreen();
+
+	glPopMatrix();
+}
+
+void DrawRed()
+{
+	glColor4f(0,0,0,1);
+	WriteText("RED", -1.f, 0);
+	DrawSlider(0);
+}
+
+void DrawGreen()
+{
+	glColor4f(0,0,0,1);
+	WriteText("GREEN", -1.f, 0);
+	DrawSlider(1);
+}
+
+void DrawBlue()
+{
+	glColor4f(0,0,0,1);
+	WriteText("BLUE", -1.f, 0);
+	DrawSlider(2);
 }
 
 void DrawNetwork()

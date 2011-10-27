@@ -12,11 +12,17 @@ void DrawMenuFrame();
 
 void DrawGameMenu();
 void DrawDebugMenu();
+void DrawThemeMenu();
 
 void DrawNetwork();
 
 void DrawConnectToBox();
 void DrawRightBorder();
+
+
+void DrawRed();
+void DrawBlue();
+void DrawGreen();
 
 void WriteText(const char *, GLfloat, GLfloat);
 #endif
