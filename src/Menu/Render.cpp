@@ -208,7 +208,7 @@ void DrawPic(int i)
 {
 	glPushMatrix();
 	glTranslatef(-1, 0, 0);
-	glScalef(180.f*3.f/5.f*3.f/(windowX+60.f),3.f/5.f, 1);
+	glScalef(180.f*3.f/5.f*3.f/windowX*(200.f-10.f)/200.f,3.f/5.f, 1);
 	glTranslatef(1.25f, 0, 0);
 	glBindTexture(GL_TEXTURE_2D, i+1);
 	glEnable(GL_TEXTURE_2D);
