@@ -5,6 +5,23 @@
 
 #include "Network/Status.h"
 
+class DebugStatus
+{
+	public:
+		static void ChangeDebugStatus(int i)
+		{
+			DebugStatusValue[i] = !DebugStatusValue[i];
+		}
+
+		static bool IsDebugOn(int i)
+		{
+			return DebugStatusValue[i];
+		}
+
+	private:
+		static bool DebugStatusValue[5];
+};
+
 class MenuMouse {
 	public:
 		static int MouseMenuX(int x)
@@ -63,6 +80,8 @@ class MenuMouse {
 				for(int i = 0; i<5; i++)
 					if(IsMouseOnMenuButton(i))
 						MenuSelected = i;
+					else if(IsMouseOnDebugButton(i) && state == GLUT_DOWN)
+						DebugStatus::ChangeDebugStatus(i);
 
 			glutSetWindow(MENUWINDOW);
 			glutPostRedisplay();

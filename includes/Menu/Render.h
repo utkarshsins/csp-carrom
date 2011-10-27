@@ -23,6 +23,6 @@ void DrawPhysicsDebug();
 void DrawGameDebug();
 void DrawAIDebug();
 void CheckDebugSelected(int);
-
+void DrawDebugTick(int);
 void WriteText(const char *, GLfloat, GLfloat);
 #endif
