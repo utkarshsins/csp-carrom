@@ -1,6 +1,5 @@
 #include"Physics.h"
 #include"Main.h"
-#include <complex>
 
 #define CORNER_RADIUS (4.5f/2.f/74.0f)
 #define ERROR_ACCOMODATION	0.005

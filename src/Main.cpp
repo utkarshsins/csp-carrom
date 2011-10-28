@@ -144,13 +144,7 @@ void drawPointer()
 
 	glPopMatrix();
 }
-/*
-void idle()
-{
-	glutSetWindow(GAMEWINDOW);
-	glutPostRedisplay();
-}
-*/
+
 void rotateCam(int requirement)
 {
 	glutSetWindow(GAMEWINDOW);
@@ -257,7 +251,7 @@ void goPersp()
 	to_look[1]=cameraLook[1]+CAMERA_Y/PERSP_ZOOM;
 	to_look[2]=cameraLook[2];
 
-	int gradiant=30;//10;
+	int gradiant=30;
 	
 	for(int i=0;i<gradiant;i++)
 	{
@@ -289,7 +283,6 @@ void init(void)
 	GLfloat light_position[] = { -1.0, -3.0, 4.0, 0.0 };
 	GLfloat white_light[] = { 1.0, 1.0, 1.0, 1.0 };
 	GLfloat lmodel_ambient[] = { 0.1, 0.1, 0.1, 1.0 };
-//	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glShadeModel(GL_SMOOTH);
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, white_light);
