@@ -123,9 +123,9 @@ void nextTurn()
 	coins[0].CenterX=-SHIFT*sin(turn_rotation*PI/180);
 	coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
 
-//	if(player==2)
-//		AIStriker();
-//	else
+	if(player==2)
+		AIStriker();
+	else
 		goPersp();
 }
 

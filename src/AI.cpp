@@ -1,6 +1,7 @@
 #include<thread>
 #include"AI.h"
 #include"Main.h"
+#include "Mouse.h"
 #include<unistd.h>
 
 void AIStriker()
@@ -24,7 +25,8 @@ void AIStriker()
 	sleep(1);	
 //	std::thread t(engagePhysics,0);
 //	t.detach();
-	striker_lock=false;
+	SimulateGame(0);
+	striker_lock = false;
 }
 
 void setCenter()
