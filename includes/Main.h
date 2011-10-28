@@ -38,7 +38,7 @@ void ReshapeFunction(int w, int h);
 void RenderGame(void);
 void RenderMenu(void);
 void scroll(int arbit, int direction, int x, int y);
-void idle();
+//void idle();
 void rotateCam(int);
 void init(void);
 int main(int args, char *argv[]);

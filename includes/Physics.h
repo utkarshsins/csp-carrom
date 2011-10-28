@@ -1,2 +1,2 @@
-void engagePhysics(int);
+bool engagePhysics();
 void checkCollision(int);

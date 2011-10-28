@@ -101,8 +101,6 @@ void RenderGame(void)
 		if(coins[i].scored==0)
 			coins[i].DrawCoin();
 
-//	DrawMenuButton();
-
 	if(striker_lock)
 		drawPointer();
 	glutSwapBuffers();
@@ -146,13 +144,13 @@ void drawPointer()
 
 	glPopMatrix();
 }
-
+/*
 void idle()
 {
 	glutSetWindow(GAMEWINDOW);
 	glutPostRedisplay();
 }
-
+*/
 void rotateCam(int requirement)
 {
 	glutSetWindow(GAMEWINDOW);
@@ -342,7 +340,7 @@ int main(int args, char *argv[])
 	
 	glutReshapeFunc(ReshapeFunctionGame);
 	glutDisplayFunc(RenderGame);
-	glutIdleFunc(idle);
+//	glutIdleFunc(idle);
 	glutMotionFunc(moveCam);
 	glutPassiveMotionFunc(stopCam);
 	glutMouseFunc(MouseButton);

@@ -29,6 +29,7 @@ void MouseButton(int key, int direction, int x, int y)
 		{
 			playTurn();
 		}
+		
 	}
 	else if(key==3||key==4)
 	{
@@ -44,9 +45,14 @@ void MouseButton(int key, int direction, int x, int y)
 			}
 			cameraPos[2]*=(1+0.07*direction/factor);
 			setCamera();
+//			glutSetWindow(GAMEWINDOW);
+//			glutPostRedisplay();
 			RenderGame();
 		}
 	}
+	
+	glutSetWindow(GAMEWINDOW);
+	glutPostRedisplay();
 }
 
 void setPointerLength(int x, int y)
@@ -147,6 +153,9 @@ void moveCam(int x, int y)
 		moving=true;
 	}
 	mouseX=x;
+	
+	glutSetWindow(GAMEWINDOW);
+	glutPostRedisplay();
 }
 
 void stopCam(int x, int y)
@@ -166,7 +175,18 @@ void stopCam(int x, int y)
 
 	mouseX=x;
 	mouseY=y;
+	
+	glutSetWindow(GAMEWINDOW);
+	glutPostRedisplay();
 }
+
+void SimulateGame(int arg)
+{
+	while(engagePhysics())
+		RenderGame();
+
+	nextTurn();
+}	
 
 void playTurn()
 {
@@ -180,7 +200,9 @@ void playTurn()
 	coins[0].VelocityY=cos(((0-pointer_angle+turn_rotation)/180)*PI)*pointer_length;
 
 	goTop();
-	std::thread t(engagePhysics,0);
-	t.detach();
+//	std::thread t(SimulateGame,0);
+// 	t.detach();
+	
 	striker_lock=false;
+	SimulateGame(0);	
 }

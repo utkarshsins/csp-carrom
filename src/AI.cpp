@@ -22,8 +22,8 @@ void AIStriker()
 	printf("st_x : %f st_y : %f\n\n\n",coins[0].VelocityX,coins[0].VelocityY);
 
 	sleep(1);	
-	std::thread t(engagePhysics,0);
-	t.detach();
+//	std::thread t(engagePhysics,0);
+//	t.detach();
 	striker_lock=false;
 }
 

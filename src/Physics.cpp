@@ -14,8 +14,9 @@ CarromCoin corners[4];
 #define physics_factor 0.024
 #define pocketing_factor 1.3
 
-void engagePhysics(int arg)
+bool engagePhysics()
 {
+
 //	printf("%f\n",coins[0].VelocityX);
 	int counter=0;
 	bool run_again=false;
@@ -69,12 +70,15 @@ void engagePhysics(int arg)
 //			checkCollision(i);
 		for(int i=0; i<6; i++)
 			coins[i].Collided = false;
-
+		
 //	printf("%d\n",run_again);
 	if(run_again)
-		glutTimerFunc(10,engagePhysics,0);
+		return true;
 	else
-		nextTurn();
+		return false;
+//		glutSetWindow(GAMEWINDOW);
+//		glutPostRedisplay();
+		
 }
 
 float distance(CarromCoin a, CarromCoin b)
