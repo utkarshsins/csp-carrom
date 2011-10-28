@@ -4,8 +4,6 @@
 #define CORNER_RADIUS (4.5f/2.f/74.0f)
 #define ERROR_ACCOMODATION	0.005
 #define ERROR_ACCOMODATION_1 (ERROR_ACCOMODATION+coins[index].radius)
-#define VELX(a) coins[a].VelocityX
-#define VELY(a) coins[a].VelocityY
 
 CarromCoin corners[4];
 #define edge_half 0.95
@@ -27,14 +25,14 @@ bool engagePhysics()
 		}
 	for(int i=0;i<6;i++)
 	{
-		if((VELX(i)>0?VELX(i):0-VELX(i))+(VELY(i)>0?VELY(i):0-VELY(i))<=0.0001)
+		if((coins[i].VelocityX>0.0?coins[i].VelocityX:-coins[i].VelocityX)+(coins[i].VelocityY>0?coins[i].VelocityY:0-coins[i].VelocityY)<=0.0001)
 		{
 			continue;
 		}
 		else
 			run_again=true;
-		float _sin=VELX(i)/sqrt(VELX(i)*VELX(i)+VELY(i)*VELY(i));
-		float _cos=VELY(i)/sqrt(VELX(i)*VELX(i)+VELY(i)*VELY(i));
+		float _sin=coins[i].VelocityX/sqrt(coins[i].VelocityX*coins[i].VelocityX+coins[i].VelocityY*coins[i].VelocityY);
+		float _cos=coins[i].VelocityY/sqrt(coins[i].VelocityX*coins[i].VelocityX+coins[i].VelocityY*coins[i].VelocityY);
 
 		coins[i].CenterX+=coins[i].VelocityX*physics_factor;
 		float tem=coins[i].VelocityX;
@@ -201,13 +199,13 @@ void checkCollision(int index)
 	if(coins[index].CenterX>=0.95-ERROR_ACCOMODATION_1||coins[index].CenterX<=-0.95+ERROR_ACCOMODATION_1)
 	{
 		coins[index].VelocityX*=-1;
-		coins[index].CenterX+=VELX(index)*physics_factor;
+		coins[index].CenterX+=coins[index].VelocityX*physics_factor;
 	}
 
 	if(coins[index].CenterY>=0.95-ERROR_ACCOMODATION_1||coins[index].CenterY<=-0.95+ERROR_ACCOMODATION_1)
 	{
 		coins[index].VelocityY*=-1;
-		coins[index].CenterY+=VELY(index)*physics_factor;
+		coins[index].CenterY+=coins[index].VelocityY*physics_factor;
 	}
 
 	return;
