@@ -1,5 +1,6 @@
 #include"Physics.h"
 #include"Main.h"
+#include <complex>
 
 #define CORNER_RADIUS (4.5f/2.f/74.0f)
 #define ERROR_ACCOMODATION	0.005
@@ -16,8 +17,6 @@ CarromCoin corners[4];
 
 bool engagePhysics()
 {
-
-//	printf("%f\n",coins[0].VelocityX);
 	int counter=0;
 	bool run_again=false;
 	for(int i=-1;i<=1;i+=2)
@@ -38,7 +37,6 @@ bool engagePhysics()
 		float _sin=VELX(i)/sqrt(VELX(i)*VELX(i)+VELY(i)*VELY(i));
 		float _cos=VELY(i)/sqrt(VELX(i)*VELX(i)+VELY(i)*VELY(i));
 
-//		printf("sin:%f, cos:%f\n",_sin,_cos);
 		coins[i].CenterX+=coins[i].VelocityX*physics_factor;
 		float tem=coins[i].VelocityX;
 		coins[i].VelocityX-=(friction*physics_factor)*_sin;
@@ -66,19 +64,13 @@ bool engagePhysics()
 		t4.join();
 		t5.join();
 
-//		for(int i=0;i<6;i++)
-//			checkCollision(i);
 		for(int i=0; i<6; i++)
 			coins[i].Collided = false;
 		
-//	printf("%d\n",run_again);
 	if(run_again)
 		return true;
 	else
-		return false;
-//		glutSetWindow(GAMEWINDOW);
-//		glutPostRedisplay();
-		
+		return false;		
 }
 
 float distance(CarromCoin a, CarromCoin b)
@@ -95,6 +87,34 @@ float distance(CarromCoin a, CarromCoin b)
 
 	return sqrt(x_squared+y_squared);
 }
+
+float GetTheta(float VectorAX, float VectorAY, float VectorBX, float VectorBY)
+{
+	float DotProduct, LengthA, LengthB, Result;
+	
+	DotProduct = (VectorAX*VectorBX) + (VectorAY*VectorBY);
+	LengthA = sqrt(VectorAX*VectorAX +VectorAY*VectorAY);
+	LengthB = sqrt(VectorBX*VectorBX +VectorBY*VectorBY);
+	
+	float CosTheta = DotProduct / LengthA / LengthB;
+	
+	if(CosTheta > 1.0)
+		CosTheta = 1.0;
+	else if(CosTheta < -1.0)
+		CosTheta = -1.0;
+		
+		
+	Result = acos(CosTheta);
+	
+	if(LengthA == 0.0 || LengthB == 0.0)
+		return 0.0;
+		
+	if(	VectorAX*VectorBY - VectorBX*VectorAY < 0 )
+		Result = -Result;
+		
+	return Result;
+}
+	
 void checkCollision(int index)
 {
 	if(coins[index].scored!=0)
@@ -105,55 +125,63 @@ void checkCollision(int index)
 			break;
 		if(coins[i].scored!=0)
 			continue;
-		if(distance(coins[index],coins[i])<coins[index].radius+coins[i].radius+ERROR_ACCOMODATION)
+		if(distance(coins[index],coins[i])<coins[index].radius+coins[i].radius)
 		{
+		if(DebugStatus::IsDebugOn(2))
+		{
+			std::cout << "VERBOSE PHYSICS: Collision Occurred " << std::endl;
+			std::cout << "VERBOSE PHYSICS: index Center X = " << coins[index].CenterX << ", Y = " << coins[index].CenterY << std::endl;
+			std::cout << "VERBOSE PHYSICS: I Center X = " << coins[i].CenterX << ", Y = " << coins[i].CenterY << std::endl;
+			std::cout << "VERBOSE PHYSICS: index Velocity X = " << coins[index].VelocityX << ", Y = " << coins[index].VelocityY << std::endl;
+			std::cout << "VERBOSE PHYSICS: I Velocity X = " << coins[i].VelocityX << ", Y = " << coins[i].VelocityY << std::endl;
+		}
 			
-//			float VelocityYRelative = -(VELY(index)-VELY(i));
-//			float VelocityXRelative = -(VELX(index)-VELX(i));
-			float MomentumYRelative = -(coins[index].CoinMass*VELY(index)-coins[i].CoinMass*VELY(i));
-			float MomentumXRelative = -(coins[index].CoinMass*VELX(index)-coins[i].CoinMass*VELX(i));
+			float RelativeCenterX = coins[index].CenterX - coins[i].CenterX;
+			float RelativeCenterY = coins[index].CenterY - coins[i].CenterY;
+			float RelativeDistance = sqrt(RelativeCenterX*RelativeCenterX + RelativeCenterY*RelativeCenterY);
+						
+			float VelocityA = sqrt(coins[index].VelocityX*coins[index].VelocityX + coins[index].VelocityY*coins[index].VelocityY);
+			float VelocityB = sqrt(coins[i].VelocityX*coins[i].VelocityX + coins[i].VelocityY*coins[i].VelocityY);
+						
+			float ThetaA = GetTheta(RelativeCenterX, RelativeCenterY, coins[index].VelocityX, coins[index].VelocityY);
+			float ThetaB = GetTheta(RelativeCenterX, RelativeCenterY, coins[i].VelocityX, coins[i].VelocityY);
+			float ThetaPosition = GetTheta(1.0, 0.0, RelativeCenterX, RelativeCenterY);
 			
-//			std::cout << "VelocityCompX = " << VelocityXRelative <<std::endl;
-//			std::cout << "MomentumComponentX = " <<  MomentumXRelative << std::endl;
-//			std::cout << "VelocityCompY = " << VelocityYRelative <<std::endl;
-//			std::cout << "MomentumComponentY = " <<  MomentumYRelative << std::endl;
+			float Vat = VelocityA*sin(ThetaA);
+			float Vbt = VelocityB*sin(ThetaB);
 			
-//			float NetRelativeVelocity = sqrt(VelocityYRelative*VelocityYRelative + VelocityXRelative*VelocityXRelative);
-			float NetRelativeMomentum = sqrt(MomentumYRelative*MomentumYRelative + MomentumXRelative*MomentumXRelative);
+			float Van = VelocityA*cos(ThetaA);
+			float Vbn = VelocityB*cos(ThetaB);
 			
-			float tanthetah  = atan2 ((coins[index].CenterY - coins[i].CenterY),(coins[index].CenterX - coins[i].CenterX));
-//			float tanthetahm  = atan2 ((coins[index].CoinMass*coins[index].CenterY - coins[i].CoinMass*coins[i].CenterY),(coins[index].CoinMass*coins[index].CenterX - coins[i].CoinMass*coins[i].CenterX));
+			float e = 0.8;
 			
-//			std::cout << "VelocityTheta = " << tanthetah <<std::endl;
-//			std::cout << "MomentumTheta = " <<  tanthetahm << std::endl;			
+			float Vand = (coins[index].CoinMass*Van + coins[i].CoinMass*(Vbn*(1.0+e) - e*Van))/(coins[index].CoinMass+coins[i].CoinMass);
+			float Vbnd = e*(Van - Vbn) + Vand;
 			
-//			float ThetaHRelativeVelocity = atan2(VelocityYRelative , VelocityXRelative);
-			float ThetaHRelativeMomentum = atan2(MomentumYRelative , MomentumXRelative);
+						
+			coins[index].VelocityX = coins[index].VelocityX - (Van-Vand)*cos(ThetaPosition);
+			coins[index].VelocityY = coins[index].VelocityY - (Van-Vand)*sin(ThetaPosition);
+			coins[i].VelocityX = coins[i].VelocityX - (Vbn-Vbnd)*cos(ThetaPosition);
+			coins[i].VelocityY = coins[i].VelocityY - (Vbn-Vbnd)*sin(ThetaPosition);
 			
-			float ThetaMThetaR = tanthetah - ThetaHRelativeMomentum;
 			
-//			float JoiningVelocityComponent = NetRelativeVelocity*cos(ThetaMThetaR);
-			float JoiningMomentumComponent = NetRelativeMomentum*cos(ThetaMThetaR);
+		if(DebugStatus::IsDebugOn(2))
+		{
+			std::cout << "VERBOSE PHYSICS: Relative Center X = " << RelativeCenterX << ", Y = " << RelativeCenterY << ", Distance = " << RelativeDistance << std::endl;			
+			std::cout << "VERBOSE PHYSICS: Velocity index = " << VelocityA << ", i = " << VelocityB << std::endl;		
+			std::cout << "VERBOSE PHYSICS: ThetaA = " << ThetaA/M_PI*180.f << ", ThetaB = " << ThetaB/M_PI*180.f << std::endl;			
+			std::cout << "VERBOSE PHYSICS: ThetaPosition = " << ThetaPosition/M_PI*180.f << std::endl;
+			std::cout << "VERBOSE PHYSICS: Van = " << Van << ", Vbn = " << Vbn << std::endl;
 			
-//			float JoiningVelocityComponentY = JoiningVelocityComponent*sin(tanthetah);
-//			float JoiningVelocityComponentX = JoiningVelocityComponent*cos(tanthetah);
-			float JoiningMomentumComponentY = JoiningMomentumComponent*sin(tanthetah);
-			float JoiningMomentumComponentX = JoiningMomentumComponent*cos(tanthetah);
+			std::cout << "VERBOSE PHYSICS: index Velocity X = " << coins[index].VelocityX << ", Y = " << coins[index].VelocityY << std::endl;
+			std::cout << "VERBOSE PHYSICS: Vand = " << Vand << ", Vbnd = " << Vbnd << std::endl;
+			std::cout << "VERBOSE PHYSICS: I Velocity X = " << coins[i].VelocityX << ", Y = " << coins[i].VelocityY << std::endl;
+		}
 			
-//			VELX(index) = VELX(index) + JoiningVelocityComponentX;
-//			VELX(i) = VELX(i) - JoiningVelocityComponentX;	
-			
-//			VELY(index) = VELY(index) + JoiningVelocityComponentY;
-//			VELY(i) = VELY(i) - JoiningVelocityComponentY;				
-	
-//			std::cout << "JoiningVelocityCompX = " << JoiningVelocityComponentX <<std::endl;
-//			std::cout << "JoiningMomentumComponentX = " <<  JoiningMomentumComponentX << std::endl;
-
-			VELX(index) = VELX(index) + JoiningMomentumComponentX / coins[index].CoinMass;
-			VELX(i) = VELX(i) - JoiningMomentumComponentX / coins[i].CoinMass;	
-			
-			VELY(index) = VELY(index) + JoiningMomentumComponentY / coins[index].CoinMass;
-			VELY(i) = VELY(i) - JoiningMomentumComponentY / coins[i].CoinMass;		
+			coins[i].CenterX+=coins[i].VelocityX*physics_factor;
+			coins[i].CenterY+=coins[i].VelocityY*physics_factor;
+			coins[index].CenterX+=coins[index].VelocityX*physics_factor;
+			coins[index].CenterY+=coins[index].VelocityY*physics_factor;
 		}
 	}
 
@@ -164,7 +192,8 @@ void checkCollision(int index)
 			coins[index].scored=player;
 			coins[index].VelocityX*=0;
 			coins[index].VelocityY*=0;
-			printf("Scored I guess. %f, %f, %f;\n", corners[i].CenterY, corners[i].CenterX, CORNER_RADIUS+ERROR_ACCOMODATION );
+			if(DebugStatus::IsDebugOn(2))
+				printf("VERBOSE PHYSICS: Scored I guess. %f, %f, %f;\n", corners[i].CenterY, corners[i].CenterX, CORNER_RADIUS+ERROR_ACCOMODATION );
 			coin_pocketed=true;
 			return;
 		}
