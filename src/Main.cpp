@@ -325,7 +325,7 @@ int main(int args, char *argv[])
 	glutInitWindowPosition(480, 300);
 	
 	glutCreateWindow(argv[0]);
-//	glutFullScreen();
+	glutFullScreen();
 	glutReshapeFunc(ReshapeFunction);
 
 	glutCreateSubWindow(glutGetWindow(), 0, 250, 1920, 500);	

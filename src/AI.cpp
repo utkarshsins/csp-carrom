@@ -1,8 +1,179 @@
+#include <iostream>
 #include<thread>
 #include"AI.h"
 #include"Main.h"
+#include "Physics.h"
 #include "Mouse.h"
 #include<unistd.h>
+
+#define edge_half 0.95
+#define CORNER_RADIUS (4.5f/2.f/74.f)
+
+bool CheckPath(int i, float M, float C, float CenterUp, float CenterDown)
+{
+	for(int j = 1; j < 6; j++)
+	{
+		float CenterX = -coins[j].CenterX;
+		float CenterY = -coins[j].CenterY;
+
+		if(j == i || coins[j].scored != 0)
+			continue;
+		else if(fabs((CenterX*M + C - CenterY) / sqrt(1.0 + M*M)) <= coins[j].radius + coins[0].radius && CenterY <= CenterUp && CenterY >= CenterDown)
+		{
+			std::cout << "AI VERBOSE: Fail for Coin " << j << " CenterX = " << CenterX << ", CenterY = " << CenterY << ", Distance = " << fabs((CenterX*M + C - CenterY) / sqrt(1.0 + M*M)) << std::endl;
+			std::cout << "AI VERBOSE: Required Distance = " << coins[j].radius + coins[0].radius << std::endl;
+			return false;
+		}
+		std::cout << "AI VERBOSE: Tested Coin " << j << ", CenterX = " << CenterX << ", CenterY = " << CenterY << ", Distance = " << fabs((CenterX*M + C - CenterY) / sqrt(1.0 + M*M)) <<  std::endl;
+	}
+
+	return true;
+}
+
+bool TryCoinUtkarsh(int i)
+{
+	std::cout << "AI VERBOSE: Trying for Coin " << i << std::endl;
+
+	float CenterX = -coins[i].CenterX;
+	float CenterY = -coins[i].CenterY;
+
+	std::cout << "AI VERBOSE: Coin CenterX = " << CenterX << ", CenterY = " << CenterY << std::endl;
+
+	for(int j = 0; j < 1; j++)
+	{
+		float CornerCenterX = -corners[j].CenterX;
+		float CornerCenterY = -corners[j].CenterY;
+
+		std::cout << "AI VERBOSE: Trying corner " << i << std::endl;
+		std::cout << "AI VERBOSE: Corner " << i << " CenterX = " << CornerCenterX << ", CenterY = " << CornerCenterY << std::endl;
+		float Theta = -GetTheta((CornerCenterX - CenterX), (CornerCenterY - CenterY), 1.0, 0);
+		std::cout << "AI VERBOSE: Corner-Coin Theta = " << Theta/M_PI*180.f << std::endl;
+
+		float StrikerCenterX = CenterX - (coins[i].radius+corners[j].radius)*cos(Theta);
+		float StrikerCenterY = CenterY - (coins[i].radius+corners[j].radius)*sin(Theta);
+		std::cout << "AI VERBOSE: Proposed Striker CenterX = " << StrikerCenterX << ", CenterY = " << StrikerCenterY << std::endl;
+		std::cout << "AI VERBOSE: Initial Striker CenterX = " << -coins[0].CenterX << ", CenterY = " << -coins[0].CenterY << std::endl;
+
+		float M = tan(Theta);
+		float InitialStrikerCenterX = StrikerCenterX - (StrikerCenterY - (-0.66f))/M;
+		float InitialStrikerCenterY = -0.66f;
+
+		float InitialStrikerCenterXLeft = InitialStrikerCenterX;
+		float InitialStrikerCenterXRight = InitialStrikerCenterX;
+
+//		int n;
+//		std::cin >> n;
+
+		std::cout << "AI VERBOSE: Generating line Y = MX + C " << std::endl;
+
+		float C = CornerCenterY - M*CornerCenterX;
+		std::cout << "AI VERBOSE: Y = " << M << "X ";
+		if(C > 0.0)
+			std::cout << " + ";
+		std::cout << C << std::endl;
+
+
+		if(CheckPath(i, M, C, CornerCenterY, CenterY))
+		for(float adjustment = 0.01; ;)
+		{
+			if(InitialStrikerCenterXLeft >= -PLACEMENTWIDTH)
+			{
+				std::cout << "AI VERBOSE: Initial Proposed Striker CenterX = " << InitialStrikerCenterXLeft << ", CenterY = " << InitialStrikerCenterY << std::endl;
+				float ThetaDash = -GetTheta((StrikerCenterX - InitialStrikerCenterXLeft), (StrikerCenterY - InitialStrikerCenterY), 1.0, 0);
+				std::cout << "AI VERBOSE: ThetaDash = " << ThetaDash*180.f/M_PI << std::endl;
+		
+				float MDash = tan(ThetaDash);
+				float CDash = StrikerCenterY - MDash*StrikerCenterX;
+				std::cout << "AI VERBOSE: Line II: Y = " << MDash << "X ";
+				if(CDash > 0.0)
+					std::cout << " + ";
+				std::cout << CDash << std::endl;
+
+				coins[0].CenterX = -InitialStrikerCenterXLeft;
+				coins[0].CenterY = -InitialStrikerCenterY;
+//				RenderGame();
+
+				if(CheckPath(i, MDash, CDash, StrikerCenterY, InitialStrikerCenterY))
+				{	
+					std::cout << "AI VERBOSE: Path Clear" << std::endl;
+					coins[0].VelocityX = -1.5 * cos(ThetaDash);//Max = 1.3
+					coins[0].VelocityY = -1.5 * sin(ThetaDash);
+					return true;
+					break;
+				}
+				InitialStrikerCenterXLeft = InitialStrikerCenterXLeft - adjustment;
+			}
+			if(InitialStrikerCenterXRight <= PLACEMENTWIDTH)
+			{
+				std::cout << "AI VERBOSE: Initial Proposed Striker CenterX = " << InitialStrikerCenterXRight << ", CenterY = " << InitialStrikerCenterY << std::endl;
+				std::cout << "AI VERBOSE: Generating line Y = MX + C " << std::endl;
+
+				float ThetaDash = -GetTheta((StrikerCenterX - InitialStrikerCenterXRight), (StrikerCenterY - InitialStrikerCenterY), 1.0, 0);
+				std::cout << "AI VERBOSE: ThetaDash = " << ThetaDash*180.f/M_PI << std::endl;
+				float MDash = tan(ThetaDash);
+				float CDash = StrikerCenterY - MDash*StrikerCenterX;
+				std::cout << "AI VERBOSE: Line II: Y = " << MDash << "X ";
+				if(CDash > 0.0)
+					std::cout << " + ";
+				std::cout << CDash << std::endl;
+
+				coins[0].CenterX = -InitialStrikerCenterXRight;
+				coins[0].CenterY = -InitialStrikerCenterY;
+//				RenderGame();
+
+				if(CheckPath(i, MDash, CDash, StrikerCenterY, InitialStrikerCenterY))
+				{	
+					std::cout << "AI VERBOSE: Path Clear" << std::endl;
+					coins[0].VelocityX = -1.5 * cos(ThetaDash);
+					coins[0].VelocityY = -1.5 * sin(ThetaDash);
+					return true;
+					break;
+				}
+				InitialStrikerCenterXRight = InitialStrikerCenterXRight + adjustment;
+			}
+			if(InitialStrikerCenterXLeft < -PLACEMENTWIDTH && InitialStrikerCenterXRight > PLACEMENTWIDTH)
+				break;
+
+
+//			int n;
+//			std::cin >> n;
+		}
+
+	}
+
+//	int n;
+//	std::cin >> n;
+	return false;
+}
+		
+
+void SetCenterUtkarsh()
+{
+	std::cout << "AI VERBOSE: Utkarsh AI" << std::endl;
+
+	for(int i = 1; i < 6; i++)
+		if(coins[i].scored==0)
+			if(TryCoinUtkarsh(i))
+				break;
+
+	if(coins[0].VelocityX != 0.0 && coins[0].VelocityY != 0.0)
+	{
+		float CenterX = coins[0].CenterX;
+		coins[0].CenterX = 0.0;
+	
+		float adjustment;
+		if(CenterX < 0.0)
+			adjustment = -0.01;
+		else
+			adjustment = 0.01;
+
+		for(; fabs(coins[0].CenterX - CenterX) >= 0.01 ; coins[0].CenterX = coins[0].CenterX + adjustment)
+			RenderGame();
+
+		coins[0].CenterX = CenterX;
+	}
+	
+}
 
 void AIStriker()
 {
@@ -19,10 +190,12 @@ void AIStriker()
 
 //	striker_lock=true;
 
-	setCenter();
+	SetCenterUtkarsh();
+//	setCenter();
+
 	printf("st_x : %f st_y : %f\n\n\n",coins[0].VelocityX,coins[0].VelocityY);
 
-	sleep(1);	
+//	sleep(1);	
 //	std::thread t(engagePhysics,0);
 //	t.detach();
 	SimulateGame(0);
