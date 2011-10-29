@@ -60,6 +60,9 @@ std::cout << "YO Processing";
 
 }
 
+int MaxPlayers = 0;
+int AIPlayers = -1;
+
 void StartServer(int Thread)
 {
 	socklen_t ClientAddressSize;
@@ -87,8 +90,20 @@ void StartServer(int Thread)
 	std::cout 	<< "=======================================================" << std::endl
 				<< "Carrom CSP301 Assignment 3 Dedicated Server" << std::endl
 				<< "Harshal Bidasaria (2010CS50283) , Utkarsh (2010CS50299)" << std::endl
-				<< "=======================================================" << std::endl
-				<< "Server Started and is listening on Port " << SERVER_PORT << std::endl;
+				<< "=======================================================" << std::endl;
+	while(MaxPlayers != 2 && MaxPlayers != 4)
+	{
+		std::cout	<< "Enter the number of players (Humans + AI) in the game: " ;
+		std::cin	>> MaxPlayers;
+	}
+	
+	while(((AIPlayers < 0 || AIPlayers > 1) && MaxPlayers == 2) || ((AIPlayers < 0 || AIPlayers > 3) && MaxPlayers == 4))
+	{
+		std::cout	<< "Enter the number of AI Players to be provided by Server: " ;
+		std::cin	>> AIPlayers;
+	}
+	
+	std::cout	<< "Server Started and is listening on Port " << SERVER_PORT << std::endl;
 				
 	for(ServerReturnSocketFileDescriptor = accept(ServerListenSocketFileDescriptor, (struct sockaddr *) &ClientAddress, &ClientAddressSize);;ServerReturnSocketFileDescriptor = accept(ServerListenSocketFileDescriptor, (struct sockaddr *) &ClientAddress, &ClientAddressSize))
 	{
