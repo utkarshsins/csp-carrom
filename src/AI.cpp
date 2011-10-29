@@ -20,11 +20,15 @@ bool CheckPath(int i, float M, float C, float CenterUp, float CenterDown)
 			continue;
 		else if(fabs((CenterX*M + C - CenterY) / sqrt(1.0 + M*M)) <= coins[j].radius + coins[0].radius && CenterY <= CenterUp && CenterY >= CenterDown)
 		{
+			if(DebugStatus::IsDebugOn(4))
+			{
 			std::cout << "AI VERBOSE: Fail for Coin " << j << " CenterX = " << CenterX << ", CenterY = " << CenterY << ", Distance = " << fabs((CenterX*M + C - CenterY) / sqrt(1.0 + M*M)) << std::endl;
 			std::cout << "AI VERBOSE: Required Distance = " << coins[j].radius + coins[0].radius << std::endl;
+			}
 			return false;
 		}
-		std::cout << "AI VERBOSE: Tested Coin " << j << ", CenterX = " << CenterX << ", CenterY = " << CenterY << ", Distance = " << fabs((CenterX*M + C - CenterY) / sqrt(1.0 + M*M)) <<  std::endl;
+		if(DebugStatus::IsDebugOn(4))
+			std::cout << "AI VERBOSE: Tested Coin " << j << ", CenterX = " << CenterX << ", CenterY = " << CenterY << ", Distance = " << fabs((CenterX*M + C - CenterY) / sqrt(1.0 + M*M)) <<  std::endl;
 	}
 
 	return true;
@@ -32,27 +36,25 @@ bool CheckPath(int i, float M, float C, float CenterUp, float CenterDown)
 
 bool TryCoinUtkarsh(int i)
 {
+	if(DebugStatus::IsDebugOn(4))
 	std::cout << "AI VERBOSE: Trying for Coin " << i << std::endl;
 
 	float CenterX = -coins[i].CenterX;
 	float CenterY = -coins[i].CenterY;
 
-	std::cout << "AI VERBOSE: Coin CenterX = " << CenterX << ", CenterY = " << CenterY << std::endl;
+
+	if(DebugStatus::IsDebugOn(4))
+		std::cout << "AI VERBOSE: Coin CenterX = " << CenterX << ", CenterY = " << CenterY << std::endl;
 
 	for(int j = 0; j < 1; j++)
 	{
 		float CornerCenterX = -corners[j].CenterX;
 		float CornerCenterY = -corners[j].CenterY;
 
-		std::cout << "AI VERBOSE: Trying corner " << i << std::endl;
-		std::cout << "AI VERBOSE: Corner " << i << " CenterX = " << CornerCenterX << ", CenterY = " << CornerCenterY << std::endl;
 		float Theta = -GetTheta((CornerCenterX - CenterX), (CornerCenterY - CenterY), 1.0, 0);
-		std::cout << "AI VERBOSE: Corner-Coin Theta = " << Theta/M_PI*180.f << std::endl;
 
 		float StrikerCenterX = CenterX - (coins[i].radius+corners[j].radius)*cos(Theta);
 		float StrikerCenterY = CenterY - (coins[i].radius+corners[j].radius)*sin(Theta);
-		std::cout << "AI VERBOSE: Proposed Striker CenterX = " << StrikerCenterX << ", CenterY = " << StrikerCenterY << std::endl;
-		std::cout << "AI VERBOSE: Initial Striker CenterX = " << -coins[0].CenterX << ", CenterY = " << -coins[0].CenterY << std::endl;
 
 		float M = tan(Theta);
 		float InitialStrikerCenterX = StrikerCenterX - (StrikerCenterY - (-0.66f))/M;
@@ -64,13 +66,22 @@ bool TryCoinUtkarsh(int i)
 //		int n;
 //		std::cin >> n;
 
-		std::cout << "AI VERBOSE: Generating line Y = MX + C " << std::endl;
 
 		float C = CornerCenterY - M*CornerCenterX;
-		std::cout << "AI VERBOSE: Y = " << M << "X ";
-		if(C > 0.0)
-			std::cout << " + ";
-		std::cout << C << std::endl;
+		
+		if(DebugStatus::IsDebugOn(4))
+		{
+			std::cout << "AI VERBOSE: Trying corner " << i << std::endl;
+			std::cout << "AI VERBOSE: Corner " << i << " CenterX = " << CornerCenterX << ", CenterY = " << CornerCenterY << std::endl;
+			std::cout << "AI VERBOSE: Corner-Coin Theta = " << Theta/M_PI*180.f << std::endl;
+			std::cout << "AI VERBOSE: Proposed Striker CenterX = " << StrikerCenterX << ", CenterY = " << StrikerCenterY << std::endl;
+			std::cout << "AI VERBOSE: Initial Striker CenterX = " << -coins[0].CenterX << ", CenterY = " << -coins[0].CenterY << std::endl;
+			std::cout << "AI VERBOSE: Generating line Y = MX + C " << std::endl;
+			std::cout << "AI VERBOSE: Y = " << M << "X ";
+			if(C > 0.0)
+				std::cout << " + ";
+			std::cout << C << std::endl;
+		}
 
 
 		if(CheckPath(i, M, C, CornerCenterY, CenterY))
@@ -78,16 +89,20 @@ bool TryCoinUtkarsh(int i)
 		{
 			if(InitialStrikerCenterXLeft >= -PLACEMENTWIDTH)
 			{
-				std::cout << "AI VERBOSE: Initial Proposed Striker CenterX = " << InitialStrikerCenterXLeft << ", CenterY = " << InitialStrikerCenterY << std::endl;
 				float ThetaDash = -GetTheta((StrikerCenterX - InitialStrikerCenterXLeft), (StrikerCenterY - InitialStrikerCenterY), 1.0, 0);
-				std::cout << "AI VERBOSE: ThetaDash = " << ThetaDash*180.f/M_PI << std::endl;
-		
 				float MDash = tan(ThetaDash);
 				float CDash = StrikerCenterY - MDash*StrikerCenterX;
-				std::cout << "AI VERBOSE: Line II: Y = " << MDash << "X ";
-				if(CDash > 0.0)
-					std::cout << " + ";
-				std::cout << CDash << std::endl;
+		
+				if(DebugStatus::IsDebugOn(4))
+				{
+					std::cout << "AI VERBOSE: Initial Proposed Striker CenterX = " << InitialStrikerCenterXLeft << ", CenterY = " << InitialStrikerCenterY << std::endl;
+					std::cout << "AI VERBOSE: ThetaDash = " << ThetaDash*180.f/M_PI << std::endl;
+					std::cout << "AI VERBOSE: Line II: Y = " << MDash << "X ";
+					if(CDash > 0.0)
+						std::cout << " + ";
+					std::cout << CDash << std::endl;
+				}
+		
 
 				coins[0].CenterX = -InitialStrikerCenterXLeft;
 				coins[0].CenterY = -InitialStrikerCenterY;
@@ -95,7 +110,8 @@ bool TryCoinUtkarsh(int i)
 
 				if(CheckPath(i, MDash, CDash, StrikerCenterY, InitialStrikerCenterY))
 				{	
-					std::cout << "AI VERBOSE: Path Clear" << std::endl;
+					if(DebugStatus::IsDebugOn(4))
+						std::cout << "AI VERBOSE: Path Clear" << std::endl;
 					coins[0].VelocityX = -1.5 * cos(ThetaDash);//Max = 1.3
 					coins[0].VelocityY = -1.5 * sin(ThetaDash);
 					return true;
@@ -105,25 +121,31 @@ bool TryCoinUtkarsh(int i)
 			}
 			if(InitialStrikerCenterXRight <= PLACEMENTWIDTH)
 			{
-				std::cout << "AI VERBOSE: Initial Proposed Striker CenterX = " << InitialStrikerCenterXRight << ", CenterY = " << InitialStrikerCenterY << std::endl;
-				std::cout << "AI VERBOSE: Generating line Y = MX + C " << std::endl;
 
 				float ThetaDash = -GetTheta((StrikerCenterX - InitialStrikerCenterXRight), (StrikerCenterY - InitialStrikerCenterY), 1.0, 0);
-				std::cout << "AI VERBOSE: ThetaDash = " << ThetaDash*180.f/M_PI << std::endl;
+				
 				float MDash = tan(ThetaDash);
 				float CDash = StrikerCenterY - MDash*StrikerCenterX;
-				std::cout << "AI VERBOSE: Line II: Y = " << MDash << "X ";
-				if(CDash > 0.0)
-					std::cout << " + ";
-				std::cout << CDash << std::endl;
-
+		
+				if(DebugStatus::IsDebugOn(4))
+				{
+					std::cout << "AI VERBOSE: Initial Proposed Striker CenterX = " << InitialStrikerCenterXRight << ", CenterY = " << InitialStrikerCenterY << std::endl;
+					std::cout << "AI VERBOSE: Generating line Y = MX + C " << std::endl;
+					std::cout << "AI VERBOSE: ThetaDash = " << ThetaDash*180.f/M_PI << std::endl;
+					std::cout << "AI VERBOSE: Line II: Y = " << MDash << "X ";
+					if(CDash > 0.0)
+						std::cout << " + ";
+					std::cout << CDash << std::endl;
+				}
+				
 				coins[0].CenterX = -InitialStrikerCenterXRight;
 				coins[0].CenterY = -InitialStrikerCenterY;
 //				RenderGame();
 
 				if(CheckPath(i, MDash, CDash, StrikerCenterY, InitialStrikerCenterY))
 				{	
-					std::cout << "AI VERBOSE: Path Clear" << std::endl;
+					if(DebugStatus::IsDebugOn(4))
+						std::cout << "AI VERBOSE: Path Clear" << std::endl;
 					coins[0].VelocityX = -1.5 * cos(ThetaDash);
 					coins[0].VelocityY = -1.5 * sin(ThetaDash);
 					return true;
@@ -149,7 +171,10 @@ bool TryCoinUtkarsh(int i)
 
 void SetCenterUtkarsh()
 {
-	std::cout << "AI VERBOSE: Utkarsh AI" << std::endl;
+	if(DebugStatus::IsDebugOn(4))
+		std::cout << "AI VERBOSE: Utkarsh AI" << std::endl;
+		
+	std::cout << "Turn_Rotation = " << turn_rotation << std::endl;
 
 	for(int i = 1; i < 6; i++)
 		if(coins[i].scored==0)
@@ -193,7 +218,8 @@ void AIStriker()
 	SetCenterUtkarsh();
 //	setCenter();
 
-	printf("st_x : %f st_y : %f\n\n\n",coins[0].VelocityX,coins[0].VelocityY);
+	if(DebugStatus::IsDebugOn(4))
+		printf("AI VERBOSE: st_x : %f st_y : %f\n\n\n",coins[0].VelocityX,coins[0].VelocityY);
 
 //	sleep(1);	
 //	std::thread t(engagePhysics,0);
@@ -292,7 +318,7 @@ bool tryCoin(int i)
 				continue;
 			if(distance(a,b,coins[j].CenterX,coins[j].CenterY)<=coins[i].radius+coins[j].radius)
 			{
-				printf("yoyohoho");
+				printf("AI VERBOSE: yoyohoho\n");
 				return false;
 			}
 		}
@@ -324,7 +350,8 @@ bool tryCoin(int i)
 	}
 
 
-	printf("Try succesful for coin %d\ncenter coin - x:%f,y:%f\ntagert center - x:%f,y:%f\ncenter striker - x:%f,y:%f",i,coins[i].CenterX,coins[i].CenterY,x,y,coins[0].CenterX,coins[0].CenterY);
+	if(DebugStatus::IsDebugOn(4))
+		printf("AI VERBOSE: Try succesful for coin %d\ncenter coin - x:%f,y:%f\ntagert center - x:%f,y:%f\ncenter striker - x:%f,y:%f\n",i,coins[i].CenterX,coins[i].CenterY,x,y,coins[0].CenterX,coins[0].CenterY);
 	return true;
 }
 
