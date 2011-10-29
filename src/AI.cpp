@@ -9,12 +9,21 @@
 #define edge_half 0.95
 #define CORNER_RADIUS (4.5f/2.f/74.f)
 
+bool IsLegal(float CenterX, float VelocityY)
+{
+	if(fabs(CenterX) < PLACEMENTWIDTH)
+		if(VelocityY >= 0.0)
+			return true;
+			
+	return false;
+}
+
 bool CheckPath(int i, float M, float C, float CenterUp, float CenterDown)
 {
 	for(int j = 1; j < 6; j++)
 	{
-		float CenterX = -coins[j].CenterX;
-		float CenterY = -coins[j].CenterY;
+		float CenterX = coins[j].CenterX*cos(turn_rotation/180.f*M_PI) - coins[j].CenterY*sin(turn_rotation/180.f*M_PI);
+		float CenterY = coins[j].CenterX*sin(turn_rotation/180.f*M_PI) + coins[j].CenterY*cos(turn_rotation/180.f*M_PI);
 
 		if(j == i || coins[j].scored != 0)
 			continue;
@@ -39,19 +48,22 @@ bool TryCoinUtkarsh(int i)
 	if(DebugStatus::IsDebugOn(4))
 	std::cout << "AI VERBOSE: Trying for Coin " << i << std::endl;
 
-	float CenterX = -coins[i].CenterX;
-	float CenterY = -coins[i].CenterY;
+		float CenterX = coins[i].CenterX*cos(turn_rotation/180.f*M_PI) - coins[i].CenterY*sin(turn_rotation/180.f*M_PI);
+		float CenterY = coins[i].CenterX*sin(turn_rotation/180.f*M_PI) + coins[i].CenterY*cos(turn_rotation/180.f*M_PI);
 
 
 	if(DebugStatus::IsDebugOn(4))
 		std::cout << "AI VERBOSE: Coin CenterX = " << CenterX << ", CenterY = " << CenterY << std::endl;
 
-	for(int j = 0; j < 1; j++)
+	for(int j = 0; j < 4; j++)
 	{
-		float CornerCenterX = -corners[j].CenterX;
-		float CornerCenterY = -corners[j].CenterY;
+		float CornerCenterX = corners[j].CenterX*cos(turn_rotation/180.f*M_PI) - corners[j].CenterY*sin(turn_rotation/180.f*M_PI);
+		float CornerCenterY = corners[j].CenterX*sin(turn_rotation/180.f*M_PI) + corners[j].CenterY*cos(turn_rotation/180.f*M_PI);
 
-		float Theta = -GetTheta((CornerCenterX - CenterX), (CornerCenterY - CenterY), 1.0, 0);
+		if(CornerCenterY < 0.0)
+			continue;
+			
+		float Theta = -GetTheta((CornerCenterX - CenterX), (CornerCenterY - CenterY), 1.0, 0.0);
 
 		float StrikerCenterX = CenterX - (coins[i].radius+corners[j].radius)*cos(Theta);
 		float StrikerCenterY = CenterY - (coins[i].radius+corners[j].radius)*sin(Theta);
@@ -83,7 +95,8 @@ bool TryCoinUtkarsh(int i)
 			std::cout << C << std::endl;
 		}
 
-
+//		std::cin >> n;
+		
 		if(CheckPath(i, M, C, CornerCenterY, CenterY))
 		for(float adjustment = 0.01; ;)
 		{
@@ -108,16 +121,19 @@ bool TryCoinUtkarsh(int i)
 				coins[0].CenterY = -InitialStrikerCenterY;
 //				RenderGame();
 
-				if(CheckPath(i, MDash, CDash, StrikerCenterY, InitialStrikerCenterY))
+				if(CheckPath(i, MDash, CDash, StrikerCenterY, InitialStrikerCenterY) && IsLegal(InitialStrikerCenterXLeft, sin(ThetaDash)))
 				{	
 					if(DebugStatus::IsDebugOn(4))
 						std::cout << "AI VERBOSE: Path Clear" << std::endl;
-					coins[0].VelocityX = -1.5 * cos(ThetaDash);//Max = 1.3
-					coins[0].VelocityY = -1.5 * sin(ThetaDash);
+					coins[0].VelocityX = 1.5 * cos(ThetaDash) * cos(-turn_rotation/180.f*M_PI) - 1.5 * sin(ThetaDash) * sin(-turn_rotation/180.f*M_PI);//Max = 1.3
+					coins[0].VelocityY = 1.5 * cos(ThetaDash) * sin(-turn_rotation/180.f*M_PI) + 1.5 * sin(ThetaDash) * cos(-turn_rotation/180.f*M_PI);
 					return true;
 					break;
 				}
 				InitialStrikerCenterXLeft = InitialStrikerCenterXLeft - adjustment;
+				
+//				int n;
+//				std::cin >> n;
 			}
 			if(InitialStrikerCenterXRight <= PLACEMENTWIDTH)
 			{
@@ -142,16 +158,19 @@ bool TryCoinUtkarsh(int i)
 				coins[0].CenterY = -InitialStrikerCenterY;
 //				RenderGame();
 
-				if(CheckPath(i, MDash, CDash, StrikerCenterY, InitialStrikerCenterY))
+				if(CheckPath(i, MDash, CDash, StrikerCenterY, InitialStrikerCenterY) && IsLegal(InitialStrikerCenterXRight, sin(ThetaDash)))
 				{	
 					if(DebugStatus::IsDebugOn(4))
 						std::cout << "AI VERBOSE: Path Clear" << std::endl;
-					coins[0].VelocityX = -1.5 * cos(ThetaDash);
-					coins[0].VelocityY = -1.5 * sin(ThetaDash);
+					coins[0].VelocityX = 1.5 * cos(ThetaDash) * cos(-turn_rotation/180.f*M_PI) - 1.5 * sin(ThetaDash) * sin(-turn_rotation/180.f*M_PI);//Max = 1.3
+					coins[0].VelocityY = 1.5 * cos(ThetaDash) * sin(-turn_rotation/180.f*M_PI) + 1.5 * sin(ThetaDash) * cos(-turn_rotation/180.f*M_PI);
 					return true;
 					break;
 				}
 				InitialStrikerCenterXRight = InitialStrikerCenterXRight + adjustment;
+				
+//				int n;
+//				std::cin >> n;
 			}
 			if(InitialStrikerCenterXLeft < -PLACEMENTWIDTH && InitialStrikerCenterXRight > PLACEMENTWIDTH)
 				break;
@@ -173,8 +192,6 @@ void SetCenterUtkarsh()
 {
 	if(DebugStatus::IsDebugOn(4))
 		std::cout << "AI VERBOSE: Utkarsh AI" << std::endl;
-		
-	std::cout << "Turn_Rotation = " << turn_rotation << std::endl;
 
 	for(int i = 1; i < 6; i++)
 		if(coins[i].scored==0)
@@ -197,6 +214,9 @@ void SetCenterUtkarsh()
 
 		coins[0].CenterX = CenterX;
 	}
+	
+//	int n;
+//	std::cin >> n;
 	
 }
 

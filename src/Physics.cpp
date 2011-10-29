@@ -106,7 +106,7 @@ float GetTheta(float VectorAX, float VectorAY, float VectorBX, float VectorBY)
 	if(LengthA == 0.0 || LengthB == 0.0)
 		return 0.0;
 		
-	if(	VectorAX*VectorBY - VectorBX*VectorAY < 0 )
+	if(	VectorAX*VectorBY - VectorBX*VectorAY < 0.0 )
 		Result = -Result;
 		
 	return Result;
