@@ -3,8 +3,8 @@ src=src
 
 flags=-std=c++0x -lGLU -lglut -lGL
 libs=-I$(inc) -IThirdPartyLibs
-a.out: Main.o AI.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o ServerClient.o MenuButton.o MenuMouse.o MenuRender.o NetworkStatus.o DebugMenu.o ThemeMenu.o
-	g++ -o a.out Main.o AI.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o ServerClient.o MenuButton.o MenuMouse.o MenuRender.o NetworkStatus.o DebugMenu.o ThemeMenu.o $(flags)
+a.out: Main.o AI.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o MenuButton.o MenuMouse.o MenuRender.o NetworkStatus.o DebugMenu.o ThemeMenu.o Client.o
+	g++ -o a.out Main.o AI.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o MenuButton.o MenuMouse.o MenuRender.o NetworkStatus.o DebugMenu.o ThemeMenu.o Client.o $(flags)
 
 Server:	Server.o CoinServer.o PhysicsServer.o Players.o
 	g++ -o Server.out CoinServer.o PhysicsServer.o Server.o Players.o $(flags)
@@ -50,6 +50,9 @@ DebugMenu.o:	$(src)/Menu/DebugMenu.cpp
 
 ThemeMenu.o:	$(src)/Menu/Theme.cpp
 	g++ $(libs) -o $@ -c $(src)/Menu/Theme.cpp $(flags)
+
+Client.o:	$(src)/Client.cpp
+	g++ $(libs) -o $@ -c $(src)/Client.cpp $(flags)
 
 Server.o:	$(src)/Server.cpp
 	g++ $(libs) -o $@ -c $(src)/Server.cpp $(flags)
