@@ -1,6 +1,7 @@
 #include"Players.h"
 #include"Physics.h"
-#include"Main.h"
+#include <thread>
+#include <iostream>
 
 #define CORNER_RADIUS (4.5f/2.f/74.0f)
 #define ERROR_ACCOMODATION	0.005
@@ -125,7 +126,7 @@ void checkCollision(int index)
 			continue;
 		if(distance(coins[index],coins[i])<coins[index].radius+coins[i].radius)
 		{
-		if(DebugStatus::IsDebugOn(2))
+		if(true)
 		{
 			std::cout << "VERBOSE PHYSICS: Collision Occurred " << std::endl;
 			std::cout << "VERBOSE PHYSICS: index Center X = " << coins[index].CenterX << ", Y = " << coins[index].CenterY << std::endl;
@@ -163,7 +164,7 @@ void checkCollision(int index)
 			coins[i].VelocityY = coins[i].VelocityY - (Vbn-Vbnd)*sin(ThetaPosition);
 			
 			
-		if(DebugStatus::IsDebugOn(2))
+		if(true)
 		{
 			std::cout << "VERBOSE PHYSICS: Relative Center X = " << RelativeCenterX << ", Y = " << RelativeCenterY << ", Distance = " << RelativeDistance << std::endl;			
 			std::cout << "VERBOSE PHYSICS: Velocity index = " << VelocityA << ", i = " << VelocityB << std::endl;		
@@ -190,7 +191,7 @@ void checkCollision(int index)
 			coins[index].scored=player;
 			coins[index].VelocityX*=0;
 			coins[index].VelocityY*=0;
-			if(DebugStatus::IsDebugOn(2))
+			if(true)
 				printf("VERBOSE PHYSICS: Scored I guess. %f, %f, %f;\n", corners[i].CenterY, corners[i].CenterX, CORNER_RADIUS+ERROR_ACCOMODATION );
 			coin_pocketed=true;
 			return;
