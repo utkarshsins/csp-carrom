@@ -23,14 +23,14 @@
 
 extern GLfloat cameraPos[3];
 extern int mouseX,mouseY, windowX, windowY;
-extern GLboolean moving,adjusting,striker_lock, camera_movable, coin_pocketed;
+extern GLboolean moving,adjusting,striker_lock, camera_movable;//, coin_pocketed;
 extern GLfloat persp_rot;
 //extern GLfloat pivotPos[3];
 extern GLfloat fixate_translate[3];
-extern CarromCoin coins[6];
+//extern CarromCoin coins[6];
 extern GLfloat cameraLook[3];
 extern GLfloat pointer_angle,pointer_length;
-extern int player;
+//extern int player;
 extern GLfloat turn_rotation;
 extern std::mutex m;
 

@@ -5,6 +5,7 @@
 #include"Main.h"
 #include"BMPLoader.h"
 #include"Mouse.h"
+#include"Players.h"
 #include"AI.h"
 
 #define PI M_PI
@@ -23,17 +24,17 @@ GLfloat persp_rot=0;
 GLfloat pointer_angle=0,pointer_length;
 GLfloat turn_rotation=0, turn_animation=0;
 GLfloat last_x=0,last_y=0;
-GLboolean coin_pocketed=false;
+//GLboolean coin_pocketed=false;
 
 int mouseX,mouseY, windowX, windowY;
 std::mutex m;
 //int rot=0;
 int dir=1;
-int player=1;
+//int player=1;
 int total_players=2;
 int frame=0;
 
-CarromCoin coins[6];
+//CarromCoin coins[6];
 
 GLboolean moving,adjusting, striker_lock=false,camera_movable=true;
 

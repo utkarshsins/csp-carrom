@@ -3,6 +3,7 @@
 #include"AI.h"
 #include"Main.h"
 #include "Physics.h"
+#include "Players.h"
 #include "Mouse.h"
 #include<unistd.h>
 

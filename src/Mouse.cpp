@@ -1,5 +1,6 @@
 #include"Main.h"
 #include"Mouse.h"
+#include"Players.h"
 #define PI M_PI
 
 int pointer_y, pointer_x;
