@@ -24,6 +24,14 @@
 #define STRIKERSTATUS 3
 #define ROOMFULL 4
 #define LEFTROOM 5
+#define STARTINGGAME 6
+#define ISAI 7
+#define ISCLIENT 8
+#define ISNONE 9
+
+
+int MaxPlayers = 0;
+int AIPlayers = -1;
 
 typedef struct	{
 	int StatusCode;
@@ -51,17 +59,66 @@ void error(const char *msg)
 	perror(msg);
 }
 
+void StartGame()
+{
+	std::cout << "Starting Game " << std::endl;
+	for(int i = 0; i < 4; i++)
+		if(Players::ReturnFileIDByPlayerID(i) != 0 && Players::ReturnFileIDByPlayerID(i) != -1)
+		{
+			int PlayerA, PlayerB, PlayerC, PlayerD;
+			if(Players::ReturnFileIDByPlayerID(0) == 0)
+				PlayerA = ISAI;
+			else
+				PlayerA = ISCLIENT;
+			
+			if(Players::ReturnFileIDByPlayerID(1) == 0)
+				PlayerB = ISAI;
+			else
+				PlayerB = ISCLIENT;
+				
+			if(Players::ReturnFileIDByPlayerID(2) == -1)
+				PlayerC = ISNONE;
+			else if (Players::ReturnFileIDByPlayerID(2) == 0)
+				PlayerC = ISAI;
+			else
+				PlayerC = ISCLIENT;
+				
+			if(Players::ReturnFileIDByPlayerID(3) == -1)
+				PlayerD = ISNONE;
+			else if (Players::ReturnFileIDByPlayerID(3) == 0)
+				PlayerD = ISAI;
+			else
+				PlayerD = ISCLIENT;
+				
+			CarromNetworkStruct StartingGame = Initialize(STARTINGGAME, PlayerA, PlayerB, PlayerC, PlayerD);
+			write(Players::ReturnFileIDByPlayerID(i), &StartingGame, sizeof(StartingGame));
+		}
+}
 
 void ProcessData(int FileID, CarromNetworkStruct Reply)
 {
-	
+	std::cout << "YO Processing " << Reply.StatusCode << std::endl;
+	if(Reply.StatusCode == LETMEJOIN)
+	{
+		std::cout << "Request for Join... NumberOfPlayers = " << Players::ReturnNumberOfPlayers() << std::endl;
+		int PlayerID = Players::AddPlayer(FileID);
+		CarromNetworkStruct Return;
+		if(PlayerID == -1)
+			Return = Initialize(ROOMFULL, 0, 0, 0, 0);
+		else
+			Return = Initialize(WELCOME, PlayerID, 0, 0, 0);
+		
+		write(FileID, &Return, sizeof(Return));
+		
+		std::cout << "Player Added" << std::endl;
+		if(PlayerID != -1 && Players::ReturnNumberOfPlayers() == MaxPlayers)
+			StartGame();
+	}
+		
 //int Players::PlayerFileID[4] = { -1 };
-std::cout << "YO Processing";
 
 }
 
-int MaxPlayers = 0;
-int AIPlayers = -1;
 
 void StartServer(int Thread)
 {
@@ -103,6 +160,8 @@ void StartServer(int Thread)
 		std::cin	>> AIPlayers;
 	}
 	
+	Players::AddAI(AIPlayers);
+	
 	std::cout	<< "Server Started and is listening on Port " << SERVER_PORT << std::endl;
 				
 	for(ServerReturnSocketFileDescriptor = accept(ServerListenSocketFileDescriptor, (struct sockaddr *) &ClientAddress, &ClientAddressSize);;ServerReturnSocketFileDescriptor = accept(ServerListenSocketFileDescriptor, (struct sockaddr *) &ClientAddress, &ClientAddressSize))
@@ -118,6 +177,7 @@ void StartServer(int Thread)
 
 		std::thread ServerThread (ProcessData, ServerReturnSocketFileDescriptor, ServerStruct);
 		ServerThread.detach();
+		std::cout << "Thread separated" << std::endl;
 
 //			close(ServerReturnSocketFileDescriptor); //was initially listen
 			//Do stuff with ReturnSocketFileDescriptor

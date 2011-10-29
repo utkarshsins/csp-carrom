@@ -24,6 +24,9 @@
 #define STRIKERSTATUS 3
 #define ROOMFULL 4
 #define LEFTROOM 5
+#define STARTINGGAME 6
+#define ISAI 7
+#define ISCLIENT 8
 
 typedef struct	{
 	int StatusCode;
@@ -51,13 +54,25 @@ void error(const char *msg)
 	perror(msg);
 }
 
+int PlayerID;
 
 void ProcessData(int FileID, CarromNetworkStruct Reply)
 {
-	
-//int Players::PlayerFileID[4] = { -1 };
-std::cout << "YO Processing";
-
+	std::cout << "YO Processing, ReplyStatusCode = " << Reply.StatusCode << std::endl;
+	if(Reply.StatusCode == LETMEJOIN)
+	{
+		write(FileID, &Reply, sizeof(Reply));
+		std::cout << "AI VERBOSE: Written LetMeJoin, Reading" << std::endl;
+		read(FileID, &Reply, sizeof(Reply));
+		ProcessData(FileID, Reply);
+	}
+	else if(Reply.StatusCode == WELCOME)
+	{
+		PlayerID = Reply.ValueA;
+		std::cout << "AI VERBOSE: Connection accepted. I am PlayerID " << PlayerID << std::endl;
+		read(FileID, &Reply, sizeof(Reply));
+		ProcessData(FileID, Reply);
+	}		
 }
 
 int ClientSocketFileDescriptor;
@@ -90,8 +105,9 @@ void StartClient(const char IpToConnect[])
 	if(connect(ClientSocketFileDescriptor, (struct sockaddr *) &ServerAddress, sizeof(ServerAddress)) < 0)
 		error("Cannot Connect");
 
-	CarromNetworkStruct ToSend;
-	ProcessData(ClientSocketFileDescriptor, ToSend);
+	ProcessData(ClientSocketFileDescriptor, Initialize(LETMEJOIN, 0, 0, 0, 0));
+		
+	std::cout << "Reached here" << std::endl;
 
 }
 

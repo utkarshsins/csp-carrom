@@ -2,6 +2,7 @@
 #define __PLAYERSH__
 
 #include "Coin.h"
+#include <iostream>
 
 extern CarromCoin coins[6];
 extern int player;
@@ -21,10 +22,15 @@ class Players
 		
 		static int ReturnNumberOfPlayers()
 		{
+			std::cout << "Returning Number Of Players, Players IDs = ";
 			for(int i = 0; i < 4; i++)
+			{
+				std::cout << PlayerFileID[i] << ", ";
 				if(PlayerFileID[i] == -1)
 					return i;
-					
+			}
+			
+			std::cout << std::endl;
 			return 4;
 		}
 				
@@ -43,6 +49,13 @@ class Players
 				PlayerFileID[NumberOfPlayers] = FileID;
 				return NumberOfPlayers;
 			}
+		}
+		
+		static void AddAI(int i)
+		{
+			std::cout << "Adding AI" << std::endl;
+			for(;i > 0; i--)
+				AddPlayer(0);
 		}
 		
 	private:
