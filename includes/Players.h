@@ -58,8 +58,30 @@ class Players
 				AddPlayer(0);
 		}
 		
+		static int ReturnPlayerTurn()
+		{
+			return PlayerTurn;
+		}
+		
+		static void ChangePlayerTurn()
+		{
+			PlayerTurn = (PlayerTurn + 1) % MaxPlayers;
+		}
+		
+		static void SetMaxPlayers(int n)
+		{
+			MaxPlayers = n;
+		}
+		
+		static int ReturnMaxPlayers()
+		{
+			return MaxPlayers;
+		}
+		
 	private:
 		static int PlayerFileID[4];
+		static int PlayerTurn;
+		static int MaxPlayers;
 };
 
 #endif

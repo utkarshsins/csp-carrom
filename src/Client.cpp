@@ -27,6 +27,8 @@
 #define STARTINGGAME 6
 #define ISAI 7
 #define ISCLIENT 8
+#define ISNONE 9
+#define DONESIM 10
 
 typedef struct	{
 	int StatusCode;

@@ -28,9 +28,8 @@
 #define ISAI 7
 #define ISCLIENT 8
 #define ISNONE 9
+#define DONESIM 10
 
-
-int MaxPlayers = 0;
 int AIPlayers = -1;
 
 typedef struct	{
@@ -58,6 +57,27 @@ void error(const char *msg)
 {
 	perror(msg);
 }
+
+void NextTurn()
+{
+	int FileIDPlayerTurn = Players::ReturnPlayerIDByFileID(Players::ReturnPlayerTurn());
+	if(FileIDPlayerTurn == 0)
+	{
+		//Run AI
+		//Write turn to all
+	}
+	else
+	{
+		CarromNetworkStruct TurnData;
+		read(FileIDPlayerTurn, &TurnData, sizeof(TurnData));
+		//Write to Rest
+		//Process and Simulate
+	}
+	
+	Players::ChangePlayerTurn();
+	NextTurn();
+}
+		
 
 void StartGame()
 {
@@ -93,6 +113,8 @@ void StartGame()
 			CarromNetworkStruct StartingGame = Initialize(STARTINGGAME, PlayerA, PlayerB, PlayerC, PlayerD);
 			write(Players::ReturnFileIDByPlayerID(i), &StartingGame, sizeof(StartingGame));
 		}
+		
+	//NextTurn();
 }
 
 void ProcessData(int FileID, CarromNetworkStruct Reply)
@@ -111,7 +133,7 @@ void ProcessData(int FileID, CarromNetworkStruct Reply)
 		write(FileID, &Return, sizeof(Return));
 		
 		std::cout << "Player Added" << std::endl;
-		if(PlayerID != -1 && Players::ReturnNumberOfPlayers() == MaxPlayers)
+		if(PlayerID != -1 && Players::ReturnNumberOfPlayers() == Players::ReturnMaxPlayers())
 			StartGame();
 	}
 		
@@ -148,13 +170,15 @@ void StartServer(int Thread)
 				<< "Carrom CSP301 Assignment 3 Dedicated Server" << std::endl
 				<< "Harshal Bidasaria (2010CS50283) , Utkarsh (2010CS50299)" << std::endl
 				<< "=======================================================" << std::endl;
-	while(MaxPlayers != 2 && MaxPlayers != 4)
+	while(Players::ReturnMaxPlayers() != 2 && Players::ReturnMaxPlayers() != 4)
 	{
+		int MaxPlayers;
 		std::cout	<< "Enter the number of players (Humans + AI) in the game: " ;
 		std::cin	>> MaxPlayers;
+		Players::SetMaxPlayers(MaxPlayers);
 	}
 	
-	while(((AIPlayers < 0 || AIPlayers > 1) && MaxPlayers == 2) || ((AIPlayers < 0 || AIPlayers > 3) && MaxPlayers == 4))
+	while(((AIPlayers < 0 || AIPlayers > 1) && Players::ReturnMaxPlayers() == 2) || ((AIPlayers < 0 || AIPlayers > 3) && Players::ReturnMaxPlayers() == 4))
 	{
 		std::cout	<< "Enter the number of AI Players to be provided by Server: " ;
 		std::cin	>> AIPlayers;

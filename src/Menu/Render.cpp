@@ -40,6 +40,26 @@ void MenuGlInit()
 	glHint(GL_FOG_HINT, GL_NICEST);
 }
 
+
+void WriteTitle(int i)
+{
+	GLfloat WriteX = -1.f/3.f;
+	GLfloat WriteY = 0.0f;
+
+	glColor4f(1, 1, 1, 1);
+
+	if(i==0)
+		WriteText("GAME", WriteX, WriteY);
+	else if(i==1)
+		WriteText("VERBOSE", WriteX, WriteY);
+	else if(i==2)
+		WriteText("THEME", WriteX, WriteY);
+	else if(i==3)
+		WriteText("SETTINGS", WriteX, WriteY);
+	else
+		WriteText("CREDITS", WriteX, WriteY);
+}
+
 void DrawMenuButton()
 {
 	glutSetWindow(MENUWINDOW);
@@ -60,7 +80,9 @@ void DrawMenuButton()
 		else if(MenuMouse::IsMouseOnMenuButton(i))
 			glDrawArrays(GL_POLYGON, 4, 22);
 		else
-			glDrawArrays(GL_POLYGON, 26, 22); 
+			glDrawArrays(GL_POLYGON, 26, 22);
+
+		WriteTitle(i);
 		glTranslatef(1.f + 5.f / windowX, 0, 0);
 	}
 	
