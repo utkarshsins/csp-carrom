@@ -15,6 +15,7 @@
 #include<thread>
 
 #include "Client.h"
+#include "Players.h"
 
 #define SERVER_PORT 1234
 
@@ -71,7 +72,13 @@ void ProcessData(int FileID, CarromNetworkStruct Reply)
 	else if(Reply.StatusCode == WELCOME)
 	{
 		PlayerID = Reply.ValueA;
-		std::cout << "AI VERBOSE: Connection accepted. I am PlayerID " << PlayerID << std::endl;
+		std::cout << "AI VERBOSE: Connection accepted. I am PlayerID ";
+	
+		for(int i = 0; i < Players::MyNumberOfPlayers ; i++)
+			std::cout << PlayerID + i << ", ";
+
+		std::cout << std::endl;
+
 		read(FileID, &Reply, sizeof(Reply));
 		ProcessData(FileID, Reply);
 	}		
@@ -81,6 +88,7 @@ int ClientSocketFileDescriptor;
 
 void StartClient(const char IpToConnect[])
 {
+	Players::MyNumberOfPlayers = 2;
 	struct sockaddr_in ServerAddress;
 	struct hostent *Server;
 
@@ -107,7 +115,7 @@ void StartClient(const char IpToConnect[])
 	if(connect(ClientSocketFileDescriptor, (struct sockaddr *) &ServerAddress, sizeof(ServerAddress)) < 0)
 		error("Cannot Connect");
 
-	ProcessData(ClientSocketFileDescriptor, Initialize(LETMEJOIN, 2, 0, 0, 0));
+	ProcessData(ClientSocketFileDescriptor, Initialize(LETMEJOIN, Players::MyNumberOfPlayers, 0, 0, 0));
 		
 	std::cout << "Reached here" << std::endl;
 

@@ -78,7 +78,8 @@ class Players
 		{
 			return MaxPlayers;
 		}
-		
+	
+		static int MyNumberOfPlayers;
 	private:
 		static int PlayerFileID[4];
 		static int PlayerTurn;

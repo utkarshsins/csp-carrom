@@ -164,7 +164,7 @@ void StartServer(int Thread)
 
 	ClientAddressSize = sizeof(ClientAddress);
 
-	std::cout 	<< "=======================================================" << std::endl
+		std::cout 	<< "=======================================================" << std::endl
 				<< "Carrom CSP301 Assignment 3 Dedicated Server" << std::endl
 				<< "Harshal Bidasaria (2010CS50283) , Utkarsh (2010CS50299)" << std::endl
 				<< "=======================================================" << std::endl;
