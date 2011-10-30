@@ -1,4 +1,5 @@
 #include"Main.h"
+#include"Client.h"
 #include"Mouse.h"
 #include"Players.h"
 #define PI M_PI
@@ -184,7 +185,7 @@ void SimulateGame(int arg)
 	while(engagePhysics())
 		RenderGame();
 
-	nextTurn();
+//	nextTurn();
 }	
 
 void playTurn()
@@ -196,6 +197,10 @@ void playTurn()
 	
 	coins[0].VelocityX=sin(((0-pointer_angle+turn_rotation)/180)*PI)*pointer_length;
 	coins[0].VelocityY=cos(((0-pointer_angle+turn_rotation)/180)*PI)*pointer_length;
+
+	CarromNetworkStruct SendMyTurn = Initialize(STRIKERSTATUS, coins[0].CenterX, coins[0].CenterY, coins[0].VelocityX, coins[0].VelocityY);
+	write(Players::ServerFileID, &SendMyTurn, sizeof(SendMyTurn));
+	std::cout << "NETWORK VERBOSE: Written striker data to FileID " << Players::ServerFileID << std::endl;
 
 	goTop();
 	

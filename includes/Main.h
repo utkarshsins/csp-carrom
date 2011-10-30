@@ -1,3 +1,6 @@
+#ifndef __MAINH__
+#define __MAINH__
+
 #include<GL/freeglut.h>
 #include<stdio.h>
 #include<cmath>
@@ -9,7 +12,6 @@
 #include"Coin.h"
 #include"Physics.h"
 #include"Client.h"
-#include "Menu/Menu.h"
 
 #define EXPANDARR3(arr) arr[0],arr[1],arr[2]
 #define ALPHA 2
@@ -53,3 +55,8 @@ void drawDebug(float,float);
 
 void NextTurn(int);
 extern bool NextTurnBoolean;
+
+
+#include "Menu/Menu.h"
+
+#endif

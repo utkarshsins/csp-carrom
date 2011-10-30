@@ -58,22 +58,26 @@ void error(const char *msg)
 
 void NextTurn()
 {
-	int FileIDPlayerTurn = Players::ReturnPlayerIDByFileID(Players::ReturnPlayerTurn());
-	if(FileIDPlayerTurn == 0)
+	int FileIDPlayerTurn = Players::ReturnFileIDByPlayerID(Players::ReturnPlayerTurn());
+	CarromNetworkStruct TurnData;
+	std::cout << "Reading from " << FileIDPlayerTurn << " for TurnData" << std::endl;
+	read(FileIDPlayerTurn, &TurnData, sizeof(TurnData));
+	std::cout << "Recieved Turn Data " << TurnData.StatusCode << std::endl;
+
+	if(TurnData.StatusCode == STRIKERSTATUS)
 	{
-		//Run AI
-		//Write turn to all
-	}
-	else
-	{
-		CarromNetworkStruct TurnData;
-		read(FileIDPlayerTurn, &TurnData, sizeof(TurnData));
+		std::cout	<< "Recieved Turn Data (Striker): "
+				<< "CenterX: " << TurnData.ValueA
+				<< ", CenterY: " << TurnData.ValueB
+				<< ", VelocityX: " << TurnData.ValueC
+				<< ", VelocityY: " << TurnData.ValueD
+				<< std::endl;
 		//Write to Rest
 		//Process and Simulate
 	}
 	
 	Players::ChangePlayerTurn();
-	NextTurn();
+//	NextTurn();
 }
 		
 
@@ -112,7 +116,7 @@ void StartGame()
 			write(Players::ReturnFileIDByPlayerID(i), &StartingGame, sizeof(StartingGame));
 		}
 		
-	//NextTurn();
+	NextTurn();
 }
 
 void ProcessData(int FileID, CarromNetworkStruct Reply)
