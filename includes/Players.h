@@ -81,6 +81,14 @@ class Players
 		{
 			return MaxPlayers;
 		}
+
+		static bool IsNextTurnMine()
+		{
+			for(int i = 0; i < 4; i++)
+				if(ReturnPlayerTurn() == MyPlayerIDs[i])
+					return true;
+			return false;
+		}
 	
 		static int ServerFileID;
 		static int MyNumberOfPlayers;

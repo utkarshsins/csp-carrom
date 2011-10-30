@@ -109,9 +109,37 @@ void RenderGame(void)
 
 bool NextTurnBoolean = false;
 
-void NextTurn()
+void NextTurn(int args)
 {
-	Players::ServerFileID;
+	if(NextTurnBoolean == true)
+	{
+		std::cout << "GAME VERBOSE: Next Turn. " << std::endl;
+		goTop();
+		if(!coin_pocketed)
+			if(Players::ReturnNumberOfPlayers() == 2)
+				rotateCam(180);
+			else
+				rotateCam(90);
+	
+		coins[0].CenterX=-SHIFT*sin(turn_rotation*PI/180);
+		coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
+
+	
+		std::cout 	<< "GAME VERBOSE: Next Turn PlayerID " << Players::ReturnPlayerTurn() 
+				<< ", My PlayerID " << Players::MyPlayerIDs[0] 
+				<< "onwards" << std::endl;
+
+		if(Players::IsNextTurnMine())
+		{
+			std::cout << "GAME VERBOSE: The turn is mine" << std::endl;
+		//	goTop();
+		//	striker_lock = false;
+		//	goPersp();
+		}
+		NextTurnBoolean = false;
+	}
+	glutSetWindow(GAMEWINDOW);
+	glutTimerFunc(10, NextTurn, 0);
 }
 
 void nextTurn()
@@ -341,6 +369,7 @@ int main(int args, char *argv[])
 	
 	glutReshapeFunc(ReshapeFunctionGame);
 	glutDisplayFunc(RenderGame);
+	glutTimerFunc(10, NextTurn, 0);
 //	glutIdleFunc(idle);
 	glutMotionFunc(moveCam);
 	glutPassiveMotionFunc(stopCam);

@@ -51,5 +51,5 @@ void nextTurn();
 void playTurn();
 void drawDebug(float,float);
 
-void NextTurn();
+void NextTurn(int);
 extern bool NextTurnBoolean;
