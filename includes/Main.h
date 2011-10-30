@@ -50,3 +50,6 @@ void goPersp();
 void nextTurn();
 void playTurn();
 void drawDebug(float,float);
+
+void NextTurn();
+extern bool NextTurnBoolean;

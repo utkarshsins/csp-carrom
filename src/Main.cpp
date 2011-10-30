@@ -107,6 +107,13 @@ void RenderGame(void)
 	glutSwapBuffers();
 }
 
+bool NextTurnBoolean = false;
+
+void NextTurn()
+{
+	Players::ServerFileID;
+}
+
 void nextTurn()
 {
 	striker_lock=false;

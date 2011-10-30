@@ -11,3 +11,4 @@ int Players::PlayerTurn = 0;
 int Players::MaxPlayers = 0;
 int Players::MyNumberOfPlayers = 0;
 int Players::MyPlayerIDs[4] = { -1, -1, -1, -1 };
+int Players::ServerFileID = -1;

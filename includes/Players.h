@@ -82,6 +82,7 @@ class Players
 			return MaxPlayers;
 		}
 	
+		static int ServerFileID;
 		static int MyNumberOfPlayers;
 		static int MyPlayerIDs[4];
 	private:

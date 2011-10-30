@@ -14,6 +14,7 @@
 
 #include<thread>
 
+#include "Main.h"
 #include "Client.h"
 #include "Players.h"
 
@@ -61,6 +62,7 @@ int PlayerID;
 
 void StartGame()
 {
+	NextTurnBoolean = true;
 }
 
 void ProcessData(int FileID, CarromNetworkStruct Reply)
@@ -133,7 +135,8 @@ void StartClient(const char IpToConnect[])
 
 	if(connect(ClientSocketFileDescriptor, (struct sockaddr *) &ServerAddress, sizeof(ServerAddress)) < 0)
 		error("Cannot Connect");
-
+	
+	Players::ServerFileID = ClientSocketFileDescriptor;
 	ProcessData(ClientSocketFileDescriptor, Initialize(LETMEJOIN, Players::MyNumberOfPlayers, 0, 0, 0));
 		
 	std::cout << "Reached here" << std::endl;
