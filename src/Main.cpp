@@ -234,8 +234,6 @@ void goTop()
 	bool cos0=(-0.00001<=cos(turn_rotation*PI/180))&&(cos(turn_rotation*PI/180)<=0.00001);
 	float angle=turn_rotation*PI/180;
 
-	printf("bools sin:%d cos:%d\n",sin0,cos0);
-
 	float camX,camY;
 	if(sin0)
 	{

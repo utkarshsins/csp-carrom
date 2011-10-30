@@ -22,18 +22,18 @@ class Players
 		
 		static int ReturnNumberOfPlayers()
 		{
-			std::cout << "Returning Number Of Players, Players IDs = ";
+//			std::cout << "Returning Number Of Players, Players IDs = ";
 			for(int i = 0; i < 4; i++)
 			{
-				std::cout << PlayerFileID[i] << ", ";
+//				std::cout << PlayerFileID[i] << ", ";
 				if(PlayerFileID[i] == -1)
 				{
-					std::cout << std::endl;
+//					std::cout << std::endl;
 					return i;
 				}
 			}
 			
-			std::cout << std::endl;
+//			std::cout << std::endl;
 			return 4;
 		}
 				
