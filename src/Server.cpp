@@ -228,7 +228,7 @@ void StartServer(int Thread)
 		
 //		else 
 	}
-//	close(ServerListenSocketFileDescriptor);
+	close(ServerListenSocketFileDescriptor);
 }
 
 int main()

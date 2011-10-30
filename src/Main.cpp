@@ -121,7 +121,7 @@ void NextTurn(int args)
 
 //		int n;
 //		std::cin >> n;
-
+/*
 		if(!coin_pocketed)
 			if(Players::ReturnNumberOfPlayers() == 2)
 				rotateCam(180);
@@ -131,7 +131,7 @@ void NextTurn(int args)
 //		coins[0].CenterX=-SHIFT*sin(turn_rotation*PI/180);
 //		coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
 		coin_pocketed = false;
-
+*/
 	
 		std::cout 	<< "GAME VERBOSE: Next Turn PlayerID " << Players::ReturnPlayerTurn() 
 				<< ", My PlayerID " << Players::MyPlayerIDs[0] 
@@ -139,6 +139,15 @@ void NextTurn(int args)
 
 		if(Players::IsNextTurnMine())
 		{
+
+			if(!coin_pocketed)
+				if(Players::ReturnNumberOfPlayers() == 2)
+					rotateCam(180);
+				else
+					rotateCam(90);
+			coin_pocketed = false;
+
+	
 			coins[0].CenterX=-SHIFT*sin(turn_rotation*PI/180);
 			coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
 	
@@ -152,16 +161,44 @@ void NextTurn(int args)
 			std::cout << "GAME VERBOSE: The turn is not mine" << std::endl;
 			std::cout << "NETWORK VERBOSE: Reading turn data from Server FileID " << Players::ServerFileID << std::endl;
 
-			goTop();
+			camera_movable = false;
 			coins[0].CenterX=-SHIFT*sin(turn_rotation*PI/180);
 			coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
+			fixate_translate[0]=-coins[0].CenterX;
+		        fixate_translate[1]=-coins[0].CenterY;
+
+//			int n;
+//			std::cin >> n;
+			goTop();
+
+
+//			std::cin >> n;
+
+//			coins[0].CenterX=-SHIFT*sin(turn_rotation*PI/180);
+//			coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
+
+
+			if(!coin_pocketed)
+				if(Players::ReturnNumberOfPlayers() == 2)
+					rotateCam(180);
+				else
+					rotateCam(90);
+			coin_pocketed = false;
+
+	//		coins[0].CenterX=-SHIFT*sin(turn_rotation*PI/180);
+	//		coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
 			CarromNetworkStruct ReadStriker;
 			read(Players::ServerFileID, &ReadStriker, sizeof(ReadStriker));
 			coins[0].CenterX = ReadStriker.ValueA;
 			coins[0].CenterY = ReadStriker.ValueB;
 			coins[0].VelocityX = ReadStriker.ValueC;
 			coins[0].VelocityY = ReadStriker.ValueD;
-			
+
+			fixate_translate[0]=-coins[0].CenterX;
+		        fixate_translate[1]=-coins[0].CenterY;
+
+
+			striker_lock = false;
 //			goTop();
 			SimulateGame(0);
 		}
