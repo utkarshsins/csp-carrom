@@ -107,7 +107,7 @@ void StartClient(const char IpToConnect[])
 	if(connect(ClientSocketFileDescriptor, (struct sockaddr *) &ServerAddress, sizeof(ServerAddress)) < 0)
 		error("Cannot Connect");
 
-	ProcessData(ClientSocketFileDescriptor, Initialize(LETMEJOIN, 0, 0, 0, 0));
+	ProcessData(ClientSocketFileDescriptor, Initialize(LETMEJOIN, 2, 0, 0, 0));
 		
 	std::cout << "Reached here" << std::endl;
 

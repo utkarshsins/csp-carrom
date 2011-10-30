@@ -39,25 +39,26 @@ class Players
 			return PlayerFileID[PlayerID];
 		}
 		
-		static int AddPlayer(int FileID)
+		static int AddPlayer(int number, int FileID)
 		{
 			int NumberOfPlayers = ReturnNumberOfPlayers();
-			if(NumberOfPlayers == 4)
+			if(NumberOfPlayers + number > 4)
 				return -1;
 			else
 			{
-				PlayerFileID[NumberOfPlayers] = FileID;
+				for(int i = NumberOfPlayers ; i < NumberOfPlayers + number ; i++)
+					PlayerFileID[i] = FileID;
 				return NumberOfPlayers;
 			}
 		}
-		
+	/*	
 		static void AddAI(int i)
 		{
 			std::cout << "Adding AI" << std::endl;
 			for(;i > 0; i--)
 				AddPlayer(0);
 		}
-		
+	*/	
 		static int ReturnPlayerTurn()
 		{
 			return PlayerTurn;

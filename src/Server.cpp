@@ -30,8 +30,6 @@
 #define ISNONE 9
 #define DONESIM 10
 
-int AIPlayers = -1;
-
 typedef struct	{
 	int StatusCode;
 	float ValueA;
@@ -110,7 +108,7 @@ void StartGame()
 			else
 				PlayerD = ISCLIENT;
 				
-			CarromNetworkStruct StartingGame = Initialize(STARTINGGAME, PlayerA, PlayerB, PlayerC, PlayerD);
+			CarromNetworkStruct StartingGame = Initialize(STARTINGGAME, Players::ReturnFileIDByPlayerID(0), Players::ReturnFileIDByPlayerID(1), Players::ReturnFileIDByPlayerID(2), Players::ReturnFileIDByPlayerID(3));
 			write(Players::ReturnFileIDByPlayerID(i), &StartingGame, sizeof(StartingGame));
 		}
 		
@@ -123,7 +121,7 @@ void ProcessData(int FileID, CarromNetworkStruct Reply)
 	if(Reply.StatusCode == LETMEJOIN)
 	{
 		std::cout << "Request for Join... NumberOfPlayers = " << Players::ReturnNumberOfPlayers() << std::endl;
-		int PlayerID = Players::AddPlayer(FileID);
+		int PlayerID = Players::AddPlayer(Reply.ValueA, FileID);
 		CarromNetworkStruct Return;
 		if(PlayerID == -1)
 			Return = Initialize(ROOMFULL, 0, 0, 0, 0);
@@ -173,11 +171,11 @@ void StartServer(int Thread)
 	while(Players::ReturnMaxPlayers() != 2 && Players::ReturnMaxPlayers() != 4)
 	{
 		int MaxPlayers;
-		std::cout	<< "Enter the number of players (Humans + AI) in the game: " ;
+		std::cout	<< "Enter the number of players in the game: " ;
 		std::cin	>> MaxPlayers;
 		Players::SetMaxPlayers(MaxPlayers);
 	}
-	
+	/*
 	while(((AIPlayers < 0 || AIPlayers > 1) && Players::ReturnMaxPlayers() == 2) || ((AIPlayers < 0 || AIPlayers > 3) && Players::ReturnMaxPlayers() == 4))
 	{
 		std::cout	<< "Enter the number of AI Players to be provided by Server: " ;
@@ -185,7 +183,8 @@ void StartServer(int Thread)
 	}
 	
 	Players::AddAI(AIPlayers);
-	
+	*/
+
 	std::cout	<< "Server Started and is listening on Port " << SERVER_PORT << std::endl;
 				
 	for(ServerReturnSocketFileDescriptor = accept(ServerListenSocketFileDescriptor, (struct sockaddr *) &ClientAddress, &ClientAddressSize);;ServerReturnSocketFileDescriptor = accept(ServerListenSocketFileDescriptor, (struct sockaddr *) &ClientAddress, &ClientAddressSize))
