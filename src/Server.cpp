@@ -15,6 +15,9 @@
 #include<thread>
 
 #include "Players.h"
+#include "Physics.h"
+#define ALPHA 2
+#define SHIFT 0.33*ALPHA
 
 #define SERVER_PORT 1234
 
@@ -87,7 +90,24 @@ void NextTurn()
 	Players::ChangePlayerTurn();
 	NextTurn();
 }
-		
+
+void CoinsInit()
+{		
+	coins[0].SetXY(0,0-SHIFT);
+	coins[0].IsStriker = true;
+	coins[0].CoinMass = CARROMSTRIKER_MASS;
+	coins[0].radius=COIN_RADIUS*1.2;
+
+	coins[2].IsWhite=true;
+	coins[2].SetXY(-0.25,-0.25);
+	coins[1].IsWhite=true;
+	coins[1].SetXY(-0.4, 0);
+
+	coins[4].SetXY(-0.4, 0.3);
+	coins[3].SetXY(0.4, 0.5);
+
+	coins[5].IsQueen=true;
+}
 
 void StartGame()
 {

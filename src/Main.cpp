@@ -139,6 +139,20 @@ void NextTurn(int args)
 		//	striker_lock = false;
 		//	goPersp();
 		}
+		else
+		{
+			std::cout << "GAME VERBOSE: The turn is not mine" << std::endl;
+			std::cout << "NETWORK VERBOSE: Reading turn data from Server FileID " << Players::ServerFileID << std::endl;
+
+			CarromNetworkStruct ReadStriker;
+			read(Players::ServerFileID, &ReadStriker, sizeof(ReadStriker));
+			coins[0].CenterX = ReadStriker.ValueA;
+			coins[0].CenterY = ReadStriker.ValueB;
+			coins[0].VelocityX = ReadStriker.ValueC;
+			coins[0].VelocityY = ReadStriker.ValueD;
+
+			SimulateGame(0);
+		}
 		NextTurnBoolean = false;
 	}
 	glutSetWindow(GAMEWINDOW);
