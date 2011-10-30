@@ -100,7 +100,9 @@ void NextTurn()
 					<< std::endl;
 	}
 	
-	Players::ChangePlayerTurn();
+	if(!coin_pocketed)
+		Players::ChangePlayerTurn();
+	coin_pocketed = false;
 	NextTurn();
 }
 

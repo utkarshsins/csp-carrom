@@ -253,8 +253,8 @@ void AIStriker()
 	else
 		setCenter();
 
-	int n;
-	std::cin >> n;
+//	int n;
+//	std::cin >> n;
 
 	camera_movable=false;
 

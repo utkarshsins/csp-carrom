@@ -137,8 +137,8 @@ void NextTurn(int args)
 	
 			std::cout << "GAME VERBOSE: The turn is mine" << std::endl;
 
-			int n;
-			std::cin >> n;
+//			int n;
+//			std::cin >> n;
 			
 			goPersp();
 			if(AIStatus::ReturnAIStatusOfPlayer(Players::ReturnPlayerTurn()) != 0)
