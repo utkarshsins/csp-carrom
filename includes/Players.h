@@ -27,7 +27,10 @@ class Players
 			{
 				std::cout << PlayerFileID[i] << ", ";
 				if(PlayerFileID[i] == -1)
+				{
+					std::cout << std::endl;
 					return i;
+				}
 			}
 			
 			std::cout << std::endl;

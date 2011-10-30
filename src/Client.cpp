@@ -59,6 +59,10 @@ void error(const char *msg)
 
 int PlayerID;
 
+void StartGame()
+{
+}
+
 void ProcessData(int FileID, CarromNetworkStruct Reply)
 {
 	std::cout << "NETWORK VERBOSE: YO Processing, ReplyStatusCode = " << Reply.StatusCode << std::endl;
@@ -85,6 +89,18 @@ void ProcessData(int FileID, CarromNetworkStruct Reply)
 		read(FileID, &Reply, sizeof(Reply));
 		ProcessData(FileID, Reply);
 	}		
+	else if(Reply.StatusCode == STARTINGGAME)
+	{
+		std::cout << "NETWORK VERBOSE: Server requests the game to be started" << std::endl;
+
+		Players::AddPlayer(1, Reply.ValueA);
+		Players::AddPlayer(1, Reply.ValueB);
+		Players::AddPlayer(1, Reply.ValueC);
+		Players::AddPlayer(1, Reply.ValueD);
+
+		std::cout << "NETWORK VERBOSE: Added players data" << std::endl;
+		StartGame();
+	}
 }
 
 int ClientSocketFileDescriptor;
