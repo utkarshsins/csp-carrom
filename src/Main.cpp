@@ -7,6 +7,7 @@
 #include"Mouse.h"
 #include"Players.h"
 #include"AI.h"
+#include"AIStatus.h"
 
 #define PI M_PI
 #define CAMERA_Y -0.6*ALPHA
@@ -114,25 +115,8 @@ void NextTurn(int args)
 	if(NextTurnBoolean == true)
 	{
 		std::cout << "GAME VERBOSE: Next Turn. " << std::endl;
-//		camera_movable = false;
-//
-//		goTop();
-		camera_movable = false;
+		//camera_movable = false;
 
-//		int n;
-//		std::cin >> n;
-/*
-		if(!coin_pocketed)
-			if(Players::ReturnNumberOfPlayers() == 2)
-				rotateCam(180);
-			else
-				rotateCam(90);
-	
-//		coins[0].CenterX=-SHIFT*sin(turn_rotation*PI/180);
-//		coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
-		coin_pocketed = false;
-*/
-	
 		std::cout 	<< "GAME VERBOSE: Next Turn PlayerID " << Players::ReturnPlayerTurn() 
 				<< ", My PlayerID " << Players::MyPlayerIDs[0] 
 				<< "onwards" << std::endl;
@@ -152,9 +136,18 @@ void NextTurn(int args)
 			coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
 	
 			std::cout << "GAME VERBOSE: The turn is mine" << std::endl;
+
+			int n;
+			std::cin >> n;
+			
 			goPersp();
+			if(AIStatus::ReturnAIStatusOfPlayer(Players::ReturnPlayerTurn()) != 0)
+				AIStriker();
+			else
+				NextTurnBoolean = false;
+
 			striker_lock = false;
-			NextTurnBoolean = false;
+//			NextTurnBoolean = false;
 		}
 		else
 		{
@@ -167,17 +160,8 @@ void NextTurn(int args)
 			fixate_translate[0]=-coins[0].CenterX;
 		        fixate_translate[1]=-coins[0].CenterY;
 
-//			int n;
-//			std::cin >> n;
 			goTop();
-
-
-//			std::cin >> n;
-
-//			coins[0].CenterX=-SHIFT*sin(turn_rotation*PI/180);
-//			coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
-
-
+		
 			if(!coin_pocketed)
 				if(Players::ReturnNumberOfPlayers() == 2)
 					rotateCam(180);
@@ -185,8 +169,6 @@ void NextTurn(int args)
 					rotateCam(90);
 			coin_pocketed = false;
 
-	//		coins[0].CenterX=-SHIFT*sin(turn_rotation*PI/180);
-	//		coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
 			CarromNetworkStruct ReadStriker;
 			read(Players::ServerFileID, &ReadStriker, sizeof(ReadStriker));
 			coins[0].CenterX = ReadStriker.ValueA;

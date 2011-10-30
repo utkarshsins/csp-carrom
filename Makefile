@@ -3,8 +3,8 @@ src=src
 
 flags=-std=c++0x -lGLU -lglut -lGL
 libs=-I$(inc) -IThirdPartyLibs
-a.out: Main.o AI.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o MenuButton.o MenuMouse.o MenuRender.o NetworkStatus.o DebugMenu.o ThemeMenu.o Client.o Players.o
-	g++ -o a.out Main.o AI.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o MenuButton.o MenuMouse.o MenuRender.o NetworkStatus.o DebugMenu.o ThemeMenu.o Client.o Players.o $(flags)
+a.out: Main.o AI.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o MenuButton.o MenuMouse.o MenuRender.o NetworkStatus.o DebugMenu.o ThemeMenu.o Client.o Players.o AIStatus.o
+	g++ -o a.out Main.o AI.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o MenuButton.o MenuMouse.o MenuRender.o NetworkStatus.o DebugMenu.o ThemeMenu.o Client.o Players.o AIStatus.o $(flags)
 
 Server:	Server.o CoinServer.o PhysicsServer.o Players.o
 	g++ -o Server.out CoinServer.o PhysicsServer.o Server.o Players.o $(flags)
@@ -14,6 +14,9 @@ Main.o: $(src)/Main.cpp $(inc)/Main.h
 
 AI.o: $(src)/AI.cpp $(inc)/AI.h
 	g++ $(libs) -c $(src)/AI.cpp $(flags)
+
+AIStatus.o:	$(src)/AIStatus.cpp $(inc)/AIStatus.h
+	g++ $(libs) -c $(src)/AIStatus.cpp $(flags)
 
 Carrom.o: $(src)/Carrom.cpp $(inc)/Carrom.h
 	g++ $(libs) -c $(src)/Carrom.cpp $(flags)

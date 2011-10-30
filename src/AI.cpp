@@ -2,6 +2,7 @@
 #include<thread>
 #include"AI.h"
 #include"Main.h"
+#include"AIStatus.h"
 #include "Physics.h"
 #include "Players.h"
 #include "Mouse.h"
@@ -61,6 +62,7 @@ bool TryCoinUtkarsh(int i)
 		float CornerCenterX = corners[j].CenterX*cos(turn_rotation/180.f*M_PI) - corners[j].CenterY*sin(turn_rotation/180.f*M_PI);
 		float CornerCenterY = corners[j].CenterX*sin(turn_rotation/180.f*M_PI) + corners[j].CenterY*cos(turn_rotation/180.f*M_PI);
 
+		std::cout << "RUKO: " << CornerCenterX << ", " << CornerCenterY << ", " << corners[j].CenterX << ", " << corners[j].CenterY << ", " << turn_rotation << std::endl;
 		if(CornerCenterY < 0.0)
 			continue;
 			
@@ -118,8 +120,8 @@ bool TryCoinUtkarsh(int i)
 				}
 		
 
-				coins[0].CenterX = -InitialStrikerCenterXLeft;
-				coins[0].CenterY = -InitialStrikerCenterY;
+				coins[0].CenterX = InitialStrikerCenterXLeft * cos(-turn_rotation/180.f*M_PI) -InitialStrikerCenterY * sin(-turn_rotation/180.f*M_PI) ;
+				coins[0].CenterY = InitialStrikerCenterXLeft * sin(-turn_rotation/180.f*M_PI) +    InitialStrikerCenterY * cos(-turn_rotation/180.f*M_PI);
 //				RenderGame();
 
 				if(CheckPath(i, MDash, CDash, StrikerCenterY, InitialStrikerCenterY) && IsLegal(InitialStrikerCenterXLeft, sin(ThetaDash)))
@@ -155,8 +157,8 @@ bool TryCoinUtkarsh(int i)
 					std::cout << CDash << std::endl;
 				}
 				
-				coins[0].CenterX = -InitialStrikerCenterXRight;
-				coins[0].CenterY = -InitialStrikerCenterY;
+				coins[0].CenterX = InitialStrikerCenterXRight * cos(-turn_rotation/180.f*M_PI) -InitialStrikerCenterY * sin(-turn_rotation/180.f*M_PI) ;
+				coins[0].CenterY = InitialStrikerCenterXRight * sin(-turn_rotation/180.f*M_PI) + InitialStrikerCenterY * cos(-turn_rotation/180.f*M_PI);
 //				RenderGame();
 
 				if(CheckPath(i, MDash, CDash, StrikerCenterY, InitialStrikerCenterY) && IsLegal(InitialStrikerCenterXRight, sin(ThetaDash)))
@@ -216,37 +218,63 @@ void SetCenterUtkarsh()
 		coins[0].CenterX = CenterX;
 	}
 	
+	std::cout << "RUKO: " << std::endl;
+	for(int i = 0; i < 6; i++)
+		std::cout << "RUKO: Coin " << i << " (" << coins[i].CenterX << ", " << coins[i].CenterY << ")" << std::endl;
+
 //	int n;
 //	std::cin >> n;
 	
 }
 
+void CornersInit()
+{
+	int counter=0;
+	for(int i=-1;i<=1;i+=2)
+		for(int j=-1;j<=1;j+=2, counter++)
+		{
+			corners[counter].CenterX=i*(edge_half-CORNER_RADIUS);
+			corners[counter].CenterY=j*(edge_half-CORNER_RADIUS);
+			corners[counter].radius=CORNER_RADIUS;
+		}
+}
+
 void AIStriker()
 {
-	cameraPos[0]=cameraLook[0]=0;
-	cameraPos[1]=cameraLook[1]=SHIFT;
+/*	
+*/
+//	striker_lock=true;
+	
+	CornersInit();
+//	camera_movable = false;
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(45,(float)(windowX)/windowY,0.5,300);
-	gluLookAt(EXPANDARR3(cameraPos),EXPANDARR3(cameraLook),0,1,0);//cameraPos[0],SHIFT*(i+1)/gradiant,0,0,1,0);
+	if(AIStatus::ReturnAIStatusOfPlayer(Players::ReturnPlayerTurn()) == AIUTKARSH)
+		SetCenterUtkarsh();
+	else
+		setCenter();
+
+	int n;
+	std::cin >> n;
+
+	camera_movable=false;
 
 	fixate_translate[0]=-coins[0].CenterX;
 	fixate_translate[1]=-coins[0].CenterY;
 
-//	striker_lock=true;
-
-	SetCenterUtkarsh();
-//	setCenter();
-
+/*
 	if(DebugStatus::IsDebugOn(4))
 		printf("AI VERBOSE: st_x : %f st_y : %f\n\n\n",coins[0].VelocityX,coins[0].VelocityY);
+*/
 
-//	sleep(1);	
-//	std::thread t(engagePhysics,0);
-//	t.detach();
+        CarromNetworkStruct SendMyTurn = Initialize(STRIKERSTATUS, coins[0].CenterX, coins[0].CenterY, coins[0].VelocityX, coins[0].VelocityY);
+        write(Players::ServerFileID, &SendMyTurn, sizeof(SendMyTurn));
+        std::cout << "NETWORK VERBOSE: Written striker data to FileID " << Players::ServerFileID << std::endl;
+
+        goTop();
+
+        striker_lock=false;
 	SimulateGame(0);
-	striker_lock = false;
+//	striker_lock = false;
 }
 
 void setCenter()
