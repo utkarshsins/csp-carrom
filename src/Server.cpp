@@ -84,7 +84,20 @@ void NextTurn()
 			}
 		}//Write to Rest
 
-		//Process and Simulate
+		coins[0].CenterX = TurnData.ValueA;
+		coins[0].CenterY = TurnData.ValueB;
+		coins[0].VelocityX = TurnData.ValueC;
+		coins[0].VelocityY = TurnData.ValueD;
+
+		while(engagePhysics());		//Process and Simulate
+		std::cout << "Simulated" << std::endl;
+		for(int i = 0 ; i < 6 ; i++)
+			std::cout	<< "Coin " << i 
+					<< "CenterX= " << coins[i].CenterX
+					<<", CenterY= " << coins[i].CenterY
+					<<", VelocityX = " << coins[i].VelocityX
+					<<", VelocityY = " << coins[i].VelocityY
+					<< std::endl;
 	}
 	
 	Players::ChangePlayerTurn();
@@ -144,6 +157,7 @@ void StartGame()
 			write(Players::ReturnFileIDByPlayerID(i), &StartingGame, sizeof(StartingGame));
 		}
 		
+	CoinsInit();
 	NextTurn();
 }
 

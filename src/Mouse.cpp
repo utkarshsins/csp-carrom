@@ -188,6 +188,15 @@ void SimulateGame(int arg)
 	if(!coin_pocketed)
 		Players::ChangePlayerTurn();
 
+        std::cout << "Simulated" << std::endl;
+		for(int i = 0 ; i < 6 ; i++)
+			std::cout       << "Coin " << i 
+					<< "CenterX= " << coins[i].CenterX
+					<<", CenterY= " << coins[i].CenterY
+					<<", VelocityX = " << coins[i].VelocityX
+					<<", VelocityY = " << coins[i].VelocityY
+					<< std::endl;
+
 	NextTurnBoolean = true;
 
 //	nextTurn();
