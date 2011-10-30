@@ -61,21 +61,24 @@ int PlayerID;
 
 void ProcessData(int FileID, CarromNetworkStruct Reply)
 {
-	std::cout << "YO Processing, ReplyStatusCode = " << Reply.StatusCode << std::endl;
+	std::cout << "NETWORK VERBOSE: YO Processing, ReplyStatusCode = " << Reply.StatusCode << std::endl;
 	if(Reply.StatusCode == LETMEJOIN)
 	{
 		write(FileID, &Reply, sizeof(Reply));
-		std::cout << "AI VERBOSE: Written LetMeJoin, Reading" << std::endl;
+		std::cout << "NETWORK VERBOSE: Written LetMeJoin, Reading" << std::endl;
 		read(FileID, &Reply, sizeof(Reply));
 		ProcessData(FileID, Reply);
 	}
 	else if(Reply.StatusCode == WELCOME)
 	{
 		PlayerID = Reply.ValueA;
-		std::cout << "AI VERBOSE: Connection accepted. I am PlayerID ";
+		std::cout << "NETWORK VERBOSE: Connection accepted. I am PlayerID ";
 	
 		for(int i = 0; i < Players::MyNumberOfPlayers ; i++)
+		{
+			Players::MyPlayerIDs[i] = PlayerID + i;
 			std::cout << PlayerID + i << ", ";
+		}
 
 		std::cout << std::endl;
 

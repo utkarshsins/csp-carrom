@@ -80,6 +80,7 @@ class Players
 		}
 	
 		static int MyNumberOfPlayers;
+		static int MyPlayerIDs[4];
 	private:
 		static int PlayerFileID[4];
 		static int PlayerTurn;
