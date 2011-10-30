@@ -74,18 +74,18 @@ void ProcessData(int FileID, CarromNetworkStruct Reply)
 	else if(Reply.StatusCode == STARTINGGAME)
 	{
 		std::cout << "NETWORK VERBOSE: Server requests the game to be started" << std::endl;
-
-		Players::AddPlayer(1, Reply.ValueA);
-		Players::AddPlayer(1, Reply.ValueB);
-		Players::AddPlayer(1, Reply.ValueC);
-		Players::AddPlayer(1, Reply.ValueD);
-
 		if(Reply.ValueC == -1)
 			Players::SetMaxPlayers(2);
 		else if(Reply.ValueD == -1)
 			Players::SetMaxPlayers(3);
 		else
 			Players::SetMaxPlayers(4);
+
+		Players::AddPlayer(1, Reply.ValueA);
+		Players::AddPlayer(1, Reply.ValueB);
+		Players::AddPlayer(1, Reply.ValueC);
+		Players::AddPlayer(1, Reply.ValueD);
+
 
 		std::cout << "NETWORK VERBOSE: Added players data" << std::endl;
 		StartGame();

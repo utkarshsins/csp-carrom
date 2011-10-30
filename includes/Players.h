@@ -45,8 +45,11 @@ class Players
 		static int AddPlayer(int number, int FileID)
 		{
 			int NumberOfPlayers = ReturnNumberOfPlayers();
-			if(NumberOfPlayers + number > 4)
+			if(NumberOfPlayers + number > ReturnMaxPlayers())
+			{
+				std::cout << "GAME VERBOSE: Can't add, max players allowed is "<< ReturnMaxPlayers() << std::endl;
 				return -1;
+			}
 			else
 			{
 				for(int i = NumberOfPlayers ; i < NumberOfPlayers + number ; i++)

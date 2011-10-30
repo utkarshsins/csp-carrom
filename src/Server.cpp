@@ -127,32 +127,7 @@ void StartGame()
 	std::cout << "Starting Game " << std::endl;
 	for(int i = 0; i < 4; i++)
 		if(Players::ReturnFileIDByPlayerID(i) != 0 && Players::ReturnFileIDByPlayerID(i) != -1)
-		{
-			int PlayerA, PlayerB, PlayerC, PlayerD;
-			if(Players::ReturnFileIDByPlayerID(0) == 0)
-				PlayerA = ISAI;
-			else
-				PlayerA = ISCLIENT;
-			
-			if(Players::ReturnFileIDByPlayerID(1) == 0)
-				PlayerB = ISAI;
-			else
-				PlayerB = ISCLIENT;
-				
-			if(Players::ReturnFileIDByPlayerID(2) == -1)
-				PlayerC = ISNONE;
-			else if (Players::ReturnFileIDByPlayerID(2) == 0)
-				PlayerC = ISAI;
-			else
-				PlayerC = ISCLIENT;
-				
-			if(Players::ReturnFileIDByPlayerID(3) == -1)
-				PlayerD = ISNONE;
-			else if (Players::ReturnFileIDByPlayerID(3) == 0)
-				PlayerD = ISAI;
-			else
-				PlayerD = ISCLIENT;
-				
+		{		
 			CarromNetworkStruct StartingGame = Initialize(STARTINGGAME, Players::ReturnFileIDByPlayerID(0), Players::ReturnFileIDByPlayerID(1), Players::ReturnFileIDByPlayerID(2), Players::ReturnFileIDByPlayerID(3));
 			write(Players::ReturnFileIDByPlayerID(i), &StartingGame, sizeof(StartingGame));
 		}

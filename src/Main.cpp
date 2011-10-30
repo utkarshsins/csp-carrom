@@ -115,8 +115,16 @@ void NextTurn(int args)
 	{
 		std::cout << "GAME VERBOSE: Next Turn. " << std::endl;
 //		camera_movable = false;
+//
+		coins[0].CenterX=-SHIFT*sin(turn_rotation*PI/180);
+		coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
+
 		goTop();
-		camera_movable = false;
+//		camera_movable = false;
+
+//		int n;
+//		std::cin >> n;
+
 		if(!coin_pocketed)
 			if(Players::ReturnNumberOfPlayers() == 2)
 				rotateCam(180);
