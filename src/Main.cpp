@@ -120,7 +120,7 @@ void NextTurn(int args)
 		coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
 
 		goTop();
-//		camera_movable = false;
+		camera_movable = false;
 
 //		int n;
 //		std::cin >> n;
@@ -133,6 +133,7 @@ void NextTurn(int args)
 	
 		coins[0].CenterX=-SHIFT*sin(turn_rotation*PI/180);
 		coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
+		coin_pocketed = false;
 
 	
 		std::cout 	<< "GAME VERBOSE: Next Turn PlayerID " << Players::ReturnPlayerTurn() 
