@@ -93,7 +93,7 @@ void NextTurn()
 		std::cout << "Simulated" << std::endl;
 		for(int i = 0 ; i < 6 ; i++)
 			std::cout	<< "Coin " << i 
-					<< "CenterX= " << coins[i].CenterX
+					<< " CenterX= " << coins[i].CenterX
 					<<", CenterY= " << coins[i].CenterY
 					<<", VelocityX = " << coins[i].VelocityX
 					<<", VelocityY = " << coins[i].VelocityY

@@ -114,8 +114,9 @@ void NextTurn(int args)
 	if(NextTurnBoolean == true)
 	{
 		std::cout << "GAME VERBOSE: Next Turn. " << std::endl;
-		camera_movable = false;
+//		camera_movable = false;
 		goTop();
+		camera_movable = false;
 		if(!coin_pocketed)
 			if(Players::ReturnNumberOfPlayers() == 2)
 				rotateCam(180);
@@ -135,9 +136,6 @@ void NextTurn(int args)
 			std::cout << "GAME VERBOSE: The turn is mine" << std::endl;
 			goPersp();
 			striker_lock = false;
-		//	goTop();
-		//	striker_lock = false;
-		//	goPersp();
 		}
 		else
 		{
