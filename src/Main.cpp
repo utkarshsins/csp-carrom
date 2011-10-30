@@ -116,7 +116,7 @@ void NextTurn(int args)
 		std::cout << "GAME VERBOSE: Next Turn. " << std::endl;
 //		camera_movable = false;
 //
-		goTop();
+//		goTop();
 		camera_movable = false;
 
 //		int n;
@@ -128,8 +128,8 @@ void NextTurn(int args)
 			else
 				rotateCam(90);
 	
-		coins[0].CenterX=-SHIFT*sin(turn_rotation*PI/180);
-		coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
+//		coins[0].CenterX=-SHIFT*sin(turn_rotation*PI/180);
+//		coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
 		coin_pocketed = false;
 
 	
@@ -139,25 +139,32 @@ void NextTurn(int args)
 
 		if(Players::IsNextTurnMine())
 		{
+			coins[0].CenterX=-SHIFT*sin(turn_rotation*PI/180);
+			coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
+	
 			std::cout << "GAME VERBOSE: The turn is mine" << std::endl;
 			goPersp();
 			striker_lock = false;
+			NextTurnBoolean = false;
 		}
 		else
 		{
 			std::cout << "GAME VERBOSE: The turn is not mine" << std::endl;
 			std::cout << "NETWORK VERBOSE: Reading turn data from Server FileID " << Players::ServerFileID << std::endl;
 
+			goTop();
+			coins[0].CenterX=-SHIFT*sin(turn_rotation*PI/180);
+			coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
 			CarromNetworkStruct ReadStriker;
 			read(Players::ServerFileID, &ReadStriker, sizeof(ReadStriker));
 			coins[0].CenterX = ReadStriker.ValueA;
 			coins[0].CenterY = ReadStriker.ValueB;
 			coins[0].VelocityX = ReadStriker.ValueC;
 			coins[0].VelocityY = ReadStriker.ValueD;
-
+			
+//			goTop();
 			SimulateGame(0);
 		}
-		NextTurnBoolean = false;
 	}
 	glutSetWindow(GAMEWINDOW);
 	glutTimerFunc(10, NextTurn, 0);
@@ -382,7 +389,7 @@ int main(int args, char *argv[])
 	glutInitWindowPosition(480, 300);
 	
 	glutCreateWindow(argv[0]);
-	glutFullScreen();
+//	glutFullScreen();
 	glutReshapeFunc(ReshapeFunction);
 
 	glutCreateSubWindow(glutGetWindow(), 0, 250, 1920, 500);	

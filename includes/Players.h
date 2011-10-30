@@ -48,6 +48,8 @@ class Players
 			if(NumberOfPlayers + number > ReturnMaxPlayers())
 			{
 				std::cout << "GAME VERBOSE: Can't add, max players allowed is "<< ReturnMaxPlayers() << std::endl;
+				std::cout << "GAME VERBOSE: NumberOfPlayers = " << NumberOfPlayers << std::endl;
+				std::cout << "GAME VERBOSE: number = " << number << std::endl;
 				return -1;
 			}
 			else
