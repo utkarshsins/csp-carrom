@@ -185,6 +185,11 @@ void SimulateGame(int arg)
 	while(engagePhysics())
 		RenderGame();
 
+	if(!coin_pocketed)
+		Players::ChangePlayerTurn();
+
+	NextTurnBoolean = true;
+
 //	nextTurn();
 }	
 

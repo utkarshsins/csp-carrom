@@ -72,12 +72,20 @@ void NextTurn()
 				<< ", VelocityX: " << TurnData.ValueC
 				<< ", VelocityY: " << TurnData.ValueD
 				<< std::endl;
-		//Write to Rest
+		for(int i = 0; i < Players::ReturnMaxPlayers() ; i++)
+		{
+			if(Players::ReturnFileIDByPlayerID(Players::ReturnPlayerTurn()) != Players::ReturnFileIDByPlayerID(i))
+			{
+				std::cout << "Writing Data to PlayerID " << i << " on FileID " << Players::ReturnFileIDByPlayerID(i) << std::endl;
+				write(Players::ReturnFileIDByPlayerID(i), &TurnData, sizeof(TurnData));
+			}
+		}//Write to Rest
+
 		//Process and Simulate
 	}
 	
 	Players::ChangePlayerTurn();
-//	NextTurn();
+	NextTurn();
 }
 		
 

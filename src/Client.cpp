@@ -80,6 +80,13 @@ void ProcessData(int FileID, CarromNetworkStruct Reply)
 		Players::AddPlayer(1, Reply.ValueC);
 		Players::AddPlayer(1, Reply.ValueD);
 
+		if(Reply.ValueC == -1)
+			Players::SetMaxPlayers(2);
+		else if(Reply.ValueD == -1)
+			Players::SetMaxPlayers(3);
+		else
+			Players::SetMaxPlayers(4);
+
 		std::cout << "NETWORK VERBOSE: Added players data" << std::endl;
 		StartGame();
 	}
