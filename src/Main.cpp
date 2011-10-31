@@ -119,6 +119,8 @@ void NextTurn(int args)
 {
 	if(NextTurnBoolean == true)
 	{
+		striker_lock = false;
+
 		std::cout << "GAME VERBOSE: Next Turn. " << std::endl;
 		//camera_movable = false;
 
@@ -151,7 +153,6 @@ void NextTurn(int args)
 			else
 				NextTurnBoolean = false;
 
-			striker_lock = false;
 //			NextTurnBoolean = false;
 		}
 		else
@@ -159,20 +160,20 @@ void NextTurn(int args)
 			std::cout << "GAME VERBOSE: The turn is not mine" << std::endl;
 			std::cout << "NETWORK VERBOSE: Reading turn data from Server FileID " << Players::ServerFileID << std::endl;
 
-			camera_movable = false;
-			coins[0].CenterX=-SHIFT*sin(turn_rotation*PI/180);
-			coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
-			fixate_translate[0]=-coins[0].CenterX;
-		        fixate_translate[1]=-coins[0].CenterY;
 
-			goTop();
-		
 			if(!coin_pocketed)
 				if(Players::ReturnNumberOfPlayers() == 2)
 					rotateCam(180);
 				else
 					rotateCam(90);
 			coin_pocketed = false;
+
+			coins[0].CenterX=-SHIFT*sin(turn_rotation*PI/180);
+			coins[0].CenterY=-SHIFT*cos(turn_rotation*PI/180);
+			fixate_translate[0]=-coins[0].CenterX;
+		        fixate_translate[1]=-coins[0].CenterY;
+
+			camera_movable = false;
 
 			CarromNetworkStruct ReadStriker;
 			read(Players::ServerFileID, &ReadStriker, sizeof(ReadStriker));
@@ -181,8 +182,8 @@ void NextTurn(int args)
 			coins[0].VelocityX = ReadStriker.ValueC;
 			coins[0].VelocityY = ReadStriker.ValueD;
 
-			fixate_translate[0]=-coins[0].CenterX;
-		        fixate_translate[1]=-coins[0].CenterY;
+//			fixate_translate[0]=-coins[0].CenterX;
+//		        fixate_translate[1]=-coins[0].CenterY;
 
 
 			striker_lock = false;

@@ -1,7 +1,7 @@
 inc=includes
 src=src
 
-flags=-std=c++0x -lGLU -lglut -lGL
+flags=-std=c++0x -lGLU -lglut -lGL -lpthread
 libs=-I$(inc) -IThirdPartyLibs
 a.out: Main.o AI.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o MenuButton.o MenuMouse.o MenuRender.o NetworkStatus.o DebugMenu.o ThemeMenu.o Client.o Players.o AIStatus.o SettingsMenu.o
 	g++ -o a.out Main.o AI.o Carrom.o Coin.o Mouse.o Physics.o BMPLoader.o MenuButton.o MenuMouse.o MenuRender.o NetworkStatus.o DebugMenu.o ThemeMenu.o Client.o Players.o AIStatus.o SettingsMenu.o $(flags)
