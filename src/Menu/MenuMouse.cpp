@@ -2,7 +2,7 @@
 
 int MenuMouse::MouseX = -1;
 int MenuMouse::MouseY = -1;
-int MenuMouse::MenuSelected = 0;
+int MenuMouse::MenuSelected = 3;
 
 bool MenuMouse::BlinkingCursorOn = false;
 

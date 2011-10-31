@@ -1,4 +1,5 @@
 #include "Menu/Render.h"
+#include "Menu/SettingsMenu.h"
 #include <GL/gl.h>
 
 //void glWindowPos2i(GLint x, GLint y);
@@ -135,6 +136,8 @@ void DrawMenuFrame()
 		DrawDebugMenu();
 	else if(MenuMouse::IsMenuSelected(2))
 		DrawThemeMenu();
+	else if(MenuMouse::IsMenuSelected(3))
+		DrawSettingsMenu();
 	else if(MenuMouse::IsMenuSelected(4))
 		DrawCreditsMenu();
 

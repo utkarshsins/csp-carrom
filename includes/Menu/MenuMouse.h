@@ -2,7 +2,7 @@
 #define __MENUMOUSE__
 #include <iostream>
 #include "Main.h"
-
+#include "Players.h"
 #include "Network/Status.h"
 #include "Menu/Theme.h"
 
@@ -76,7 +76,25 @@ class MenuMouse {
 						return true;
 			return false;
 		}
+		
+		static bool IsMouseOnSettings(int i)
+		{
+			if(IsMenuSelected(3))
+				if(MouseY >= 60 && MouseY <= 240)
+					if(MouseX >= 5+(windowX-10)*i/5.f && MouseX <= 5+(windowX-10.f)*(i+1)/5.f)
+						return true;
+			return false;
+		}
 	
+		static bool IsMouseOnLocalPlayers(int i)
+		{
+			if(IsMouseOnSettings(0))
+				if(MouseY >= 105 && MouseY <= 150)
+					if(MouseX >= 5+(windowX-10)*i/5.f/4.f && MouseX <= 5+(windowX-10)*(i+1)/5.f/4.f)
+						return true;
+			return false;
+		}
+				
 		static bool IsMouseOnRGB(int state)
 		{
 			int i;
@@ -103,8 +121,6 @@ class MenuMouse {
 							i = 2;
 
 						Theme::ChangeRGB(i, MouseRGBX);
-	
-						std::cout << "OnRGB X = " << MouseRGBX << std::endl;
 					}
 			}
 			return false;
@@ -120,6 +136,9 @@ class MenuMouse {
 					else if(IsMouseOnDebugButton(i) && state == GLUT_DOWN)
 						DebugStatus::ChangeDebugStatus(i);
 				IsMouseOnRGB(state);
+				for(int i = 0; i < 4; i++)
+					if(IsMouseOnLocalPlayers(i))
+						Players::MyNumberOfPlayers = i+1;
 			}
 
 			if(state == GLUT_DOWN)

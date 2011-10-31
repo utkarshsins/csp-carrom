@@ -85,7 +85,7 @@ void DrawDebugTick(int i)
 	if(MenuMouse::IsMouseOnDebugButton(i))
 		glColor4f(1,1,1,DebugIsOn);
 	else
-		glColor4f(0,0,0,DebugIsOn);
+		glColor4f(Theme::ReturnRGB(0)/255.f, Theme::ReturnRGB(1)/255.f, Theme::ReturnRGB(2)/255.f,DebugIsOn);
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glTranslatef(0.8f, 0,0);
