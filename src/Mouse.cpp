@@ -5,6 +5,7 @@
 #define PI M_PI
 
 int pointer_y, pointer_x;
+bool coverTurn,coverTaken;
 void MouseButton(int key, int direction, int x, int y)
 {
 	if(!camera_movable)
@@ -182,11 +183,24 @@ void stopCam(int x, int y)
 
 void SimulateGame(int arg)
 {
+	bool prevTurnQueen=coverTurn;
 	while(engagePhysics())
 		RenderGame();
 
+	if(prevTurnQueen&&coverTaken)
+	{
+		Players::PlayerScore[Players::ReturnPlayerTurn()]+=50;
+		coverTurn=false;
+		coverTaken=false;
+	}
+	else if(prevTurnQueen&&!coverTaken)
+	{
+		CoinToCenter(5);
+		coverTurn=false;
+		coverTaken=false;
+	}
 	if(!coin_pocketed)
-		Players::ChangePlayerTurn();
+	Players::ChangePlayerTurn();
 
         std::cout << "GAME VERBOSE: Simulated" << std::endl;
 		for(int i = 0 ; i < 6 ; i++)
@@ -209,8 +223,8 @@ void playTurn()
 	fixate_translate[0]=-coins[0].CenterX;
 	fixate_translate[1]=-coins[0].CenterY;
 	
-	coins[0].VelocityX=sin(((0-pointer_angle+turn_rotation)/180)*PI)*pointer_length;
-	coins[0].VelocityY=cos(((0-pointer_angle+turn_rotation)/180)*PI)*pointer_length;
+	coins[0].VelocityX=sin(((0-pointer_angle+turn_rotation)/180)*PI)*pointer_length*1.4;
+	coins[0].VelocityY=cos(((0-pointer_angle+turn_rotation)/180)*PI)*pointer_length*1.4;
 
 	CarromNetworkStruct SendMyTurn = Initialize(STRIKERSTATUS, coins[0].CenterX, coins[0].CenterY, coins[0].VelocityX, coins[0].VelocityY);
 	write(Players::ServerFileID, &SendMyTurn, sizeof(SendMyTurn));

@@ -183,16 +183,42 @@ void checkCollision(int index)
 		}
 	}
 
-	for(int i=0;i<4;i++)
+	int i=index;
+	for(int j=0;j<4;j++)
 	{
-		if(distance(coins[index],corners[i])<2*CORNER_RADIUS+5*ERROR_ACCOMODATION)
+		if(distance(coins[index],corners[j])<2*CORNER_RADIUS+5*ERROR_ACCOMODATION)
 		{
 			coins[index].scored=player;
 			coins[index].VelocityX*=0;
 			coins[index].VelocityY*=0;
 			if(DebugStatus::IsDebugOn(2))
-				printf("VERBOSE PHYSICS: Scored I guess. %f, %f, %f;\n", corners[i].CenterY, corners[i].CenterX, CORNER_RADIUS+ERROR_ACCOMODATION );
+				printf("VERBOSE PHYSICS: Scored I guess. %f, %f, %f;\n", corners[j].CenterY, corners[j].CenterX, CORNER_RADIUS+ERROR_ACCOMODATION );
+
 			coin_pocketed=true;
+			if(coverTurn)
+			{
+				if(i!=0)
+					coverTaken=true;
+				else
+					CoinToCenter(5);
+			}
+
+			//code for whether coin is to be reset
+			if(i==0)
+			{
+				Players::PlayerScore[Players::ReturnPlayerTurn()]-=10;
+				CoinToCenter(0);
+				coin_pocketed=false;
+			}
+			if(i==1||i==2)
+				Players::PlayerScore[Players::ReturnPlayerTurn()]+=10;
+			if(i==3||i==4)
+				Players::PlayerScore[Players::ReturnPlayerTurn()]+=20;
+			if(i==5)
+			{
+				coverTurn=true;
+				coverTaken=false;
+			}
 			return;
 		}
 	}
@@ -210,4 +236,26 @@ void checkCollision(int index)
 	}
 
 	return;
+}
+
+void CoinToCenter(int i)
+{
+	coins[i].CenterX=0;
+	coins[i].CenterY=0;
+	coins[i].scored=0;	
+	bool flag;
+	do
+	{
+		flag=false;
+		for(int j=0;j<6;j++)
+		{
+			if(i==j)
+				continue;
+			if(distance(coins[i],coins[j])<=(coins[i].radius+coins[j].radius)*1.05)
+			{
+				coins[i].CenterX+=0.04;
+				flag=true;
+			}
+		}
+	}while(flag);
 }
