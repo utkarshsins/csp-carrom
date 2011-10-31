@@ -204,18 +204,36 @@ void SetCenterUtkarsh()
 	if(coins[0].VelocityX != 0.0 && coins[0].VelocityY != 0.0)
 	{
 		float CenterX = coins[0].CenterX;
-		coins[0].CenterX = 0.0;
+		float CenterY = coins[0].CenterY;
 	
 		float adjustment;
-		if(CenterX < 0.0)
-			adjustment = -0.01;
+
+		if((int) turn_rotation % 180 == 0)
+		{
+			if(CenterX < 0.0)
+				adjustment = -0.01;
+			else
+				adjustment = 0.01;
+				
+			coins[0].CenterX = 0.0;
+			for(; fabs(coins[0].CenterX - CenterX) >= 0.01 ; coins[0].CenterX = coins[0].CenterX + adjustment)
+				RenderGame();
+
+			coins[0].CenterX = CenterX;
+		}
 		else
-			adjustment = 0.01;
+		{
+			if(CenterY < 0.0)
+				adjustment = -0.01;
+			else
+				adjustment = 0.01;
+			coins[0].CenterY = 0.0;
+			for(; fabs(coins[0].CenterY - CenterY) >= 0.01 ; coins[0].CenterY = coins[0].CenterY + adjustment)
+				RenderGame();
 
-		for(; fabs(coins[0].CenterX - CenterX) >= 0.01 ; coins[0].CenterX = coins[0].CenterX + adjustment)
-			RenderGame();
-
-		coins[0].CenterX = CenterX;
+			coins[0].CenterY = CenterY;
+		}
+			
 	}
 	
 	std::cout << "RUKO: " << std::endl;
