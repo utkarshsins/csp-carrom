@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Main.h"
 #include "Players.h"
+#include "AIStatus.h"
 #include "Network/Status.h"
 #include "Menu/Theme.h"
 
@@ -104,6 +105,20 @@ class MenuMouse {
 			return false;
 		}
 			
+		static bool IsMouseOnAI(int i)
+		{
+			if(IsMouseOnSettings(i/3 + 1))
+				if(MouseY >= 105 + (i%3)*45)
+					if(i%3 != 2)
+						if(MouseY <= 105 + ((i+1)%3)*45)
+							return true;
+						else
+							return false;
+					else
+						if(MouseY <= 240)
+							return true;
+			return false;
+		}
 				
 		static bool IsMouseOnRGB(int state)
 		{
@@ -157,6 +172,11 @@ class MenuMouse {
 					glutPostRedisplay();
 					glutSetWindow(MENUWINDOW);
 				}
+				
+				for(int i = 0; i < 12; i++)
+					if(IsMouseOnAI(i)  && state == GLUT_DOWN)
+						AIStatus::ChangeAIStatusOfPlayer(i/3, i%3);
+						
 			}
 
 			if(state == GLUT_DOWN)
