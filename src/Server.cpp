@@ -135,6 +135,7 @@ void StartGame()
 		}
 		
 	CoinsInit();
+	coin_pocketed = false;
 	NextTurn();
 }
 
