@@ -96,7 +96,6 @@ int ClientSocketFileDescriptor;
 
 void StartClient(const char IpToConnect[])
 {
-	Players::MyNumberOfPlayers = 4;
 	struct sockaddr_in ServerAddress;
 	struct hostent *Server;
 

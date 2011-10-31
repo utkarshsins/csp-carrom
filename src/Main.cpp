@@ -427,10 +427,10 @@ int main(int args, char *argv[])
 	glutKeyboardFunc(key);
 
 	MenuInit();
-	
+	/*
 	std::thread ClientThread(StartClient, "localhost");
 	ClientThread.detach();
-
+*/
 	glutMainLoop();
 
 	return 0;

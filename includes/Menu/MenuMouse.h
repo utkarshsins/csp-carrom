@@ -228,7 +228,15 @@ class MenuKeyboard
 					NetIP[PositionToInsert-1] = '\0';
 				else;
 			else if(key == 13)
-				std::cout << "Pressed Enter. Change State." << std::endl;
+			{
+				if(!ConnectionStarted)
+				{
+					std::thread ClientThread(StartClient, "localhost");
+					ClientThread.detach();
+					std::cout << "Pressed Enter. Change State." << std::endl;
+					ConnectionStarted = true;
+				}
+			}
 			else if(PositionToInsert < 15)
 				NetIP[PositionToInsert] = key;
 
@@ -236,6 +244,8 @@ class MenuKeyboard
 			glutPostRedisplay();
 			//NetworkStatus::ChangeIP(NetIP);
 		}
+	private:
+		static bool ConnectionStarted;
 };
 
 
