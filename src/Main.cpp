@@ -83,6 +83,11 @@ void RenderGame(void)
 	glutSetWindow(GAMEWINDOW);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1,1,1,0.7);
+	
+	if(MenuMouse::IsWireframeOn())
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	glMatrixMode(GL_MODELVIEW);
 

@@ -61,6 +61,33 @@ void DrawLocalPlayer(int i)
 	glPopMatrix();
 	
 }
+
+void DrawWireframe()
+{
+	glColor4f(0,0,0,1);
+	if(MenuMouse::IsMouseOnWireframe())
+	{
+		glDrawArrays(GL_QUADS, 0, 4);
+		glColor4f(1,1,1,1);
+	}
+	WriteText("Wireframe", -0.75, 0.1);
+	float WireframeIsOn = 0.25f;
+	if(MenuMouse::IsWireframeOn())
+		 WireframeIsOn = 1.f;
+		 
+	glPushMatrix();
+	glTranslatef(0.65, 0, 0);
+	glScalef(0.25, 0.25, 1);
+	if(MenuMouse::IsMouseOnWireframe())
+		glColor4f(1,1,1,WireframeIsOn);
+	else
+		glColor4f(Theme::ReturnRGB(0)/255.f, Theme::ReturnRGB(1)/255.f, Theme::ReturnRGB(2)/255.f,WireframeIsOn);
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDrawArrays(GL_QUADS, 0, 4);
+	glEnableClientState(GL_COLOR_ARRAY);
+
+	glPopMatrix();
+}
 	
 void DrawMiscSettings()
 {
@@ -89,6 +116,12 @@ void DrawMiscSettings()
 		DrawLocalPlayer(i);
 		glTranslatef(2,0,0);
 	}
+	glPopMatrix();
+	
+	glPushMatrix();
+	glScalef(1, 0.5, 1);
+	glTranslatef(0, -1, 0);
+	DrawWireframe();
 	glPopMatrix();
 }
 	

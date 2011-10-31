@@ -94,6 +94,16 @@ class MenuMouse {
 						return true;
 			return false;
 		}
+		
+		static bool IsMouseOnWireframe()
+		{
+			if(IsMouseOnSettings(0))
+				if(MouseY >= 150 && MouseY <= 240)
+					if(MouseX >= 5 && MouseX <= 5+(windowX-10)/5.f)
+						return true;
+			return false;
+		}
+			
 				
 		static bool IsMouseOnRGB(int state)
 		{
@@ -139,6 +149,14 @@ class MenuMouse {
 				for(int i = 0; i < 4; i++)
 					if(IsMouseOnLocalPlayers(i))
 						Players::MyNumberOfPlayers = i+1;
+				
+				if(IsMouseOnWireframe() && state == GLUT_DOWN)
+				{
+					Wireframe = !Wireframe;
+					glutSetWindow(GAMEWINDOW);
+					glutPostRedisplay();
+					glutSetWindow(MENUWINDOW);
+				}
 			}
 
 			if(state == GLUT_DOWN)
@@ -163,12 +181,18 @@ class MenuMouse {
 		{
 			return BlinkingCursorOn;
 		}
+		
+		static bool IsWireframeOn()
+		{
+			return Wireframe;
+		}
 
 	private:
 		static int MouseX, MouseY;
 		static int MenuSelected;
 		static bool BlinkingCursorOn;
 		static bool MouseDown;
+		static bool Wireframe;
 };
 
 class MenuKeyboard
