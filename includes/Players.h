@@ -98,6 +98,7 @@ class Players
 		static int ServerFileID;
 		static int MyNumberOfPlayers;
 		static int MyPlayerIDs[4];
+		static int PlayerScore[4]; // To Use this.. access Players::PlayerScore[i] from anywhere in the program
 	private:
 		static int PlayerFileID[4];
 		static int PlayerTurn;
